@@ -108,7 +108,7 @@ If you use this work, please cite:
 ```bibtex
 @article{erdos-straus-gateway-2026,
   title={A Finite Algebraic Covering System for the {Erd\H{o}s--Straus} Conjecture to $10^9$},
-  author={Macdara},
+  author={\'O Murch\'u, Macdara},
   year={2026},
   note={Preprint}
 }
