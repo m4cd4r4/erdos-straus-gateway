@@ -2,6 +2,8 @@
 
 **Gateway Decompositions via Divisors of N^2**
 
+![Results overview: prime classification, A-value distribution, and max A stabilisation](banner.png)
+
 ## Overview
 
 The [Erdos-Straus conjecture](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Straus_conjecture) (1948) asserts that for every integer n >= 2, the equation
