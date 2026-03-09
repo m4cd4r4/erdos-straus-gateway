@@ -193,9 +193,9 @@ for spine in ['top', 'right']:
 # ============================================================================
 fig.suptitle(
     r'Erdős–Straus Conjecture: Gateway Decompositions to $10^9$',
-    fontsize=17, color=WHITE, fontweight='bold', y=1.02
+    fontsize=17, color=WHITE, fontweight='bold', y=1.06
 )
-fig.text(0.5, 0.97,
+fig.text(0.5, 0.99,
          '24 algebraic identities cover all 50,847,534 primes  |  max $A$ = 239  |  key insight: $d \\mid N^2$',
          ha='center', fontsize=10, color=GOLD, style='italic')
 
