@@ -10,8 +10,8 @@ import numpy as np
 plt.rcParams.update({
     'font.family': 'serif',
     'font.size': 10,
-    'figure.dpi': 200,
-    'savefig.dpi': 200,
+    'figure.dpi': 300,
+    'savefig.dpi': 300,
     'savefig.bbox': 'tight',
 })
 
