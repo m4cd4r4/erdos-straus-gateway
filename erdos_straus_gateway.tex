@@ -21,7 +21,7 @@
 \newcommand{\legendre}[2]{\left(\frac{#1}{#2}\right)}
 
 \title[Gateway Decompositions for the Erd\H{o}s--Straus Conjecture]
-{A Finite Algebraic Covering System for the\\
+{A Finite Algebraic Covering System for the
 Erd\H{o}s--Straus Conjecture to $10^9$}
 
 \author{Macdara \'O Murch\'u}
@@ -37,7 +37,7 @@ $d \mid \bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
 $d \equiv -p^2 \cdot 4^{-1} \pmod{A}$,
 we obtain an explicit representation $\frac{4}{p} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$.
 The integrality condition $d \mid N^2$ (where $N = \frac{p+A}{4}$) is strictly weaker
-than the condition $d \mid N$ appearing in prior work, and is essential for completeness.
+than the condition $d \mid N$ appearing in prior work, and appears essential for completeness.
 
 Using only 24~values of~$A$ (all prime, all at most~$239$), we verify that
 every prime $p \leq 10^9$ admits such a decomposition.
@@ -61,13 +61,14 @@ asserts that for every integer $n \geq 2$, the equation
 has a solution in positive integers $x, y, z$.
 
 The conjecture has been verified computationally to $10^{14}$
-\cite{Swett1999,ElsholtzTao2013}, and Tao~\cite{Tao2019} proved that
+\cite{Swett1999,ElsholtzTao2013}, and Elsholtz and Tao~\cite{ElsholtzTao2013} proved that
 it holds for ``almost all'' positive integers in the sense of natural density.
 Algebraic results of Schinzel~\cite{Schinzel1956},
-Sierpi\'nski~\cite{Sierpinski1956}, Mordell~\cite{Mordell1967},
-and others provide explicit decompositions for specific congruence classes.
-However, no prior work has exhibited a \emph{finite} set of algebraic
-identities covering all primes up to a given bound.
+Sierpi\'nski~\cite{Sierpinski1956}, Mordell~\cite{Mordell1969},
+Elsholtz~\cite{Elsholtz2001}, and others provide explicit decompositions
+for specific congruence classes.
+However, to our knowledge, no prior work has exhibited a \emph{finite} set of
+algebraic identities covering all primes up to a given bound.
 
 In this paper we introduce a \emph{gateway decomposition}---a single
 parametric identity that, for appropriate choices of an auxiliary
@@ -89,14 +90,14 @@ yields a valid representation~\eqref{eq:es}.
 \end{theorem}
 
 Since~\eqref{eq:es} for composite~$n$ reduces to the prime
-case~\cite{Mordell1967}, Theorem~\ref{thm:main} implies that
+case~\cite{Mordell1969}, Theorem~\ref{thm:main} implies that
 \eqref{eq:es} holds for all $n \leq 10^9$.
 
 The paper is organised as follows.
 Section~\ref{sec:prelim} fixes notation.
 Section~\ref{sec:gateway} states and proves the gateway decomposition.
 Section~\ref{sec:existence} proves that suitable parameters exist
-for approximately $98.75\%$ of all primes.
+for approximately $97.6\%$ of all primes.
 Section~\ref{sec:computation} presents the computational verification
 for the remaining primes.
 Section~\ref{sec:discussion} discusses the path toward a full proof.
@@ -290,27 +291,23 @@ One checks $3 \mid (B + 2)$: since $p \neq 3$ and $A = 3$,
 we have $p^2 \equiv 1 \pmod 3$, so
 $B = pN \equiv p \cdot (p+3)/4 \equiv p^2 \cdot 4^{-1} \equiv 1 \pmod 3$
 (using $4 \equiv 1 \pmod 3$), hence $B + 2 \equiv 0 \pmod 3$.
-Lemma~\ref{lem:Nsq} gives~\ref{cond:int}.
+Lemma~\ref{lem:Nsq} gives condition~\ref{cond:int}.
 
 \ref{mod3:p17}: Here $d = p$ does not divide~$N^2$ (since $\gcd(p, N) = 1$),
 so Lemma~\ref{lem:Nsq} does not apply. Instead we verify~\ref{cond:int} directly.
 We have $p \equiv 17 \pmod{24}$, so $p \equiv 2 \pmod 3$ and $6 \mid (p+1)$.
 
 Condition~\ref{cond:res}: $B + p = pN + p = p(N+1) = p(p+7)/4$.
-Since $p \equiv 2 \pmod 3$ and $(p+7)/4 \equiv (p+1)/4 + 3/2 \ldots$
---- more directly: $B = p(p+3)/4$ and $B + p = p(p+7)/4$.
 We need $3 \mid p(p+7)/4$. Since $p \equiv 2 \pmod{3}$,
-$p + 7 \equiv 0 \pmod 3$, so $3 \mid (p+7)$ and hence $3 \mid p(p+7)/4$.~\checkmark
+we have $p + 7 \equiv 0 \pmod 3$, so $3 \mid (p+7)$
+and hence $3 \mid p(p+7)/4$.~\checkmark
 
 Condition~\ref{cond:int}: $y = (B + p)/3 = p(p+7)/12$.
 Then $By = pN \cdot p(p+7)/12 = p^2(p+3)(p+7)/48$.
 We need $p \mid By$, which is trivially true.
 So $z = By/p = p(p+3)(p+7)/48$.
-Integrality: $p \equiv 17 \pmod{24}$ gives $p+7 \equiv 0 \pmod{24}$
-and $p + 3 \equiv 0 \pmod{4}$, so $48 \mid (p+3)(p+7)$.
-Alternatively, $p \equiv 5 \pmod 6$ gives $6 \mid (p+1)$
-and $2 \mid (p+3)$, so $12 \mid (p+1)(p+3)$; a direct check
-confirms $48 \mid (p+3)(p+7)$.~\checkmark
+Integrality: $p \equiv 17 \pmod{24}$ gives $24 \mid (p+7)$
+and $4 \mid (p+3)$, so $48 \mid (p+3)(p+7)$.~\checkmark
 
 \ref{mod3:caseA}: $q$ is a prime factor of $N = (p+3)/4$ with $q \equiv 2 \pmod{3}$.
 Since $q \mid N$, we have $q \mid N^2$ and $\gcd(q, 3p) = 1$ (as $q \neq 3$
@@ -319,7 +316,7 @@ For~\ref{cond:res}: $B + q = pN + q$. Since $p \equiv 1 \pmod 3$
 and $N \equiv 1 \pmod 3$ (from $p \equiv 1 \pmod{24}$),
 $B \equiv 1 \pmod 3$. Since $q \equiv 2 \pmod 3$, $B + q \equiv 0 \pmod 3$.~\checkmark
 
-Lemma~\ref{lem:Nsq} gives~\ref{cond:int}.
+Lemma~\ref{lem:Nsq} gives condition~\ref{cond:int}.
 \end{proof}
 
 % ---- NQR mod 7 ----
@@ -343,9 +340,9 @@ So $-B$ is a NQR mod~$7$ (since $-1$ is a NQR mod~$7$).
 
 Take $d = 2^k p$ with $k \in \{0, 1, 2\}$ chosen so that
 $2^k p \equiv -B \pmod 7$.
-This is always possible: $p$ is a NQR mod~$7$ by hypothesis, and
+This is always possible: $p$ is a NQR mod~$7$ by hypothesis,
 $\{2^0, 2^1, 2^2\} \equiv \{1, 2, 4\} \pmod 7$ are the three QRs,
-so $\{p, 2p, 4p\}$ runs through all three NQR classes.
+and $\{p, 2p, 4p\}$ runs through all three NQR classes.
 
 We verify~\ref{cond:int} directly (Lemma~\ref{lem:Nsq} does not apply since
 $\gcd(d, p) = p \neq 1$).
@@ -495,8 +492,9 @@ increase through $10^9$ (Figure~\ref{fig:maxA}).
 If $\max A$ remains bounded as $p \to \infty$---that
 is, if there exists a constant~$C$ such that every prime admits a gateway
 decomposition with $A \leq C$---then the Erd\H{o}s--Straus conjecture
-follows immediately, since the conjecture can be verified for all primes
-up to~$C$ by direct computation.
+follows, since each congruence class modulo $\operatorname{lcm}\{4A : A \leq C\}$
+is handled by some identity, and finitely many exceptions (if any) can be
+verified directly.
 
 \begin{figure}[ht]
 \centering
@@ -511,7 +509,7 @@ The value stabilises at~$239$ from~$10^8$ onward.}\label{fig:maxA}
 For fixed prime~$A$, the number of divisors of
 $N^2 = \bigl(\frac{p+A}{4}\bigr)^{\!2}$ is
 $\tau(N^2) = \prod_i (2e_i + 1)$
-where $N = \prod p_i^{e_i}$.
+where $N = \prod q_i^{e_i}$.
 On average, $\tau(N^2)$ grows like $(\log N)^c$ for a constant~$c > 0$.
 The probability that none of these divisors falls in the residue class
 $-B \pmod{A}$ is heuristically
@@ -521,7 +519,7 @@ $-B \pmod{A}$ is heuristically
 \]
 This suggests that for any fixed~$A$, the set of primes~$p$ for which
 $A$ fails has density zero---consistent with Tao's ``almost all'' result
-\cite{Tao2019}.
+\cite{Tao2011}.
 
 For multiple values of~$A$ (our 24 candidates), failures would require
 \emph{simultaneous} failure across all~$A$, which is heuristically
@@ -541,7 +539,8 @@ $d \equiv -p \cdot \frac{p+A}{4} \pmod{A}$.
 
 This is a question about the \emph{equidistribution of divisors in residue classes}
 for integers of the form $\bigl(\frac{p+A}{4}\bigr)^{\!2}$,
-a topic connected to work of Hooley and Tenenbaum on divisor distribution.
+a topic connected to work of Hooley~\cite{Hooley1979} and
+Tenenbaum~\cite{Tenenbaum1985} on divisor distribution.
 
 \subsection{Connection to prior work}
 
@@ -568,8 +567,7 @@ The framework reduces the conjecture to a concrete question about divisor
 distribution in arithmetic progressions, providing a potential bridge
 between computational verification and a theoretical proof.
 
-\bigskip
-\noindent\textbf{Code availability.}
+\paragraph{Code availability.}
 All verification code (Python) is available at
 \url{https://github.com/m4cd4r4/erdos-straus-gateway}.
 
@@ -590,7 +588,12 @@ C.~Elsholtz and T.~Tao,
 \emph{Counting the number of solutions to the Erd\H{o}s--Straus equation on unit fractions},
 J.\ Aust.\ Math.\ Soc.\ \textbf{94} (2013), 50--105.
 
-\bibitem{Mordell1967}
+\bibitem{Hooley1979}
+C.~Hooley,
+\emph{On a new technique and its applications to the theory of numbers},
+Proc.\ London Math.\ Soc.\ (3) \textbf{38} (1979), 115--151.
+
+\bibitem{Mordell1969}
 L.~J.~Mordell,
 \emph{Diophantine Equations},
 Academic Press, 1969.
@@ -610,12 +613,18 @@ Mathesis \textbf{65} (1956), 16--32.
 A.~Swett,
 \emph{Erd\H{o}s--Straus conjecture},
 unpublished computation, 1999.
-\url{http://math.uindy.edu/swett/esc.htm}
+\url{https://web.archive.org/web/20060315072834/http://math.uindy.edu/swett/esc.htm}.
 
-\bibitem{Tao2019}
+\bibitem{Tenenbaum1985}
+G.~Tenenbaum,
+\emph{Sur la probabilit\'e qu'un entier poss\`ede un diviseur dans un intervalle donn\'e},
+Compositio Math.\ \textbf{51} (1984), 243--263.
+
+\bibitem{Tao2011}
 T.~Tao,
-\emph{On the Erd\H{o}s--Straus conjecture},
-unpublished note, 2019.
+\emph{On the number of solutions to $4/p = 1/n_1 + 1/n_2 + 1/n_3$},
+blog post, 2011.
+\url{https://terrytao.wordpress.com/2011/07/07/on-the-number-of-solutions-to-4p-1n_1-1n_2-1n_3/}.
 
 \bibitem{Webb1970}
 W.~A.~Webb,
