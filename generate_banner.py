@@ -33,7 +33,7 @@ BG = '#0d1117'
 CARD = '#161b22'
 
 # ============================================================================
-# PANEL 1: Coverage pie — simplified single pie
+# PANEL 1: Coverage pie - simplified single pie
 # ============================================================================
 ax1 = fig.add_subplot(gs[0])
 ax1.set_facecolor(BG)
@@ -84,7 +84,7 @@ ax1.text(0, -1.35, '78,498 primes to $10^6$', ha='center',
          fontsize=8, color=DIMMED, style='italic')
 
 # ============================================================================
-# PANEL 2: A-value distribution — bar chart
+# PANEL 2: A-value distribution - bar chart
 # ============================================================================
 ax2 = fig.add_subplot(gs[1])
 ax2.set_facecolor(CARD)

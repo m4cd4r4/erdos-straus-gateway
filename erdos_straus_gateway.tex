@@ -286,9 +286,10 @@ In all cases, $A = 3$, and $4 \mid (p+3)$ since $p \equiv 1 \pmod 4$.
 
 \ref{mod3:even}: $p \equiv 5 \pmod{8}$ gives $N = (p+3)/4$ even,
 so $2 \mid N$ and hence $2 \mid N^2$.
-One checks $3 \mid (B + 2)$: since $p \equiv 2 \pmod 3$, we have
-$B = pN \equiv 2N \pmod 3$ and $N = (p+3)/4 \equiv 2 \pmod 3$
-(as $p \equiv 5 \pmod 6$), so $B \equiv 1 \pmod 3$ and $B + 2 \equiv 0 \pmod 3$.
+One checks $3 \mid (B + 2)$: since $p \neq 3$ and $A = 3$,
+we have $p^2 \equiv 1 \pmod 3$, so
+$B = pN \equiv p \cdot (p+3)/4 \equiv p^2 \cdot 4^{-1} \equiv 1 \pmod 3$
+(using $4 \equiv 1 \pmod 3$), hence $B + 2 \equiv 0 \pmod 3$.
 Lemma~\ref{lem:Nsq} gives~\ref{cond:int}.
 
 \ref{mod3:p17}: Here $d = p$ does not divide~$N^2$ (since $\gcd(p, N) = 1$),
@@ -346,13 +347,17 @@ This is always possible: $p$ is a NQR mod~$7$ by hypothesis, and
 $\{2^0, 2^1, 2^2\} \equiv \{1, 2, 4\} \pmod 7$ are the three QRs,
 so $\{p, 2p, 4p\}$ runs through all three NQR classes.
 
-Condition $d \mid N^2$: $d = 2^k p$ and we need $2^k \mid N$ and $p \mid N^2$.
-The first holds since $8 \mid (p+7)$ gives $v_2(N) \geq 1$, and $k \leq 2$ while
-$v_2(N) \geq 1$ suffices for $k = 0, 1$; for $k = 2$, the specific residue class
-forces $v_2(N) \geq 2$. For $p \mid N^2$: this fails in general ($\gcd(p, N) = 1$
-typically), so we instead verify~\ref{cond:int} directly.
-Since $d = 2^k p$ and $p \mid B = pN$, we have $p \mid By$; and
-$2^k \mid N \mid By$ as well. So $d = 2^k p \mid By$.~\checkmark
+We verify~\ref{cond:int} directly (Lemma~\ref{lem:Nsq} does not apply since
+$\gcd(d, p) = p \neq 1$).
+Write $d = 2^k p$; then $p \mid B = pN$, so $p \mid By$.
+For the power of~$2$: since $8 \mid (p+7)$, we have $v_2(N) \geq 1$.
+Now $y = (B + d)/7 = p(N + 2^k)/7$, so $v_2(By) = v_2(N) + v_2(N + 2^k)$.
+If $v_2(N) \geq k$, then $2^k \mid N \mid By$.
+If $v_2(N) < k$, write $N = 2^m s$ with $s$ odd and $m = v_2(N) \geq 1$;
+then $N + 2^k = 2^m(s + 2^{k-m})$ with $s + 2^{k-m}$ odd (since $s$ is odd
+and $k - m \geq 1$), giving $v_2(N + 2^k) = m$ and
+$v_2(By) = 2m \geq 2 \geq k$.
+In all cases $2^k \mid By$, so $d = 2^k p \mid By$.~\checkmark
 
 Explicitly:
 \[
