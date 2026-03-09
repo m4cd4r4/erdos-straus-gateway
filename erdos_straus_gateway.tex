@@ -16,10 +16,6 @@
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\legendre}[2]{\left(\frac{#1}{#2}\right)}
-
 \title[Gateway Decompositions for the Erd\H{o}s--Straus Conjecture]
 {A Finite Algebraic Covering System for the
 Erd\H{o}s--Straus Conjecture to $10^9$}
@@ -61,12 +57,13 @@ asserts that for every integer $n \geq 2$, the equation
 has a solution in positive integers $x, y, z$.
 
 The conjecture has been verified computationally to $10^{14}$
-\cite{Swett1999,ElsholtzTao2013}, and Elsholtz and Tao~\cite{ElsholtzTao2013} proved that
-it holds for ``almost all'' positive integers in the sense of natural density.
+by Swett~\cite{Swett1999}.
+Elsholtz and Tao~\cite{ElsholtzTao2013} proved that it holds for
+``almost all'' positive integers in the sense of natural density.
 Algebraic results of Schinzel~\cite{Schinzel1956},
-Sierpi\'nski~\cite{Sierpinski1956}, Mordell~\cite{Mordell1969},
-Elsholtz~\cite{Elsholtz2001}, and others provide explicit decompositions
-for specific congruence classes.
+Sierpi\'nski~\cite{Sierpinski1956}, Webb~\cite{Webb1970},
+Mordell~\cite{Mordell1969}, Elsholtz~\cite{Elsholtz2001},
+and others provide explicit decompositions for specific congruence classes.
 However, to our knowledge, no prior work has exhibited a \emph{finite} set of
 algebraic identities covering all primes up to a given bound.
 
@@ -81,17 +78,19 @@ not the stronger condition $d \mid N$.
 Our main computational result is:
 
 \begin{theorem}[Main Result]\label{thm:main}
-For every prime $p \leq 10^9$, there exists a prime
-$A \leq 239$ with $A \equiv 3 \pmod{4}$ and a divisor
-$d$ of $\bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
+For every prime $p \equiv 1 \pmod{4}$ with $p \leq 10^9$,
+there exists a prime $A \leq 239$ with $A \equiv 3 \pmod{4}$
+and a divisor $d$ of $\bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
 $d \equiv -p^2 \cdot 4^{-1} \pmod{A}$,
 such that the gateway decomposition~\textup{(Theorem~\ref{thm:gateway})}
 yields a valid representation~\eqref{eq:es}.
 \end{theorem}
 
-Since~\eqref{eq:es} for composite~$n$ reduces to the prime
-case~\cite{Mordell1969}, Theorem~\ref{thm:main} implies that
-\eqref{eq:es} holds for all $n \leq 10^9$.
+Since primes $p \equiv 3 \pmod{4}$ are handled by the classical
+identity (Proposition~\ref{prop:3mod4}) and composite~$n$
+reduces to the prime case~\cite{Mordell1969},
+Theorem~\ref{thm:main} implies that~\eqref{eq:es}
+holds for all $n \leq 10^9$.
 
 The paper is organised as follows.
 Section~\ref{sec:prelim} fixes notation.
@@ -425,7 +424,7 @@ The computation was performed in stages:
 Limit & Primes & Case B QR7 & Max $A$ & $d \nmid N$ needed \\
 \midrule
 $10^6$ & $78{,}498$ & $1{,}880$ & $199$ & $389$ $(20.7\%)$ \\
-$10^7$ & $664{,}579$ & $18{,}019$ & $199$ & --- \\
+$10^7$ & $664{,}579$ & $18{,}019$ & $199$ & (not tracked) \\
 $10^8$ & $5{,}761{,}455$ & $146{,}251$ & $239$ & $3{,}175$ $(2.17\%)$ \\
 $10^9$ & $50{,}847{,}534$ & $1{,}212{,}383$ & $239$ & $21{,}954$ $(1.81\%)$ \\
 \bottomrule
@@ -492,9 +491,8 @@ increase through $10^9$ (Figure~\ref{fig:maxA}).
 If $\max A$ remains bounded as $p \to \infty$---that
 is, if there exists a constant~$C$ such that every prime admits a gateway
 decomposition with $A \leq C$---then the Erd\H{o}s--Straus conjecture
-follows, since each congruence class modulo $\operatorname{lcm}\{4A : A \leq C\}$
-is handled by some identity, and finitely many exceptions (if any) can be
-verified directly.
+follows, since the finitely many gateway identities indexed by
+$A \leq C$ would then cover every prime.
 
 \begin{figure}[ht]
 \centering
@@ -518,8 +516,8 @@ $-B \pmod{A}$ is heuristically
   \quad\text{as } N \to \infty.
 \]
 This suggests that for any fixed~$A$, the set of primes~$p$ for which
-$A$ fails has density zero---consistent with Tao's ``almost all'' result
-\cite{Tao2011}.
+$A$ fails has density zero---consistent with the ``almost all'' result
+of Elsholtz and Tao~\cite{ElsholtzTao2013}.
 
 For multiple values of~$A$ (our 24 candidates), failures would require
 \emph{simultaneous} failure across all~$A$, which is heuristically
@@ -527,7 +525,7 @@ negligible.
 
 \subsection{The precise open problem}
 
-The Erd\H{o}s--Straus conjecture is equivalent to:
+The Erd\H{o}s--Straus conjecture reduces to:
 
 \begin{quote}
 For every prime $p \equiv 1 \pmod{24}$ with $p \equiv 1, 2,$ or $4 \pmod{7}$
@@ -540,13 +538,15 @@ $d \equiv -p \cdot \frac{p+A}{4} \pmod{A}$.
 This is a question about the \emph{equidistribution of divisors in residue classes}
 for integers of the form $\bigl(\frac{p+A}{4}\bigr)^{\!2}$,
 a topic connected to work of Hooley~\cite{Hooley1979} and
-Tenenbaum~\cite{Tenenbaum1985} on divisor distribution.
+Tenenbaum~\cite{Tenenbaum1984} on divisor distribution.
 
 \subsection{Connection to prior work}
 
 Our gateway decomposition can be viewed as making explicit the identities
-whose existence is guaranteed by Tao's density argument.
-While Tao's result shows that the exceptional set has natural density zero,
+whose existence is guaranteed by the Elsholtz--Tao density
+argument~\cite{ElsholtzTao2013}.
+While their result shows that the exceptional set has natural density zero
+(see also Tao's survey~\cite{Tao2011}),
 it does not provide effective bounds on the auxiliary parameter~$A$.
 Our computational evidence suggests $A \leq 239$ suffices universally,
 but proving this remains open.
@@ -615,7 +615,7 @@ A.~Swett,
 unpublished computation, 1999.
 \url{https://web.archive.org/web/20060315072834/http://math.uindy.edu/swett/esc.htm}.
 
-\bibitem{Tenenbaum1985}
+\bibitem{Tenenbaum1984}
 G.~Tenenbaum,
 \emph{Sur la probabilit\'e qu'un entier poss\`ede un diviseur dans un intervalle donn\'e},
 Compositio Math.\ \textbf{51} (1984), 243--263.
