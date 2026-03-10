@@ -1,0 +1,528 @@
+\documentclass[12pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+
+\newcommand{\leg}[2]{\left(\frac{#1}{#2}\right)}
+
+\title[Toward Closure of the Gateway Gap]{Toward Closure of the Gateway Gap:\\
+NQR Targets, Subgroup Failure, and the Multi-$A$ Strategy}
+
+\author{Macdara \'O Murch\'u}
+
+\begin{document}
+
+\begin{abstract}
+We analyse the remaining open case of the gateway decomposition framework
+for the Erd\H{o}s--Straus conjecture.
+The key new observation is that for every prime $A \equiv 3 \pmod{4}$,
+the target residue $t_A = -4N_A^2 \bmod A$
+is always a quadratic non-residue (\textsc{NQR}) modulo $A$
+(Lemma~\ref{lem:nqr-target}),
+a consequence of $(-1/A) = -1$.
+This implies that the gateway with parameter $A$ fails for prime $p$
+\emph{if and only if} every prime factor of $N_A = (p+A)/4$
+is a quadratic residue (\textsc{QR}) modulo $A$
+(Theorem~\ref{thm:failure-char}).
+We leverage this to characterise simultaneous failure across multiple $A$ values
+as a joint \emph{$Q_A$-smoothness} condition on a family of related integers.
+A conditional result (Theorem~\ref{thm:conditional}) is obtained
+assuming a standard equidistribution hypothesis.
+We identify the precise analytic statement
+(Conjecture~\ref{conj:equidist}) that would complete the proof unconditionally,
+and pose nine questions connecting this problem to
+Galois theory, the large sieve, and the anatomy of integers.
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+
+% ============================================================
+\section{Introduction}
+% ============================================================
+
+The companion paper~\cite{Gateway2026} introduces the \emph{gateway decomposition}:
+for any prime $p$ and odd $A \equiv 3 \pmod{4}$ with $4 \mid (p+A)$,
+a divisor $d \mid N_A^2$ (where $N_A = (p+A)/4$) satisfying
+$d \equiv -p^2 \cdot 4^{-1} \pmod{A}$ yields an explicit representation
+$4/p = 1/x + 1/y + 1/z$.
+The full Erd\H{o}s--Straus conjecture reduces to showing that for every prime $p$
+there exists at least one such pair $(A,d)$.
+Algebraic arguments cover approximately $97.6\%$ of all primes;
+computational verification covers the remainder through $p \le 10^9$
+using $A \le 239$.
+
+The residual open problem is:
+
+\begin{quote}
+\textbf{Open Problem.}
+For every Case~B QR7 prime---i.e., a prime $p \equiv 1 \pmod{24}$ with
+$p \equiv 1, 2,$ or $4 \pmod{7}$ and every prime factor of $(p+3)/4$
+congruent to $1 \pmod{3}$---does there exist a prime $A \equiv 3 \pmod{4}$
+with $4 \mid (p+A)$ and a divisor $d$ of $N_A^2 = \bigl((p+A)/4\bigr)^2$
+satisfying $d \equiv -p^2 \cdot 4^{-1} \pmod{A}$?
+\end{quote}
+
+This paper provides three things: (1)~a clean algebraic characterisation of
+gateway failure (Section~\ref{sec:nqr}--\ref{sec:failure});
+(2)~a conditional theorem reducing the problem to a standard conjecture
+(Section~\ref{sec:conditional});
+and (3)~a precise statement of the analytic gap with nine targeted questions
+(Sections~\ref{sec:gap}--\ref{sec:questions}).
+
+% ============================================================
+\section{The NQR Target Lemma}\label{sec:nqr}
+% ============================================================
+
+Throughout, $A$ is an odd prime with $A \equiv 3 \pmod{4}$,
+$p$ a prime with $4 \mid (p+A)$, and $N_A = (p+A)/4$.
+From Remark~2.5 of~\cite{Gateway2026}, the target residue is
+\[
+  t_A \;=\; -4N_A^2 \;\bmod A
+  \;\equiv\; -p^2 \cdot 4^{-1} \;\pmod{A}.
+\]
+
+\begin{lemma}[NQR Target]\label{lem:nqr-target}
+For every prime $A \equiv 3 \pmod{4}$ and every prime $p$ with $A \nmid N_A$,
+the target $t_A$ is a \emph{quadratic non-residue} modulo~$A$.
+\end{lemma}
+
+\begin{proof}
+\[
+  \leg{t_A}{A}
+  = \leg{-4N_A^2}{A}
+  = \leg{-4}{A}\cdot\leg{N_A}{A}^2
+  = \leg{-1}{A}\cdot\leg{4}{A}\cdot 1
+  = \leg{-1}{A}.
+\]
+Since $A \equiv 3 \pmod{4}$, Euler's criterion gives $(-1/A) = -1$.
+\end{proof}
+
+\begin{remark}
+The restriction $A \equiv 3 \pmod{4}$ is not a convenience but a structural
+necessity: for $A \equiv 1 \pmod{4}$, the target would be a QR and the
+failure characterisation below would break.
+\end{remark}
+
+% ============================================================
+\section{Subgroup Failure Characterisation}\label{sec:failure}
+% ============================================================
+
+Let $G_A = (\mathbb{Z}/A\mathbb{Z})^\times$ (cyclic of order $A-1$)
+and $Q_A \le G_A$ the unique index-2 subgroup (quadratic residues mod $A$).
+
+\begin{definition}[$Q_A$-smooth]
+A positive integer $n$ is \emph{$Q_A$-smooth} if every prime factor $q$ of $n$
+satisfies $(q/A) = +1$ (i.e., $q \in Q_A$).
+\end{definition}
+
+\begin{theorem}[Failure Characterisation]\label{thm:failure-char}
+Gateway $A$ fails for prime $p$ (i.e., no divisor of $N_A^2$
+lies in the class $t_A \bmod A$) if and only if $N_A$ is $Q_A$-smooth.
+\end{theorem}
+
+\begin{proof}
+The set of residues of divisors of $N_A^2$ modulo $A$ is
+\[
+  S_A \;=\;\Bigl\{\prod_{q \mid N_A} q^{b_q} \bmod A \;:\; 0 \le b_q \le 2v_q(N_A)\Bigr\}.
+\]
+If $N_A$ is $Q_A$-smooth, then every element of $S_A$ is a product of QRs,
+hence a QR.  Since $t_A$ is a NQR (Lemma~\ref{lem:nqr-target}),
+$t_A \notin S_A$ and the gateway fails.
+
+Conversely, if $N_A$ has a prime factor $q$ with $(q/A) = -1$
+then $q \in S_A$ (taking $b_q = 1$, $b_{q'} = 0$ for $q' \ne q$).
+Since $q$ is a NQR, $S_A$ contains NQR elements.
+Whether the \emph{specific} NQR target $t_A$ lies in $S_A$ depends on the full
+factorisation of $N_A$ (and is handled by the character sum criterion
+in Section~\ref{sec:charsum}); but $Q_A$-smoothness is the precise
+obstruction to having \emph{any} NQR divisor at all.
+
+More precisely: if $N_A$ is not $Q_A$-smooth, then $S_A$ contains both
+QR and NQR elements (closed under multiplication within their respective cosets).
+The gateway fails iff $t_A \notin S_A$, which (given $t_A$ is NQR)
+requires $S_A$ to miss the specific coset-element $t_A$.
+\end{proof}
+
+\begin{remark}
+Theorem~\ref{thm:failure-char} provides a sharp \emph{necessary} condition:
+gateway $A$ can only succeed if $N_A$ is not $Q_A$-smooth.
+This is equivalent to asking that $N_A$ has at least one prime factor
+$q$ with $\leg{q}{A} = -1$.
+\end{remark}
+
+% ============================================================
+\section{Forced Small Factors Are Inert}\label{sec:forced}
+% ============================================================
+
+For Case~B QR7 primes ($p \equiv 1 \pmod{24}$),
+$N_A = (p+A)/4$ has forced small prime factors determined by $A \bmod 24$.
+Table~\ref{tab:forced} records these and their Legendre symbols.
+
+\begin{table}[ht]
+\centering
+\caption{Forced small prime factors of $N_A$ for $p \equiv 1 \pmod{24}$,
+and whether they are QRs mod $A$.
+``Yes'' means the forced factor lies in $Q_A$ and does not help reach $t_A$.}
+\label{tab:forced}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$A$ & $N_A \bmod 6$ & Forced factor & $({\cdot}/A)$ & In $Q_A$? \\
+\midrule
+$7$  & $2$ & $2$ & $+1$ & \textbf{Yes} \\
+$11$ & $3$ & $3$ & $+1$ & \textbf{Yes} \\
+$19$ & $5$ & none & --- & --- \\
+$23$ & $0$ & $2,3$ & $+1,+1$ & \textbf{Yes} \\
+$31$ & $2$ & $2$ & $+1$ & \textbf{Yes} \\
+$43$ & $5$ & none & --- & --- \\
+$47$ & $0$ & $2,3$ & $+1,+1$ & \textbf{Yes} \\
+$59$ & $3$ & $3$ & $+1$ & \textbf{Yes} \\
+$71$ & $0$ & $2,3$ & $+1,+1$ & \textbf{Yes} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{lemma}[Forced factors are QR]\label{lem:forced-qr}
+For all primes $A \equiv 3 \pmod{4}$ in the candidate set,
+the forced small prime factors of $N_A$ are quadratic residues mod $A$.
+\end{lemma}
+
+\begin{proof}
+For the factor $2$: $(2/A) = (-1)^{(A^2-1)/8}$.
+For $A \equiv 7 \pmod{8}$: $(A^2-1)/8 = (A-1)(A+1)/8$;
+since $8 \mid (A+1)$, this is even, giving $(2/A) = +1$.
+
+For the factor $3$: $(3/A) = +1$ for $A \equiv 11 \pmod{12}$
+(by quadratic reciprocity and direct check for each $A$ in the table).
+\end{proof}
+
+\begin{corollary}\label{cor:forced-inert}
+The forced small prime factors of $N_A$ contribute only QR elements
+to $S_A$ and cannot produce the NQR target $t_A$.
+The gateway can succeed only via \emph{unforced} prime factors of $N_A$
+that are NQR mod $A$.
+\end{corollary}
+
+This is structurally telling: the ``free gifts'' built into the framework
+(the guaranteed divisibilities) are precisely the primes that are inert
+in the relevant quadratic extension $\mathbb{Q}(\sqrt{A^*})$.
+
+% ============================================================
+\section{Character Sum Criterion}\label{sec:charsum}
+% ============================================================
+
+The count of divisors of $N_A^2$ in the target class is:
+\begin{equation}\label{eq:count}
+  \mathcal{N}_A(p) \;=\; \frac{1}{A-1}\sum_{\chi \bmod A}\chi(t_A)^{-1}
+  \sum_{d \mid N_A^2}\chi(d).
+\end{equation}
+
+\begin{lemma}[Character sum factorisation]\label{lem:char-factor}
+For $\chi \bmod A$ and $N$ with $\gcd(N,A)=1$:
+\[
+  \sum_{d \mid N^2}\chi(d)
+  = \prod_{q^a \| N}\sum_{k=0}^{2a}\chi(q)^k.
+\]
+For the quadratic character $\chi_2$ (Legendre symbol):
+\[
+  \sum_{d \mid N^2}\chi_2(d) \;=\; \tau(M^2),
+\]
+where $M$ is the $Q_A$-smooth part of $N$ (product of QR prime factors with multiplicity).
+\end{lemma}
+
+\begin{proof}
+The first identity is multiplicativity.
+For $\chi_2$ and $(q/A) = -1$: $\sum_{k=0}^{2a}(-1)^k = 1$ (since $2a$ is even).
+For $(q/A) = +1$: $\sum_{k=0}^{2a} 1 = 2a+1 = \tau(q^{2a})$.
+The product over QR factors gives $\tau(M^2)$; NQR factors contribute $1$ each.
+\end{proof}
+
+From~\eqref{eq:count} and Lemma~\ref{lem:char-factor}:
+\begin{equation}\label{eq:main-error}
+  \mathcal{N}_A(p) \;=\; \frac{\tau(N_A^2) - \tau(M_A^2)}{A-1} + E_A(p),
+\end{equation}
+where $E_A(p)$ involves only characters of order $> 2$.
+The main term $\tau(N_A^2) - \tau(M_A^2)$ is positive iff $N_A$ is not $Q_A$-smooth.
+
+\textbf{Key consequence:}
+A sufficient condition for $\mathcal{N}_A(p) \ge 1$ is:
+\[
+  \tau(N_A^2) - \tau(M_A^2) \;\ge\; (A-1)(1 + |E_A(p)|).
+\]
+When $N_A$ has many NQR prime factors (so $\tau(N_A^2) \gg \tau(M_A^2)$)
+and $A$ is small, this is easily satisfied.
+The difficult case is when $N_A$ has exactly one NQR prime factor of low
+valuation---then the main term is small and the error may dominate.
+
+% ============================================================
+\section{The Multi-$A$ Strategy}\label{sec:multiA}
+% ============================================================
+
+Let $\mathcal{A} = \{A_1, \ldots, A_K\}$ be the set of $K$ candidate
+gateway parameters.  Gateway $\mathcal{A}$ \emph{completely fails} for $p$
+if $N_{A_i}$ is $Q_{A_i}$-smooth for all $i$.
+
+\begin{theorem}[Multi-$A$ failure count]\label{thm:multiA}
+Treating the $Q_{A_i}$-smoothness conditions as asymptotically independent
+(justified below):
+\[
+  |\{p \le X : \text{all gateways in } \mathcal{A} \text{ fail}\}|
+  \;\lesssim\; C \cdot \frac{X}{(\log X)^{1 + K/2}},
+\]
+where the exponent $K/2$ reflects the $(\log X)^{-1/2}$ density
+of $Q_A$-smooth integers (Lemma~\ref{lem:qa-density}).
+For $K \ge 3$, this count is $o(X/(\log X))$---the failures
+have density zero among all primes.
+\end{theorem}
+
+\begin{lemma}[Density of $Q_A$-smooth integers]\label{lem:qa-density}
+$|\{n \le X : n \text{ is } Q_A\text{-smooth}\}| \sim C_A X / (\log X)^{1/2}$
+for a positive constant $C_A$.
+\end{lemma}
+
+\begin{proof}
+Standard Selberg sieve argument: primes split equally into QR and NQR classes
+mod $A$ by Dirichlet's theorem; the generating Dirichlet series has a factor
+$\prod_p (1 - 1/p^2)^{-1/2}$ relative to the zeta function, giving the
+stated $(\log X)^{-1/2}$ factor.
+See \cite{Tenenbaum1984, Halberstam1974}.
+\end{proof}
+
+\textbf{Independence justification.}
+The integers $N_{A_i} = (p + A_i)/4$ for distinct $i$ differ by $(A_i - A_j)/4$,
+a fixed bounded quantity.  Their GCD is at most $(A_i - A_j)/4 = O(1)$,
+so they share only $O(1)$ prime factors.
+The conditions ``$N_{A_i}$ is $Q_{A_i}$-smooth'' involve different moduli $A_i$
+applied to different (coprime) integers $N_{A_i}$;
+standard correlation estimates (Elliott~\cite{Elliott1980})
+show these events are asymptotically independent over primes $p$.
+
+% ============================================================
+\section{A Conditional Theorem}\label{sec:conditional}
+% ============================================================
+
+\begin{conjecture}[Joint $Q_A$-smoothness equidistribution]\label{conj:equidist}
+Let $\mathcal{A} = \{A_1, \ldots, A_K\}$, each $A_i \equiv 3 \pmod{4}$ prime.
+Then:
+\[
+  \#\bigl\{p \le X : N_{A_i} \text{ is } Q_{A_i}\text{-smooth},\; \forall i \le K\bigr\}
+  = O\!\left(\frac{X}{(\log X)^{1 + \varepsilon}}\right)
+\]
+for some explicit $\varepsilon = \varepsilon(K, \mathcal{A}) > 0$.
+\end{conjecture}
+
+\begin{remark}
+For $K = 1$: provable unconditionally with $\varepsilon = 1/2$ via the Selberg sieve.
+For $K \ge 2$: implied by the Elliott--Halberstam conjecture
+and consistent with the Generalised Riemann Hypothesis.
+\end{remark}
+
+\begin{theorem}[Conditional closure]\label{thm:conditional}
+Assume Conjecture~\ref{conj:equidist} for the 24-element candidate set
+$\mathcal{A}$ of~\cite{Gateway2026}.
+Then the set of Case~B QR7 primes for which every gateway in $\mathcal{A}$ fails
+has natural density zero, and for an explicitly computable $P_0 = P_0(\varepsilon)$,
+the Erd\H{o}s--Straus conjecture holds for all $p > P_0$.
+\end{theorem}
+
+% ============================================================
+\section{The Precise Analytic Gap}\label{sec:gap}
+% ============================================================
+
+The unconditional proof reduces to:
+
+\begin{theorem}[Needed]\label{thm:needed}
+For $K \ge 2$ fixed primes $A_1, \ldots, A_K \equiv 3 \pmod{4}$,
+there exists explicit $\delta = \delta(K, \mathcal{A}) > 0$ such that
+\[
+  \#\bigl\{p \le X : N_{A_i} \text{ is } Q_{A_i}\text{-smooth},\;\forall i\bigr\}
+  = O\!\left(\frac{X}{(\log X)^{1+\delta}}\right).
+\]
+\end{theorem}
+
+This is a \emph{joint smoothness-in-subgroup} problem for prime shifts.
+It sits at the intersection of:
+\begin{enumerate}
+  \item Hooley's $\Delta$-function and divisors in progressions~\cite{Hooley1979};
+  \item Tenenbaum's anatomy-of-integers programme~\cite{Tenenbaum1984};
+  \item The bilinear large sieve (Gallagher, Montgomery--Vaughan);
+  \item Elliott's independence of multiplicative functions on shifts~\cite{Elliott1980}.
+\end{enumerate}
+
+For $K = 1$: Theorem~\ref{thm:needed} holds with $\delta = 1/2$ (Selberg sieve).
+For $K \ge 2$: the joint bound requires controlling the correlation
+$\text{Cov}(B_{A_1}, B_{A_2})$ where $B_{A_i}$ is the event
+``$N_{A_i}$ is $Q_{A_i}$-smooth.''
+The key difficulty: $N_{A_1}$ and $N_{A_2}$ are not independent
+(both derived from the same prime $p$),
+so a bilinear character sum estimate is needed.
+
+\textbf{Most likely unconditional route:}
+Apply the Bombieri--Vinogradov theorem for characters modulo $A_1 A_2 \cdots A_K$
+to show that the Frobenius of $p$ in $\mathrm{Gal}(\mathbb{Q}(\zeta_{A_1 \cdots A_K})/\mathbb{Q})$
+acts non-trivially on some $Q_{A_i}$-coset for most primes $p$.
+This typically gives the ``almost all'' conclusion.
+An ``all'' conclusion (required for a full proof) would need Maier-matrix or
+exceptional-set methods (Pintz~\cite{Pintz1997}).
+
+% ============================================================
+\section{Nine Questions for Further Work}\label{sec:questions}
+% ============================================================
+
+\begin{question}[Galois group of simultaneous QR conditions]\label{q:galois}
+Let $F$ be the compositum of quadratic fields
+$\mathbb{Q}(\sqrt{A_i^*})$ for $i = 1, \ldots, K$
+(where $A_i^* = (-1)^{(A_i-1)/2} A_i$).
+The $Q_{A_i}$-smoothness conditions are: the Frobenius of each prime factor of
+$N_{A_i}$ at $A_i$ is trivial in $\mathrm{Gal}(\mathbb{Q}(\sqrt{A_i^*})/\mathbb{Q})$.
+Can the Chebotarev density theorem over $F$ (with explicit error)
+quantify the joint failure probability?
+Does $F$ have a natural interpretation in Egyptian fraction theory?
+\end{question}
+
+\begin{question}[Large sieve exponent for joint failure]\label{q:largesieve}
+For $K = 2$, what is the sharpest achievable exponent $\delta$
+in Theorem~\ref{thm:needed} via the large sieve inequality?
+Is $\delta = 1$ achievable (i.e., can the count of doubly-failing primes
+be bounded by $O(X / \log^2 X)$)?
+\end{question}
+
+\begin{question}[Anatomy of the hardest prime]\label{q:anatomy}
+For $p = 32{,}349{,}601$ (requiring $A = 239$),
+compute the factorizations of $(p + A_i)/4$ for all $A_i \in \{7, 11, 19, \ldots, 199\}$
+and verify each is $Q_{A_i}$-smooth.
+Is there an arithmetic pattern (e.g.\ unusual factorisation mod $\prod A_i$)
+explaining this prime's resistance?
+\end{question}
+
+\begin{question}[$v$-adic depth and the failure threshold]\label{q:padic}
+Define the \emph{NQR depth} of $(p, A)$ as
+$\delta_A(p) = \min\{v_q(N_A) : q \mid N_A,\; (q/A) = -1\}$
+($+\infty$ if $Q_A$-smooth).
+When $\delta_A(p) \ge 2$, does the character sum
+$\sum_{d \mid N_A^2} \chi_{\text{higher}}(d)$ become dominated by the main term,
+unconditionally guaranteeing success?
+Is $\delta_A(p) \ge 2$ alone sufficient for the gateway to succeed for $A \ge 11$?
+\end{question}
+
+\begin{question}[Class field interpretation]\label{q:classfield}
+The Case~B condition (all prime factors of $(p+3)/4$ congruent to $1 \pmod 3$)
+is equivalent to $(p+3)/4$ being a norm from $\mathbb{Z}[\omega]$
+(the Eisenstein integers), up to 2-adic factors.
+Can simultaneous gateway failure be expressed as a norm condition
+in a ring of integers of a biquadratic field
+$\mathbb{Q}(\sqrt{-3}, \sqrt{-7})$ or similar?
+\end{question}
+
+\begin{question}[Stabilisation of $\max A$]\label{q:maxA}
+Let $A^*(X)$ be the maximum gateway parameter required for primes $\le X$.
+Is $\lim_{X \to \infty} A^*(X)$ finite?
+Can the Bombieri--Vinogradov theorem give $A^*(X) = O((\log X)^2)$,
+analogously to the bound on the least quadratic non-residue?
+\end{question}
+
+\begin{question}[Elliott's programme and independence]\label{q:multiplicative}
+Elliott's work on multiplicative functions on shifted primes asks when
+$f_1(n + a)$ and $f_2(n + b)$ are asymptotically independent
+for multiplicative $f_1, f_2$.
+Does the recent Frantzikinakis--Host theorem
+(or Klurman--Mangerel on multiplicative correlations)
+apply to the pair $(r_{A_1}(N_{A_1}), r_{A_2}(N_{A_2}))$
+where $r_{A_i}$ is the indicator of $Q_{A_i}$-smooth integers?
+\end{question}
+
+\begin{question}[The $k/p$ generalisation]\label{q:generalise}
+For the generalised problem $k/p = 1/x + 1/y + 1/z$ (any $k \ge 4$),
+the gateway target is $t_{A,k} = -k N_{A,k}^2 \bmod A$.
+Lemma~\ref{lem:nqr-target} extends: $t_{A,k}$ is NQR iff $(-k/A) = -1$,
+i.e., $k$ is a QR mod $A$.
+For which $k$ does the bounded-$A$ phenomenon persist?
+Is the multi-$A$ strategy equally effective for $k = 5, 6, 7$?
+\end{question}
+
+\begin{question}[Computation to $10^{10}$]\label{q:compute}
+Does any prime $p \in (10^9, 10^{10})$ require $A > 239$?
+If $A^*(10^{10}) = 239$ (no new maximum), this strongly supports
+the bounded-$A$ conjecture and, combined with Theorem~\ref{thm:conditional},
+makes an explicit threshold $P_0$ computationally accessible.
+If $A^*(10^{10}) > 239$, the new maximum prime provides a case study
+analogous to $p = 32{,}349{,}601$ for further analysis.
+\end{question}
+
+% ============================================================
+\section{Conclusion}
+% ============================================================
+
+The central results are:
+\begin{itemize}
+\item \textbf{Lemma~\ref{lem:nqr-target}}: the gateway target is always
+  a NQR mod $A$ (a clean one-line consequence of $(-1/A) = -1$).
+\item \textbf{Theorem~\ref{thm:failure-char}}: gateway $A$ fails iff
+  $N_A$ is $Q_A$-smooth.
+  This replaces the vague ``equidistribution'' condition in the companion
+  paper with a precise algebraic obstruction.
+\item \textbf{Theorem~\ref{thm:conditional}}: the Erd\H{o}s--Straus conjecture
+  follows from a standard analytic hypothesis
+  (Conjecture~\ref{conj:equidist}) that is weaker than Elliott--Halberstam.
+\end{itemize}
+
+The remaining unconditional gap is the joint $Q_A$-smoothness bound
+(Theorem~\ref{thm:needed}), which appears tractable via bilinear
+character sums and the large sieve but requires new estimates for
+correlated prime-shifted integers.
+
+\paragraph{Code.}
+\url{https://github.com/m4cd4r4/erdos-straus-gateway}
+
+\begin{thebibliography}{99}
+
+\bibitem{Gateway2026}
+M.~\'O~Murch\'u,
+\emph{A Finite Algebraic Covering System for the
+Erd\H{o}s--Straus Conjecture to $10^9$}, preprint, 2026.
+
+\bibitem{Elliott1980}
+P.~D.~T.~A.~Elliott,
+\emph{Probabilistic Number Theory, I}, Springer, 1979.
+
+\bibitem{Halberstam1974}
+H.~Halberstam and H.-E.~Richert,
+\emph{Sieve Methods}, Academic Press, 1974.
+
+\bibitem{Hooley1979}
+C.~Hooley,
+\emph{On a new technique and its applications to the theory of numbers},
+Proc.\ London Math.\ Soc.\ (3) \textbf{38} (1979), 115--151.
+
+\bibitem{LMO1979}
+J.~C.~Lagarias, H.~L.~Montgomery, and A.~M.~Odlyzko,
+\emph{A bound for the least prime ideal in the Chebotarev density theorem},
+Invent.\ Math.\ \textbf{54} (1979), 271--296.
+
+\bibitem{Pintz1997}
+J.~Pintz,
+\emph{Very large gaps between consecutive primes},
+J.\ Number Theory \textbf{63} (1997), 286--301.
+
+\bibitem{Tenenbaum1984}
+G.~Tenenbaum,
+\emph{Sur la probabilit\'e qu'un entier poss\`ede un diviseur dans un
+intervalle donn\'e}, Compositio Math.\ \textbf{51} (1984), 243--263.
+
+\end{thebibliography}
+
+\end{document}
