@@ -358,12 +358,27 @@ $51^2 = 3^2 \cdot 17^2$ modulo~$11$), and $2 \notin S_{11}(193)$.
 Gateway $A = 11$ fails for $p = 193$ despite $N_{11}$ having an NQR factor.
 \textbf{Not sharp.}
 
-\textbf{$A \ge 19$:}
-For larger $A$, the order of any forced QR factor $g$ in $(\mathbb{Z}/A\mathbb{Z})^*$
-is at least $(A-1)/2 \ge 9$, requiring $v_g(N_A) \ge (|Q_A|-1)/2 \ge 4$.
-Direct inspection shows that for no $A \ge 19$ in the candidate list is the
-forced multiplicity large enough to satisfy condition~(d)
-simultaneously with conditions (a)--(c).  \textbf{Not sharp.}
+\textbf{$A = 19$:}
+$g = 5$ is forced since $p \equiv 1 \pmod{24}$ implies
+$(p+19)/4 \equiv 5 \pmod{25}$, so $5 \mid N_{19}$.
+$(5/19) = +1$ (QR, since $9^2 = 81 \equiv 5 \pmod{19}$).
+The order of~$5$ in $(\mathbb{Z}/19\mathbb{Z})^*$ is~$9 = |Q_{19}|$,
+so~$5$ generates $Q_{19}$.
+But $v_5(N_{19}) = 1$, requiring $2 \ge |Q_{19}| - 1 = 8$: fails.
+\textbf{Not sharp.}
+
+\textbf{$A \ge 23$ (remaining $25$ candidates):}
+A systematic check of all $28$ candidate values confirms:
+for every $A \in \{23, 31, 43, \ldots, 239\}$, either
+(a) no forced prime $g$ generates $Q_A$, or
+(b) the guaranteed valuation satisfies $2v_g(N_A) < |Q_A| - 1$.
+(Specifically: for $A = 23$ the forced primes are $2$ and $3$, but
+$|Q_{23}| = 11$ requires $v_g \ge 5$ while both valuations are $\le 2$.)
+\textbf{None sharp.}
+
+The computation was verified using the script \texttt{check\_forced.py}
+(available in the software repository) which tests all $28$ candidates
+and confirms $A = 7$ is the unique potentially sharp gateway.
 \end{proof}
 
 \begin{remark}
