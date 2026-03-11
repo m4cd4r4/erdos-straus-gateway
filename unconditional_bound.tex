@@ -68,12 +68,15 @@ These primes constitute approximately $2.4\%$ of all primes,
 but they resist the standard algebraic decompositions.
 
 The \emph{gateway decomposition framework}~\cite{ES-paper} handles
-each Case~B QR7 prime using a finite set of $28$ candidate parameters
-$A \in \{3,7,11,\ldots,239\}$, all primes $\equiv 3 \pmod{4}$.
+each Case~B QR7 prime using a finite set of candidate parameters
+$A$, primes $\equiv 3 \pmod{4}$.
+The original implementation used $28$ values $A \in \{3,7,11,\ldots,239\}$.
 Computational verification confirms that at least one gateway always
-succeeds for all primes $p \le 10^9$ (with $A = 239$ the worst case),
-and the GPU-accelerated verification reported in
-Section~\ref{sec:computation} extends this to $p \le 10^{10}$.
+succeeds for all primes $p \le 10^9$ (with $A = 239$ the worst case).
+Section~\ref{sec:computation} reports an ongoing GPU-accelerated
+verification to $10^{10}$ and a newly discovered prime
+$p = 3{,}807{,}728{,}761$ which requires $A = 359$, necessitating
+extension of the candidate set to $87$ values up to $A = 991$.
 
 Theoretically, the only prior bound was the trivial
 \[
@@ -486,11 +489,15 @@ The algorithm:
   \item CPU algebraic filters: five congruence checks eliminate
     $\approx 97.6\%$ of primes in $O(1)$ per prime.
   \item GPU gateway kernel (one CUDA thread per Case~B QR7 prime):
-    for each prime $p$, tries all 28 candidate $A$ values;
+    for each prime $p$, tries candidate $A$ values in order;
     for each $A$, factorises $N_A$ by trial division and builds
     the divisor residue set modulo~$A$.
 \end{enumerate}
 
+The original run used $28$ candidate $A$ values up to $A = 239$.
+After discovering $p = 3{,}807{,}728{,}761$ requires $A = 359$
+(Section~\ref{subsec:a359}), the kernel was corrected to use
+$87$ candidate $A$ values up to $A = 991$ and the full run restarted.
 The GPU processes batches of $2 \times 10^6$ primes per launch.
 Expected speedup over single-core CPU: $200\times$ on gateway checks.
 
@@ -506,7 +513,8 @@ $10^7$  &   664,579  &   19,246 & 239 \\
 $10^8$  & 5,761,454  &  146,227 & 239 \\
 $10^9$  & 50,847,534 & 1,236,195 & 239 \\
 $2.5 \times 10^9$ & $\approx 115{,}669{,}000$ & 2,827,522 & 239 \\
-$10^{10}$ & {\em in progress} & {\em ---} & $\le 239$ (25\% done, no exceptions) \\
+$5 \times 10^9$   & $\approx 217{,}645{,}000$ & 5,378,137 & \textbf{359} (see \S\ref{subsec:a359}) \\
+$10^{10}$ & {\em in progress (corrected run)} & {\em ---} & $\ge 359$ \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -516,14 +524,47 @@ The Erd\H{o}s--Straus conjecture holds for all primes
 $p \le 10^{9}$, verified by the CPU segmented sieve and confirmed
 by an independent GPU implementation, with maximum gateway
 parameter $A \le 239$.
-No prime requiring $A > 239$ has been found in any range checked.
 \end{theorem}
+
+\subsection{Discovery: the first prime requiring $A > 239$}\label{subsec:a359}
+
+An initial GPU run with the 28-candidate set ($A \le 239$) found
+that the prime
+\[
+  p \;=\; 3{,}807{,}728{,}761
+\]
+is not solved by any gateway $A \le 239$.
+
+\medskip
+\noindent\textit{Verification that $p$ is Case~B QR7.}
+$p \equiv 1 \pmod{24}$, $p \equiv 4 \pmod 7$,
+and $(p+3)/4 = 951{,}932{,}191 = 7 \times 73 \times 1{,}862{,}881$,
+all three factors $\equiv 1 \pmod 3$, confirming $Q_3$-smoothness.
+
+\medskip
+\noindent\textit{Solution via $A = 359$.}
+$N_{359} = (p + 359)/4 = 951{,}932{,}280
+        = 2^3 \cdot 3 \cdot 5 \cdot 13 \cdot 23 \cdot 43 \cdot 617.$
+The factors $13, 43, 617$ are all NQR modulo~$359$.
+The divisor $d = 1935 = 3^2 \times 5 \times 43$ divides $N_{359}^2$,
+$\gcd(d, 359 p) = 1$, and
+$1935 \bmod 359 = 140 = t_{359}$, so gateway $A = 359$ succeeds.
+
+\medskip
+\noindent
+This prime is the current record-holder: the largest gateway
+parameter required for any prime up to $5 \times 10^9$.
+The corrected GPU run with $87$ candidate $A$ values (up to $A = 991$)
+is in progress and will determine whether further records occur
+in $(5 \times 10^9, 10^{10})$.
 
 \begin{remark}
 The count of Case~B QR7 primes grows as $\sim 0.024 \cdot \pi(X)$,
 consistent with the $2.4\%$ density predicted by the algebraic framework.
 The fraction requiring $A > 100$ decreases as $X$ increases,
-suggesting the ``hardest'' primes become relatively rarer in larger ranges.
+while the maximum $A$ encountered can still grow: $A = 239$ suffices
+to $10^9$, but $A = 359$ is required at $p = 3{,}807{,}728{,}761
+\approx 3.8 \times 10^9$.
 \end{remark}
 
 % ======================================================================
@@ -542,10 +583,13 @@ using the large-sieve with the full set of 28 candidate gateways.
 \end{question}
 
 \begin{question}
-Extend the verification beyond $10^{10}$.  For $10^{12}$,
-the expected runtime on the RTX~5000 is $\sim 5$~hours,
-and a new hardest prime may be found requiring $A > 239$
-(which would require expanding the candidate set).
+Extend the verification beyond $10^{10}$.  The corrected
+87-candidate run (up to $A = 991$) is in progress; once complete,
+extending to $10^{11}$ and beyond would determine whether $A = 359$
+remains the hardest case, or whether larger gateway parameters
+appear.  The maximum $A$ encountered for any prime $p \le X$
+appears to grow slowly with $X$ (log-like); bounding this
+growth rigorously is an open problem.
 \end{question}
 
 \begin{question}

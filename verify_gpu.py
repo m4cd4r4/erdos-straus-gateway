@@ -35,7 +35,7 @@ LIMIT      = int(sys.argv[1]) if len(sys.argv) > 1 else 10_000_000_000
 TPB        = int(sys.argv[2]) if len(sys.argv) > 2 else 256
 SEGMENT    = 500_000_000   # sieve segment (500MB RAM)
 BATCH_SIZE = 2_000_000     # GPU batch size
-MAX_A      = 239
+MAX_A      = 1000
 SQRT_LIMIT = isqrt(LIMIT)
 
 # -----------------------------------------------------------------------------
@@ -87,8 +87,8 @@ void gateway_kernel(
     // Thread-local storage
     long long fac[12];
     int       exp_a[12];
-    char      res[240];    // residue set, size >= MAX_A = 239
-    char      nxt[240];
+    char      res[1001];   // residue set, size >= MAX_A = 1000
+    char      nxt[1001];
 
     for (int ai = 0; ai < n_cands; ++ai) {
         long long A = cands[ai];
