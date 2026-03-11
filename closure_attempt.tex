@@ -33,10 +33,11 @@ the target residue $t_A = -4N_A^2 \bmod A$
 is always a quadratic non-residue (\textsc{NQR}) modulo $A$
 (Lemma~\ref{lem:nqr-target}),
 a consequence of $(-1/A) = -1$.
-This implies that the gateway with parameter $A$ fails for prime $p$
-\emph{if and only if} every prime factor of $N_A = (p+A)/4$
-is a quadratic residue (\textsc{QR}) modulo $A$
-(Theorem~\ref{thm:failure-char}).
+This implies that the gateway with parameter $A$ necessarily fails
+whenever every prime factor of $N_A = (p+A)/4$ is a quadratic residue
+(\textsc{QR}) modulo $A$ (Theorem~\ref{thm:failure-char});
+but having an NQR factor is necessary, not sufficient, for success
+in general.
 We prove that gateway $A = 7$ is uniquely \emph{sharp}:
 a single NQR prime factor in $N_7$ always suffices for gateway success,
 a consequence of $2$ generating all of $Q_7$
@@ -141,39 +142,95 @@ satisfies $(q/A) = +1$ (i.e., $q \in Q_A$).
 \end{definition}
 
 \begin{theorem}[Failure Characterisation]\label{thm:failure-char}
-Gateway $A$ fails for prime $p$ (i.e., no divisor of $N_A^2$
-lies in the class $t_A \bmod A$) if and only if $N_A$ is $Q_A$-smooth.
+Let $S_A = \{d \bmod A : d \mid N_A^2\}$ be the set of residues of
+divisors of $N_A^2$ modulo~$A$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item\label{fc:smooth} If $N_A$ is $Q_A$-smooth, then $S_A \subseteq Q_A \cup \{0\}$,
+    so $t_A \notin S_A$ and the gateway fails.
+  \item\label{fc:necessary} Conversely, if the gateway succeeds,
+    then $N_A$ is not $Q_A$-smooth.
+    That is, having an NQR prime factor is \emph{necessary} for success.
+  \item\label{fc:not-suff} Having an NQR prime factor is \emph{not sufficient}
+    for success in general: $S_A$ may contain NQR elements without
+    containing the specific target~$t_A$.
+\end{enumerate}
 \end{theorem}
 
 \begin{proof}
-The set of residues of divisors of $N_A^2$ modulo $A$ is
+The residue set is
 \[
   S_A \;=\;\Bigl\{\prod_{q \mid N_A} q^{b_q} \bmod A \;:\; 0 \le b_q \le 2v_q(N_A)\Bigr\}.
 \]
-If $N_A$ is $Q_A$-smooth, then every element of $S_A$ is a product of QRs,
-hence a QR.  Since $t_A$ is a NQR (Lemma~\ref{lem:nqr-target}),
-$t_A \notin S_A$ and the gateway fails.
 
-Conversely, if $N_A$ has a prime factor $q$ with $(q/A) = -1$
-then $q \in S_A$ (taking $b_q = 1$, $b_{q'} = 0$ for $q' \ne q$).
-Since $q$ is a NQR, $S_A$ contains NQR elements.
-Whether the \emph{specific} NQR target $t_A$ lies in $S_A$ depends on the full
-factorisation of $N_A$ (and is handled by the character sum criterion
-in Section~\ref{sec:charsum}); but $Q_A$-smoothness is the precise
-obstruction to having \emph{any} NQR divisor at all.
+\ref{fc:smooth}: If $N_A$ is $Q_A$-smooth, every element of $S_A$ is a product
+of QRs, hence a QR.
+Since $t_A$ is NQR (Lemma~\ref{lem:nqr-target}), $t_A \notin S_A$.
 
-More precisely: if $N_A$ is not $Q_A$-smooth, then $S_A$ contains both
-QR and NQR elements (closed under multiplication within their respective cosets).
-The gateway fails iff $t_A \notin S_A$, which (given $t_A$ is NQR)
-requires $S_A$ to miss the specific coset-element $t_A$.
+\ref{fc:necessary}: Contrapositive of~\ref{fc:smooth}.
+
+\ref{fc:not-suff}: If $N_A$ has a prime factor $q$ with $(q/A) = -1$,
+then $q \in S_A$, so $S_A$ contains NQR elements.
+But $S_A$ need not contain \emph{all} NQRs mod~$A$.
+When $|Q_A|$ is large relative to the number of achievable
+NQR residues in $S_A$, the specific target $t_A$ may be missed.
+(See Example~\ref{ex:hardest} below for a concrete illustration.)
 \end{proof}
 
-\begin{remark}
-Theorem~\ref{thm:failure-char} provides a sharp \emph{necessary} condition:
-gateway $A$ can only succeed if $N_A$ is not $Q_A$-smooth.
-This is equivalent to asking that $N_A$ has at least one prime factor
-$q$ with $\leg{q}{A} = -1$.
+\begin{remark}\label{rem:iff-a7}
+The gap between parts~\ref{fc:necessary} and~\ref{fc:not-suff}
+is the central difficulty.
+For $A = 7$, this gap closes completely: we prove in
+Theorem~\ref{thm:a7sharp} that having any NQR factor IS sufficient,
+making the characterisation a true ``if and only if'' for $A = 7$ alone.
+For all other candidate $A \ge 11$, part~\ref{fc:not-suff} is a genuine obstruction.
 \end{remark}
+
+\begin{example}[Anatomy of the hardest prime]\label{ex:hardest}
+The prime $p = 32{,}349{,}601$ (requiring $A = 239$ in~\cite{Gateway2026})
+illustrates the gap between parts~\ref{fc:necessary} and~\ref{fc:not-suff}
+of Theorem~\ref{thm:failure-char}.
+Of the 28 eligible $A$ values (primes $\equiv 3 \pmod 4$ with $4 \mid (p+A)$):
+\begin{itemize}
+  \item 18 have $N_A$ that is $Q_A$-smooth --- the gateway is structurally blocked.
+  \item 10 have $N_A$ with at least one NQR factor ---
+    the gateway \emph{could} succeed, but for 9 of these the specific
+    target $t_A$ is not among the achievable divisor residues.
+  \item Only $A = 239$ succeeds, via the NQR factor $37$
+    (with $(37/239) = -1$).
+\end{itemize}
+Table~\ref{tab:hardest} records the five smallest $A$ values that have
+NQR factors but still fail.
+
+\begin{table}[ht]
+\centering
+\caption{Gateway failures for $p = 32{,}349{,}601$ despite NQR factors in $N_A$.
+The target $t_A$ is NQR but lies outside the set of achievable
+divisor residues $S_A$.}
+\label{tab:hardest}
+\begin{tabular}{@{}rrlrl@{}}
+\toprule
+$A$ & $N_A$ & NQR factor(s) & $t_A$ & $t_A \in S_A$? \\
+\midrule
+$67$  & $8{,}087{,}417$ & $13$ & $30$ & No \\
+$71$  & $8{,}087{,}418$ & $149{,}767$ & $11$ & No \\
+$83$  & $8{,}087{,}421$ & $117{,}209$ & $55$ & No \\
+$107$ & $8{,}087{,}427$ & $17$ & $96$ & No \\
+$131$ & $8{,}087{,}433$ & $29$ & $23$ & No \\
+\midrule
+$239$ & $8{,}087{,}460$ & $37$ & $173$ & \textbf{Yes} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The pattern is clear: each failing $A$ has a single NQR prime factor $q$
+whose powers, combined with the forced QR factors, generate only a small
+fraction of the NQR coset mod~$A$.
+As $A$ grows, $|Q_A| = (A-1)/2$ grows, making it increasingly unlikely
+that a single NQR factor covers the specific target.
+The success at $A = 239$ is not a structural guarantee but a numerical accident:
+the factor $37$ happens to combine with the QR factors of $N_{239}$
+to produce residue $173 = t_{239}$.
+\end{example}
 
 % ============================================================
 \section{Forced Small Factors Are Inert}\label{sec:forced}
@@ -228,8 +285,11 @@ that are NQR mod $A$.
 \end{corollary}
 
 This is structurally telling: the ``free gifts'' built into the framework
-(the guaranteed divisibilities) are precisely the primes that are inert
-in the relevant quadratic extension $\mathbb{Q}(\sqrt{A^*})$.
+(the guaranteed divisibilities) are precisely the primes that \emph{split}
+in the quadratic extension $\mathbb{Q}(\sqrt{A^*})$ ---
+they contribute only QR residues and are powerless to reach the NQR target.
+The primes that \emph{could} help are the inert ones (NQR mod~$A$),
+but these are never forced.
 
 % ============================================================
 \section{The $A=7$ Sharp Theorem}\label{sec:a7sharp}
@@ -285,9 +345,14 @@ In each case the coset equals $\{3, 5, 6\}$.
 \textit{Step 4 (target hit).}
 The divisors $q,\, 2q,\, 4q$ all divide $N_7^2$
 (since $q \mid N_7$ and $2 \mid N_7$ with $v_2(N_7^2) \ge 2$).
-Their residues mod~7 are $\{3, 5, 6\}$ -- the full set of NQRs mod~7.
+Their residues mod~7 are $\{3, 5, 6\}$ --- the full set of NQRs mod~7.
 Since $t_7$ is NQR (Lemma~\ref{lem:nqr-target}),
-$t_7 \in \{3, 5, 6\} \subseteq S_7$, so the gateway succeeds.
+$t_7 \in \{3, 5, 6\} \subseteq S_7$.
+Furthermore, $\gcd(d, 7p) = 1$ for each such $d$
+(since $q \neq p$ as $\gcd(N_7, p) = 1$, and $q \neq 7$ as $7 \nmid N_7$),
+so the integrality condition (ii) of Theorem~2.1 in~\cite{Gateway2026}
+follows from Lemma~3.2 of~\cite{Gateway2026}.
+The gateway succeeds.
 \end{proof}
 
 \begin{remark}[Why $A = 7$ is the unique sharp gateway]\label{rem:a7unique}
@@ -303,9 +368,20 @@ the three divisors $\{q, 2q, 4q\}$ cover \emph{all} NQRs mod~7.
 
 For every other prime $A \equiv 3 \pmod 4$ with $A \ge 11$,
 we have $|Q_A| \ge 5$.
-The forced divisor only guarantees $\{f_A^0, f_A^1, f_A^2\}$
-(three elements), which cannot cover all of $Q_A$ when $|Q_A| \ge 5$.
+Even when $N_A$ has forced factors $f_1, f_2, \ldots$,
+the guaranteed divisor residues form at most a 3-element subset of $Q_A$
+(from $\{f_A^0, f_A^1, f_A^2\}$ when there is a single forced factor),
+or a modestly larger set when multiple forced factors are present
+(e.g., $A = 23$ forces both $2$ and $3$, giving up to 9 residues from
+$\{2^a \cdot 3^b\}$, but $|Q_{23}| = 11$).
+In no case does the forced set cover all of $Q_A$.
 No other candidate $A$ is sharp.
+
+The hardest prime $p = 32{,}349{,}601$ (Example~\ref{ex:hardest})
+demonstrates this concretely: 9 of 10 candidate $A$ values with
+NQR factors in $N_A$ fail because the achievable NQR residues
+miss the specific target $t_A$.
+The $A = 7$ sharp theorem explains why $A = 7$ never suffers this fate.
 \end{remark}
 
 % ============================================================
@@ -651,10 +727,13 @@ The central results are:
 \begin{itemize}
 \item \textbf{Lemma~\ref{lem:nqr-target}}: the gateway target is always
   a NQR mod $A$ (a clean one-line consequence of $(-1/A) = -1$).
-\item \textbf{Theorem~\ref{thm:failure-char}}: gateway $A$ fails iff
-  $N_A$ is $Q_A$-smooth.
-  This replaces the vague ``equidistribution'' condition in the companion
-  paper with a precise algebraic obstruction.
+\item \textbf{Theorem~\ref{thm:failure-char}}: $Q_A$-smoothness of $N_A$
+  is both necessary and sufficient for gateway failure when $A = 7$
+  (Theorem~\ref{thm:a7sharp}),
+  and necessary (but not sufficient) for success in general.
+  The anatomy of the hardest prime $p = 32{,}349{,}601$
+  (Example~\ref{ex:hardest}) shows that 9 of 10 candidate $A$ values
+  with NQR factors still fail to hit the specific target~$t_A$.
 \item \textbf{Theorem~\ref{thm:a7sharp}}: gateway $A = 7$ is uniquely sharp.
   A single NQR prime factor in $N_7$ always suffices for success,
   because $2$ generates all of $Q_7$ and $v_2(N_7^2) \ge 2 = |Q_7| - 1$.
