@@ -282,10 +282,19 @@ see~\cite[Theorem~5.6]{Iwaniec-Kowalski} for the general framework.
 \begin{definition}[Sharp gateway]
 A candidate parameter $A \equiv 3 \pmod{4}$ is \emph{sharp} if,
 for every Case~B QR7 prime~$p$ for which $4 \mid (p+A)$,
-gateway~$A$ succeeds \emph{if and only if} $N_A$ is not $Q_A$-smooth.
-Equivalently: among Case~B QR7 primes, $Q_A$-smoothness of $N_A$
-characterises gateway~$A$ failure exactly.
+gateway~$A$ succeeds \emph{if and only if} $N_A$ is not $Q_A$-smooth;
+and moreover the characterisation is \emph{non-vacuous}: there exist
+Case~B QR7 primes $p$ for which $N_A$ is not $Q_A$-smooth
+(so gateway~$A$ sometimes succeeds on Case~B QR7 primes).
 \end{definition}
+
+\begin{remark}
+The non-vacuity clause excludes $A = 3$.
+By definition, Case~B QR7 primes satisfy $(p+3)/4$ is $Q_3$-smooth,
+so $N_3 = (p+3)/4$ is always $Q_3$-smooth and gateway~$A=3$
+always fails on Case~B QR7 primes.
+The iff holds vacuously but gives no density improvement.
+\end{remark}
 
 By Theorem~\ref{thm:fc}(i)(ii), every gateway satisfies the forward
 implication ($Q_A$-smooth $\Rightarrow$ fails) and the converse direction
