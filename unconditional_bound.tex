@@ -333,9 +333,21 @@ Order of~$3$ in $(\mathbb{Z}/11\mathbb{Z})^*$ is~$5 = |Q_{11}|$, so $3$
 generates $Q_{11}$.
 However, the minimum forced multiplicity is $v_3(N_{11}) \ge 1$, giving
 $2v_3(N_{11}) \ge 2$, but we need $\ge |Q_{11}|-1 = 4$.
-For $p \equiv 1, 4 \pmod{9}$ (two-thirds of cases) one has $v_3(N_{11}) = 1 < 2$,
-so the required divisors $3^3 = 27$ and $3^4 = 81$ do not appear in $N_{11}^2$,
-and the target $t_{11}$ need not be hit.  \textbf{Not sharp.}
+For $p \equiv 1, 4 \pmod{9}$ (two-thirds of cases) one has $v_3(N_{11}) = 1$,
+so the required divisors $3^3$ and $3^4$ do not appear in $N_{11}^2$
+and the target $t_{11}$ need not be hit.
+
+\emph{Concrete counterexample.}
+Take $p = 193$ (Case~B QR7: $193 \equiv 1 \pmod{24}$,
+$193 \equiv 4 \pmod{7}$, $(p+3)/4 = 49 = 7^2$ is $Q_3$-smooth).
+Then $N_{11} = (193+11)/4 = 51 = 3 \times 17$.
+The factor $17$ satisfies $(17/11) = -1$ (NQR: $6 \notin Q_{11}$),
+so $N_{11}$ has an NQR prime factor.
+Yet $t_{11} = (-4 \cdot 51^2) \bmod 11 = 2$, while
+$S_{11}(193) = \{1,3,5,6,7,9,10\}$ (all residues of divisors of
+$51^2 = 3^2 \cdot 17^2$ modulo~$11$), and $2 \notin S_{11}(193)$.
+Gateway $A = 11$ fails for $p = 193$ despite $N_{11}$ having an NQR factor.
+\textbf{Not sharp.}
 
 \textbf{$A \ge 19$:}
 For larger $A$, the order of any forced QR factor $g$ in $(\mathbb{Z}/A\mathbb{Z})^*$
@@ -468,16 +480,18 @@ Limit & Primes & Case~B QR7 & Max $A$ required \\
 $10^6$  &    78,498  &    2,269 & 239 \\
 $10^7$  &   664,579  &   19,246 & 239 \\
 $10^8$  & 5,761,454  &  146,227 & 239 \\
-$10^9$  & 50,847,534 & 1,236,195 & $\le 239$ \\
-$10^{10}$ & {\em in progress} & {\em ---} & $\le 239$ (expected) \\
+$10^9$  & 50,847,534 & 1,236,195 & 239 \\
+$10^{10}$ & {\em in progress} & {\em ---} & $\le 239$ (no exceptions found) \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-\begin{theorem}[GPU Verification]\label{thm:gpu}
+\begin{theorem}[Computational Verification]\label{thm:gpu}
 The Erd\H{o}s--Straus conjecture holds for all primes
-$p \le 10^{10}$, with maximum gateway parameter $A \le 239$.
-No prime requiring $A > 239$ has been found.
+$p \le 10^{9}$, verified by the CPU segmented sieve and confirmed
+by an independent GPU implementation, with maximum gateway
+parameter $A \le 239$.
+No prime requiring $A > 239$ has been found in any range checked.
 \end{theorem}
 
 \begin{remark}

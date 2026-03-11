@@ -21,6 +21,9 @@ Usage:
 import sys, time
 from math import isqrt
 
+# Force line-buffered stdout so progress appears immediately in log files
+sys.stdout.reconfigure(line_buffering=True)
+
 import numpy as np
 import cupy as cp
 
