@@ -186,16 +186,18 @@ def chk(p, t, d):
     return z > 0 and 4 * x * y * z == p * (y * z + x * z + x * y)
 
 def is_case_a(p):
+    """Case A: (p+3)/4 has at least one prime factor NOT equiv 1 mod 3.
+    Returns True if Case A (solvable algebraically), False if Case B (needs gateway)."""
     n2 = (p + 3) // 4
     d2 = 2
     while d2 * d2 <= n2:
         if n2 % d2 == 0:
             if d2 % 3 != 1:
-                return False
+                return True
             while n2 % d2 == 0:
                 n2 //= d2
         d2 += 1
-    return not (n2 > 1 and n2 % 3 != 1)
+    return n2 > 1 and n2 % 3 != 1
 
 def gateway_solve(p):
     for phase in [TS0, TS1, TS2]:
