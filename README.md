@@ -1,4 +1,4 @@
-# A Finite Algebraic Covering System for the Erdos-Straus Conjecture to 10^9
+# Bounded Gateway Parameters for the Erdos-Straus Conjecture
 
 **Gateway Decompositions via Divisors of N^2**
 
@@ -14,6 +14,8 @@ has a solution in positive integers x, y, z.
 
 This repository contains the paper, verification code, and figures for a unified algebraic approach that covers **all 50,847,534 primes up to 10^9** using just **24 values** of a single auxiliary parameter A (all prime, all <= 239).
 
+A GPU-accelerated extension to 5 x 10^9 found one prime (p = 3,807,728,761) requiring A = 359 - the first to exceed the original 24-element set. The extended set of 87 candidates (up to A = 991) resolves all primes tested so far.
+
 ## Key Result
 
 **Theorem.** For every prime p <= 10^9, there exists a prime A <= 239 with A = 3 (mod 4) and a divisor d of ((p+A)/4)^2 satisfying d = -p^2 * 4^{-1} (mod A), such that
@@ -24,16 +26,33 @@ are positive integers giving 4/p = 1/x + 1/y + 1/z.
 
 The critical insight is that the integrality condition requires d | N^2 (where N = (p+A)/4), which is **strictly weaker** than d | N. About 1.8% of the hardest primes require this extension.
 
+## Bounded-A Phenomenon
+
+The maximum A value grows extremely slowly with scale:
+
+| Limit | max A | Increase |
+|-------|-------|----------|
+| 10^6 | 199 | - |
+| 10^7 | 199 | +0 |
+| 10^8 | 239 | +40 |
+| 10^9 | 239 | +0 |
+| 5 x 10^9 | 359 | +120 |
+
+This suggests the conjecture may reduce to a finite verification.
+
 ## Paper
 
-The paper (`erdos_straus_gateway.tex`) contains:
+The main paper (`erdos_straus_gateway.tex`) contains:
 
 - **Section 3**: The Gateway Decomposition theorem and the d | N^2 lemma
 - **Section 4**: Algebraic existence proofs covering ~97.6% of all primes
 - **Section 5**: Computational verification for the remaining ~2.4% (Case B QR7 primes)
 - **Section 6**: Discussion of the bounded-A phenomenon and the path to a full proof
 
-Compiled PDF: `erdos_straus_gateway.pdf`
+### Companion Documents
+
+- **`closure_attempt.tex`** - Explores algebraic routes toward unconditional proof, including the NQR Target Lemma, Failure Characterisation Theorem, and the A=7 Sharp Theorem.
+- **`unconditional_bound.tex`** - Develops an unconditional O(log^{2/3} p) bound on the gateway parameter A using sieve methods.
 
 ## Verification
 
@@ -54,6 +73,13 @@ python verify.py 1000000000
 ```
 
 No dependencies beyond Python 3.6+ standard library.
+
+For GPU-accelerated verification to higher limits:
+
+```bash
+# Verify to 5 x 10^9 using 87 candidate A values
+python verify_gpu.py
+```
 
 Example output at 10^6:
 
@@ -89,7 +115,7 @@ python generate_figures.py # Generates fig1-fig5 as PDF and PNG
 |--------|-------------|
 | fig1_coverage | Prime classification hierarchy (pie charts) |
 | fig2_A_distribution | Gateway parameter A distribution (bar + cumulative) |
-| fig3_max_A | Max A stabilisation across scales (10^3 to 10^9) |
+| fig3_max_A | Max A stabilisation across scales (10^3 to 5 x 10^9) |
 | fig4_d_over_N | d/N ratio distribution showing N^2 extension |
 | fig5_gateway_diagram | Conceptual schematic of the decomposition |
 
@@ -107,7 +133,7 @@ If you use this work, please cite:
 
 ```bibtex
 @article{erdos-straus-gateway-2026,
-  title={A Finite Algebraic Covering System for the {Erd\H{o}s--Straus} Conjecture to $10^9$},
+  title={Bounded Gateway Parameters for the {Erd\H{o}s--Straus} Conjecture},
   author={\'O Murch\'u, Macdara},
   year={2026},
   note={Preprint}
