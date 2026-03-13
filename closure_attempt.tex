@@ -182,6 +182,7 @@ is the central difficulty.
 For $A = 7$, this gap closes completely: we prove in
 Theorem~\ref{thm:a7sharp} that having any NQR factor IS sufficient,
 making the characterisation a true ``if and only if'' for $A = 7$ alone.
+(See Theorem~\ref{thm:a7sharp}.)
 For all other candidate $A \ge 11$, part~\ref{fc:not-suff} is a genuine obstruction.
 \end{remark}
 
@@ -697,13 +698,15 @@ For which $k$ does the bounded-$A$ phenomenon persist?
 Is the multi-$A$ strategy equally effective for $k = 5, 6, 7$?
 \end{question}
 
-\begin{question}[Computation to $10^{10}$]\label{q:compute}
-Does any prime $p \in (10^9, 10^{10})$ require $A > 239$?
-If $A^*(10^{10}) = 239$ (no new maximum), this strongly supports
-the bounded-$A$ conjecture and, combined with Theorem~\ref{thm:conditional},
-makes an explicit threshold $P_0$ computationally accessible.
-If $A^*(10^{10}) > 239$, the new maximum prime provides a case study
-analogous to $p = 32{,}349{,}601$ for further analysis.
+\begin{question}[Computation beyond $10^{10}$]\label{q:compute}
+GPU verification~\cite{Gateway2026} has found $p = 3{,}807{,}728{,}761$
+($\approx 3.8 \times 10^9$) requiring $A = 359$, extending the candidate
+set to $87$ values up to $A = 991$.
+Does any prime $p \in (5 \times 10^9, 10^{11})$ require $A > 359$?
+The growth of $A^*(X)$ (the maximum gateway parameter needed for primes
+$\le X$) remains a key open question; bounding it rigorously would
+connect to the bounded-$A$ conjecture and make an explicit threshold
+$P_0$ in Theorem~\ref{thm:conditional} computationally accessible.
 \end{question}
 
 \begin{question}[Depth-1 completeness and its proof]\label{q:depth1}
@@ -763,8 +766,8 @@ in the simpler depth-1 regime.
 
 \bibitem{Gateway2026}
 M.~\'O~Murch\'u,
-\emph{A Finite Algebraic Covering System for the
-Erd\H{o}s--Straus Conjecture to $10^9$}, preprint, 2026.
+\emph{Bounded Gateway Parameters for the
+Erd\H{o}s--Straus Conjecture}, preprint, 2026.
 
 \bibitem{Elliott1980}
 P.~D.~T.~A.~Elliott,

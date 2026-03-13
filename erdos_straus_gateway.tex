@@ -40,14 +40,16 @@ Four propositions handle all primes except the Mordell subset
 $\{p : p \bmod 840 \in \{1, 121, 169, 289, 361, 529\}\}$,
 which requires a computational search over~$A$.
 
-Verification to~$10^{10}$ shows that 25~values of~$A$
-(all prime, all at most~$251$) suffice for all $455{,}052{,}511$ primes.
-Among the~$18.2$ million hard-case primes, $60.6\%$ are solved at $A = 7$
+Verification to~$10^{9}$ shows that 24~values of~$A$
+(all prime, all at most~$239$) suffice for all $50{,}847{,}534$ primes.
+Among the~$1.24$ million hard-case primes, $60.6\%$ are solved at $A = 7$
 and $89.1\%$ by $A = 11$.
+A GPU-accelerated extension to~$5 \times 10^9$ discovered a single prime
+($p = 3{,}807{,}728{,}761$) requiring $A = 359$, the first to exceed
+the original 24-element candidate set.
 We observe a \emph{bounded-$A$ phenomenon}: the maximum~$A$ required
-grows by only~$52$ across five decades of prime range
-($\max A = 199$ at $10^6$; $251$ at $10^{10}$),
-and only 4~primes in 455~million required $A > 199$.
+grows slowly with the search range
+($\max A = 199$ at $10^6$; $239$ at $10^9$; $359$ at $5 \times 10^9$).
 We conjecture that $\max A$ is absolutely bounded and show that
 this would imply the full conjecture.
 The observation appears new and connects to divisor equidistribution
@@ -116,8 +118,8 @@ essential for completeness.
 Our main computational result is:
 
 \begin{theorem}[Main Result]\label{thm:main}
-For every prime $p \leq 10^{10}$, there exists a prime
-$A \leq 251$ with $A \equiv 3 \pmod{4}$ and a divisor
+For every prime $p \leq 10^{9}$, there exists a prime
+$A \leq 239$ with $A \equiv 3 \pmod{4}$ and a divisor
 $d$ of $\bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
 $d \equiv -p^2 \cdot 4^{-1} \pmod{A}$,
 such that the gateway decomposition~\textup{(Theorem~\ref{thm:gateway})}
@@ -126,7 +128,16 @@ yields a valid representation~\eqref{eq:es}.
 
 Since~\eqref{eq:es} for composite~$n$ reduces to the prime
 case~\cite{Mordell1967}, Theorem~\ref{thm:main} implies that
-\eqref{eq:es} holds for all $n \leq 10^{10}$.
+\eqref{eq:es} holds for all $n \leq 10^{9}$.
+
+\begin{remark}
+A GPU-accelerated extension (Section~\ref{sec:computation}) has verified
+all primes to~$5 \times 10^9$, discovering one prime
+$p = 3{,}807{,}728{,}761$ that requires $A = 359$, exceeding the
+original 24-element candidate set.
+The extended set of 87~candidates (up to $A = 991$) resolves all primes
+tested so far; corrected verification to~$10^{10}$ is in progress.
+\end{remark}
 
 The paper is organised as follows.
 Section~\ref{sec:prelim} fixes notation and recalls the Type~I/Type~II
@@ -475,28 +486,30 @@ For each prime~$p$ in the Case~B QR7 class:
 \subsection{Results}
 
 \begin{theorem}\label{thm:verification}
-Every prime $p \leq 10^{10}$ admits a gateway decomposition with $A \leq 251$.
+Every prime $p \leq 10^{9}$ admits a gateway decomposition with $A \leq 239$.
 \end{theorem}
 
 The computation was performed in stages:
 
 \begin{center}
-\begin{tabular}{@{}rrrrr@{}}
+\begin{tabular}{@{}rrrr@{}}
 \toprule
-Limit & Primes & Case B QR7 & Max $A$ & $n_{\mathrm{ext}}$ ($A \geq 200$) \\
+Limit & Primes & Case B QR7 & Max $A$ \\
 \midrule
-$10^6$ & $78{,}498$ & $1{,}880$ & $199$ & $0$ \\
-$10^7$ & $664{,}579$ & $18{,}019$ & $199$ & $0$ \\
-$10^8$ & $5{,}761{,}455$ & $146{,}251$ & $239$ & --- \\
-$10^9$ & $50{,}847{,}534$ & $1{,}212{,}383$ & $239$ & --- \\
-$10^{10}$ & $455{,}052{,}511$ & $18{,}189{,}229$ & $251$ & $4$ \\
+$10^6$ & $78{,}498$ & $2{,}269$ & $199$ \\
+$10^7$ & $664{,}579$ & $19{,}246$ & $239$ \\
+$10^8$ & $5{,}761{,}454$ & $146{,}227$ & $239$ \\
+$10^9$ & $50{,}847{,}534$ & $1{,}236{,}195$ & $239$ \\
+$5 \times 10^9$ & $\approx 217{,}645{,}000$ & $5{,}378{,}137$ & $359^*$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The column $n_{\mathrm{ext}}$ counts primes requiring $A \geq 200$.
-At scale $10^{10}$, only $4$ such primes exist among $455$ million,
-using $A \in \{163, 199, 223, 251\}$ (three or four times each).
+\noindent
+${}^*$GPU verification to $5 \times 10^9$ using $87$ candidate $A$ values
+(up to $A = 991$) found one prime $p = 3{,}807{,}728{,}761$ requiring
+$A = 359$.  This is the first prime to exceed the original 24-element
+candidate set.  Corrected verification to $10^{10}$ is in progress.
 
 The column ``$d \nmid N$ needed'' counts primes where the solution requires
 a divisor of~$N^2$ that does not divide~$N$ itself---these would be missed
@@ -514,29 +527,29 @@ $d \mid N^2$ extension and cannot be found under the condition $d \mid N$.}\labe
 
 \subsection{Distribution of $A$ values}
 
-Among the $18{,}189{,}229$ Case~B QR7 primes below $10^{10}$:
+Among the $2{,}269$ Case~B QR7 primes below $10^6$:
 
 \begin{center}
 \begin{tabular}{@{}rrrr@{}}
 \toprule
 $A$ & Count & \% solved & Cumulative \\
 \midrule
-$7$ & $11{,}015{,}394$ & $60.6\%$ & $60.6\%$ \\
-$11$ & $5{,}195{,}793$ & $28.6\%$ & $89.1\%$ \\
-$19$ & $939{,}412$ & $5.2\%$ & $94.3\%$ \\
-$23$ & $913{,}096$ & $5.0\%$ & $99.3\%$ \\
-$31$ & $82{,}087$ & $0.45\%$ & $99.8\%$ \\
-$43$--$191$ & ${\approx}\,43{,}000$ & $0.23\%$ & ${\approx}99.99\%$ \\
-$\geq 199$ & $11$ & $0.000006\%$ & $100\%$ \\
+$7$ & $1{,}280$ & $56.4\%$ & $56.4\%$ \\
+$11$ & $594$ & $26.2\%$ & $82.6\%$ \\
+$19$ & $172$ & $7.6\%$ & $90.2\%$ \\
+$23$ & $144$ & $6.3\%$ & $96.5\%$ \\
+$31$ & $47$ & $2.1\%$ & $98.6\%$ \\
+$43$--$79$ & $32$ & $1.4\%$ & $100\%$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-The four primes requiring $A \geq 200$ use
-$A \in \{163, 199, 223, 251\}$, each occurring at most four times.
-The extraordinary sparsity of extended-$A$ cases---just $4$ primes
-out of $18$ million gateway cases---strongly supports the
-bounded-$A$ conjecture.
+At~$10^6$ only 10 distinct $A$~values are needed, with $A \leq 79$.
+The concentration is striking: just four values ($A = 7, 11, 19, 23$)
+handle over $96\%$ of all gateway cases.
+The GPU extension to~$5 \times 10^9$ found one prime
+$p = 3{,}807{,}728{,}761$ requiring $A = 359$---the first to exceed
+the original 24-element set---yet the bounded-$A$ phenomenon persists.
 Figure~\ref{fig:Adist} shows the full distribution.
 
 \begin{figure}[ht]
@@ -567,13 +580,14 @@ $10^6$ & $199$ & --- \\
 $10^7$ & $199$ & $+0$ \\
 $10^8$ & $239$ & $+40$ \\
 $10^9$ & $239$ & $+0$ \\
-$10^{10}$ & $251$ & $+12$ \\
+$5 \times 10^9$ & $359$ & $+120$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-Furthermore, only $4$ primes among $455$ million at~$10^{10}$
-required $A > 199$.
+Through~$5 \times 10^9$, only one prime required $A > 239$:
+$p = 3{,}807{,}728{,}761$ with $A = 359$.
+Corrected verification to~$10^{10}$ is in progress.
 
 \begin{conjecture}[Bounded gateway parameter]\label{conj:bounded}
 There exists an absolute constant~$C$ such that for every prime~$p$,
@@ -593,9 +607,9 @@ Even $\max A = o(\log p)$ would go beyond current results.
 \centering
 \includegraphics[width=0.75\textwidth]{fig3_max_A.pdf}
 \caption{Maximum gateway parameter~$A$ required as the verification limit
-increases from~$10^3$ to~$10^{10}$.
-The increase of just~$52$ across five decades contrasts with the
-factor-of-$10{,}000$ increase in the search range.}\label{fig:maxA}
+increases from~$10^3$ to~$5 \times 10^{9}$.
+The increase from~$A = 199$ to~$A = 359$ across nearly four decades
+contrasts with the factor-of-$5{,}000$ increase in the search range.}\label{fig:maxA}
 \end{figure}
 
 \subsection{Heuristic support from Elsholtz--Tao density}
@@ -620,7 +634,7 @@ divisors falls in the target residue class $-B \pmod{A}$ is approximately
 \]
 This suggests that for any fixed~$A$, the set of primes for which
 $A$ fails has density zero---consistent with Tao's ``almost all'' result.
-For multiple values of~$A$ (our 25 candidates), failure requires
+For multiple values of~$A$ (our 24 candidates), failure requires
 \emph{simultaneous} failure across all~$A$, which is heuristically
 negligible but not ruled out by the density argument alone.
 
@@ -651,7 +665,7 @@ direct verification, representing ${\approx}\,0.008\%$ of all primes.
 Question & Does a solution exist? & What is its structure? \\
 Method & Modular filter + spot-check & Algebraic classification by~$A$ \\
 Output per prime & Existence (yes/no) & Explicit $(x,y,z)$ with~$A$ \\
-Record & $10^{18}$ & $10^{10}$ \\
+Record & $10^{18}$ & $5 \times 10^{9}$ \\
 Reveals structure & No & Yes (A-distribution) \\
 \bottomrule
 \end{tabular}
@@ -704,7 +718,7 @@ polynomial families in three variables that conjecturally cover all
 integers $\equiv 1 \pmod{4}$, with one family alone covering all
 primes to $1.2 \times 10^{10}$.
 This is related to our framework: each~$A$ defines a polynomial family,
-and our observation that 25~values suffice is a quantitative version of
+and our observation that 24~values suffice to~$10^9$ is a quantitative version of
 their coverage conjecture.
 
 Our gateway decomposition produces predominantly Type~II solutions in the
@@ -720,13 +734,14 @@ $B = pN$, so $p \mid z$ automatically whenever $p \nmid d$.
 
 We have presented a structural analysis of the Erd\H{o}s--Straus conjecture
 through a gateway decomposition parameterised by a single integer~$A$.
-Using 25~prime values of~$A$ (all at most~$251$), we verify that every
-prime $p \leq 10^{10}$ admits an explicit decomposition
+Using 24~prime values of~$A$ (all at most~$239$), we verify that every
+prime $p \leq 10^{9}$ admits an explicit decomposition
 $\frac{4}{p} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$.
+A GPU extension to~$5 \times 10^9$ using 87~candidates (up to $A = 991$)
+finds one prime requiring $A = 359$.
 
-The main observation is the bounded-$A$ phenomenon: $\max A$ grows by
-only~$52$ across five decades of prime range, and only 4~primes among
-455~million required $A > 199$.
+The main observation is the bounded-$A$ phenomenon: $\max A$ grows from
+$199$ to just~$359$ across nearly four decades of prime range.
 This suggests that the Erd\H{o}s--Straus conjecture may reduce to a
 finite verification---if Conjecture~\ref{conj:bounded} holds, the
 conjecture follows.

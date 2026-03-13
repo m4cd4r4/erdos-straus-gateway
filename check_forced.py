@@ -8,7 +8,7 @@ def is_prime(n):
         if n % d == 0: return False
     return True
 
-candidates = [a for a in range(3, 240) if a % 4 == 3 and is_prime(a)]
+candidates = [a for a in range(3, 1000) if a % 4 == 3 and is_prime(a)]
 print(f"{len(candidates)} candidates: {candidates[:5]}...{candidates[-3:]}")
 
 QR_mod = {}
