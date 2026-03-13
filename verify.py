@@ -152,17 +152,17 @@ def main():
             counts["p=2"] = 1
             continue
 
-        # Layer 2: p = 3 (mod 4) - Proposition 4.1
+        # Layer 2: p = 3 (mod 4) — Proposition 4.1
         if p % 4 == 3:
             counts["3mod4"] += 1
             continue
 
-        # Layer 3: p = 5 (mod 8) - Proposition 4.2(a)
+        # Layer 3: p = 5 (mod 8) — Proposition 4.2(a)
         if p % 8 == 5:
             counts["5mod8"] += 1
             continue
 
-        # Layer 4: p = 17 (mod 24) - Proposition 4.2(b)
+        # Layer 4: p = 17 (mod 24) — Proposition 4.2(b)
         if p % 24 == 17:
             counts["17mod24"] += 1
             continue
@@ -171,17 +171,17 @@ def main():
         if p % 24 != 1:
             continue
 
-        # Layer 5: Case A - Proposition 4.2(c)
+        # Layer 5: Case A — Proposition 4.2(c)
         if not is_case_b(p):
             counts["caseA"] += 1
             continue
 
-        # Layer 6: NQR mod 7 - Proposition 4.3
+        # Layer 6: NQR mod 7 — Proposition 4.3
         if p % 7 in (3, 5, 6):
             counts["nqr7"] += 1
             continue
 
-        # Layer 7: Case B QR7 - gateway search (Theorem 5.1)
+        # Layer 7: Case B QR7 — gateway search (Theorem 5.1)
         found = False
         for A_list in [A_SMALL, A_MED, A_LARGE]:
             for A in A_list:

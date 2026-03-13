@@ -13,8 +13,8 @@ plt.rcParams.update({
     'font.size': 11,
     'axes.titlesize': 13,
     'axes.labelsize': 12,
-    'figure.dpi': 300,
-    'savefig.dpi': 300,
+    'figure.dpi': 200,
+    'savefig.dpi': 200,
     'savefig.bbox': 'tight',
 })
 
@@ -22,7 +22,7 @@ with open("stats_1M.json") as f:
     stats = json.load(f)
 
 # ============================================================================
-# FIGURE 1: Coverage Hierarchy - Nested Pie / Sunburst
+# FIGURE 1: Coverage Hierarchy — Nested Pie / Sunburst
 # ============================================================================
 
 def fig1_coverage():
@@ -53,7 +53,7 @@ def fig1_coverage():
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 7),
                                      gridspec_kw={'wspace': 0.3})
 
-    # Left: Pie chart - start at 220° so small slices end up on the lower-right
+    # Left: Pie chart — start at 220° so small slices end up on the lower-right
     wedges, texts, autotexts = ax1.pie(
         values, labels=None, colors=colors, autopct='',
         startangle=220, counterclock=False,
@@ -237,7 +237,7 @@ def fig3_max_A_stabilisation():
 
 
 # ============================================================================
-# FIGURE 4: d/N ratio - showing the N^2 extension
+# FIGURE 4: d/N ratio — showing the N^2 extension
 # ============================================================================
 
 def fig4_d_over_N():
@@ -301,7 +301,7 @@ def fig4_d_over_N():
 
 
 # ============================================================================
-# FIGURE 5 (BONUS): The Gateway Formula - visual diagram
+# FIGURE 5 (BONUS): The Gateway Formula — visual diagram
 # ============================================================================
 
 def fig5_gateway_diagram():

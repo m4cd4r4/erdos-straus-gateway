@@ -1,0 +1,15 @@
+{
+  "theorem4_verified": true,
+  "case_a_count": 2662,
+  "case_b_count": 2475,
+  "theorem5_verified": true,
+  "case_b_failures": [],
+  "coverage": {
+    "3mod4": 20806,
+    "5mod8": 10397,
+    "17mod24": 5197,
+    "1mod24_A": 2662,
+    "1mod24_B": 2475,
+    "p2": 1
+  }
+}

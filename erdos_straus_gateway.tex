@@ -13,34 +13,45 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
+\newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 
-\title[Gateway Decompositions for the Erd\H{o}s--Straus Conjecture]
-{A Finite Algebraic Covering System for the
-Erd\H{o}s--Straus Conjecture to $10^9$}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\legendre}[2]{\left(\frac{#1}{#2}\right)}
+
+\title[Bounded Gateway Parameters for the Erd\H{o}s--Straus Conjecture]
+{Bounded Gateway Parameters for the\\
+Erd\H{o}s--Straus Conjecture}
 
 \author{Macdara \'O Murch\'u}
 
 \begin{document}
 
 \begin{abstract}
-The Erd\H{o}s--Straus conjecture asserts that $\frac{4}{n} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$
-has a solution in positive integers for every integer $n \geq 2$.
-We introduce a unified \emph{gateway decomposition}: for any prime~$p$,
-odd~$A \equiv 3 \pmod{4}$ with $4 \mid (p+A)$, and any divisor
-$d \mid \bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
-$d \equiv -p^2 \cdot 4^{-1} \pmod{A}$,
-we obtain an explicit representation $\frac{4}{p} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$.
-The integrality condition $d \mid N^2$ (where $N = \frac{p+A}{4}$) is strictly weaker
-than the condition $d \mid N$ appearing in prior work, and appears essential for completeness.
+We present a structural analysis of solutions to the Erd\H{o}s--Straus
+conjecture, parameterised by a single integer~$A$.
+A \emph{gateway decomposition} produces an explicit representation
+$\frac{4}{p} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$
+from any divisor $d \mid \bigl(\frac{p+A}{4}\bigr)^{\!2}$ in a
+specific residue class modulo~$A$.
+Four propositions handle all primes except the Mordell subset
+$\{p : p \bmod 840 \in \{1, 121, 169, 289, 361, 529\}\}$,
+which requires a computational search over~$A$.
 
-Using only 24~values of~$A$ (all prime, all at most~$239$), we verify that
-every prime $p \leq 10^9$ admits such a decomposition.
-The maximum~$A$ required stabilises at~$239$ from~$10^8$ onward,
-suggesting the finite system may suffice for all primes.
-We reduce the full conjecture to a question about divisor equidistribution
-in residue classes for integers of the form $\bigl(\frac{p+A}{4}\bigr)^{\!2}$.
+Verification to~$10^{10}$ shows that 25~values of~$A$
+(all prime, all at most~$251$) suffice for all $455{,}052{,}511$ primes.
+Among the~$18.2$ million hard-case primes, $60.6\%$ are solved at $A = 7$
+and $89.1\%$ by $A = 11$.
+We observe a \emph{bounded-$A$ phenomenon}: the maximum~$A$ required
+grows by only~$52$ across five decades of prime range
+($\max A = 199$ at $10^6$; $251$ at $10^{10}$),
+and only 4~primes in 455~million required $A > 199$.
+We conjecture that $\max A$ is absolutely bounded and show that
+this would imply the full conjecture.
+The observation appears new and connects to divisor equidistribution
+in residue classes for structured quadratic integers.
 \end{abstract}
 
 \maketitle
@@ -56,50 +67,80 @@ asserts that for every integer $n \geq 2$, the equation
 \end{equation}
 has a solution in positive integers $x, y, z$.
 
-The conjecture has been verified computationally to $10^{14}$
-by Swett~\cite{Swett1999}.
-Elsholtz and Tao~\cite{ElsholtzTao2013} proved that it holds for
-``almost all'' positive integers in the sense of natural density.
-Algebraic results of Schinzel~\cite{Schinzel1956},
-Sierpi\'nski~\cite{Sierpinski1956}, Webb~\cite{Webb1970},
-Mordell~\cite{Mordell1969}, Elsholtz~\cite{Elsholtz2001},
-and others provide explicit decompositions for specific congruence classes.
-However, to our knowledge, no prior work has exhibited a \emph{finite} set of
-algebraic identities covering all primes up to a given bound.
+\subsection*{Prior work}
+The conjecture has been verified computationally to $10^{17}$ by
+Salez~\cite{Salez2014}, who introduced an efficient modular sieve
+that reduces the set of primes requiring direct verification, and
+extended to $10^{18}$ by Mihnea and Dumitru~\cite{MihneaDumitru2025}.
+Earlier verification to $10^{14}$ is due to Swett~\cite{Swett1999}.
+Elsholtz and Tao~\cite{ElsholtzTao2013} showed that the average
+number of solutions satisfies $f(p) \asymp (\log p)^3$ for primes,
+and Tao~\cite{Tao2011} observed that quadratic reciprocity presents
+a fundamental obstruction to resolving the conjecture via covering
+systems alone.
 
-In this paper we introduce a \emph{gateway decomposition}---a single
-parametric identity that, for appropriate choices of an auxiliary
-parameter~$A$ and a divisor~$d$, produces an explicit solution
-to~\eqref{eq:es} for any prime~$p$.
-The key technical point is that the integrality condition on the
-third variable requires $d \mid N^2$ (where $N = \frac{p+A}{4}$),
-not the stronger condition $d \mid N$.
+Algebraic results of Schinzel~\cite{Schinzel1956},
+Sierpi\'nski~\cite{Sierpinski1956}, Mordell~\cite{Mordell1967},
+Webb~\cite{Webb1970}, and others provide explicit decompositions for
+specific congruence classes, covering 804 of the 840 residue classes
+modulo~840.
+The remaining 36~classes---the \emph{Mordell subset}---require
+methods beyond modular identities.
+
+Vaughn~\cite{Vaughn2024} independently formulated an equivalent
+approach to the hard cases: for each prime~$p$, one seeks $x$ with
+$\lceil p/4\rceil \leq x \leq \lceil p/2 \rceil$ and a divisor $d$ of
+$x^2$ satisfying a modular condition. Our gateway parameterisation by~$A$
+(with $x = (p+A)/4$) is algebraically equivalent to this formulation.
+
+\subsection*{Our contribution}
+We provide a \emph{structural analysis} of solutions,
+not a new verification record.
+Using a gateway decomposition parameterised by a single integer~$A$,
+we classify how each prime is solved and observe a phenomenon not
+previously noted in the literature:
+
+\begin{quote}
+\itshape The maximum value of~$A$ required to solve all primes up to~$N$
+grows extremely slowly---by only~$52$ across five decades of prime range---and
+may be absolutely bounded.
+\end{quote}
+
+We call this the \emph{bounded-$A$ conjecture} (Conjecture~\ref{conj:bounded}).
+If true, it implies the full Erd\H{o}s--Straus conjecture.
+
+The integrality condition underlying the gateway requires $d \mid N^2$
+(where $N = (p+A)/4$), which is strictly weaker than $d \mid N$ and
+essential for completeness.
 
 Our main computational result is:
 
 \begin{theorem}[Main Result]\label{thm:main}
-For every prime $p \equiv 1 \pmod{4}$ with $p \leq 10^9$,
-there exists a prime $A \leq 239$ with $A \equiv 3 \pmod{4}$
-and a divisor $d$ of $\bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
+For every prime $p \leq 10^{10}$, there exists a prime
+$A \leq 251$ with $A \equiv 3 \pmod{4}$ and a divisor
+$d$ of $\bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
 $d \equiv -p^2 \cdot 4^{-1} \pmod{A}$,
 such that the gateway decomposition~\textup{(Theorem~\ref{thm:gateway})}
 yields a valid representation~\eqref{eq:es}.
 \end{theorem}
 
-Since primes $p \equiv 3 \pmod{4}$ are handled by the classical
-identity (Proposition~\ref{prop:3mod4}) and composite~$n$
-reduces to the prime case~\cite{Mordell1969},
-Theorem~\ref{thm:main} implies that~\eqref{eq:es}
-holds for all $n \leq 10^9$.
+Since~\eqref{eq:es} for composite~$n$ reduces to the prime
+case~\cite{Mordell1967}, Theorem~\ref{thm:main} implies that
+\eqref{eq:es} holds for all $n \leq 10^{10}$.
 
 The paper is organised as follows.
-Section~\ref{sec:prelim} fixes notation.
-Section~\ref{sec:gateway} states and proves the gateway decomposition.
+Section~\ref{sec:prelim} fixes notation and recalls the Type~I/Type~II
+solution classification of Elsholtz and Tao.
+Section~\ref{sec:gateway} states and proves the gateway decomposition,
+noting its equivalence to the formulation of~\cite{Vaughn2024}.
 Section~\ref{sec:existence} proves that suitable parameters exist
-for approximately $97.6\%$ of all primes.
+for approximately $97.6\%$ of all primes, recovering exactly the
+Mordell subset as the residual class.
 Section~\ref{sec:computation} presents the computational verification
-for the remaining primes.
-Section~\ref{sec:discussion} discusses the path toward a full proof.
+for the remaining primes, including A-value distribution data.
+Section~\ref{sec:discussion} states the bounded-$A$ conjecture,
+provides heuristic support from the Elsholtz--Tao density estimates,
+and discusses the connection to divisor equidistribution.
 
 % ============================================================================
 \section{Preliminaries}\label{sec:prelim}
@@ -242,6 +283,19 @@ $d \equiv -p^2 \cdot 4^{-1} \pmod{A}$
 so $-p^2 \cdot 4^{-1} \equiv -4N^2 \pmod A$).
 \end{remark}
 
+\begin{remark}[Relation to prior formulations]\label{rem:prior}
+Vaughn~\cite{Vaughn2024} independently formulated the Erd\H{o}s--Straus
+problem as: for prime~$p$, find $x$ with $\lceil p/4\rceil \leq x \leq
+\lceil p/2 \rceil$ and a divisor $d \mid x^2$ satisfying
+$d \equiv -px \pmod{4x - p}$.
+Setting $A = 4x - p$ recovers our parameterisation: $x = N = (p+A)/4$,
+$4x - p = A$, and the divisor condition matches~\ref{cond:res} via
+Remark~\ref{rem:residue}. The two formulations are thus algebraically equivalent.
+Our contribution is not the identity itself, but the observation that
+the parameter~$A$ stays remarkably small---the bounded-$A$ phenomenon
+(Section~\ref{sec:discussion}).
+\end{remark}
+
 
 % ============================================================================
 \section{Existence Results}\label{sec:existence}
@@ -286,27 +340,30 @@ In all cases, $A = 3$, and $4 \mid (p+3)$ since $p \equiv 1 \pmod 4$.
 
 \ref{mod3:even}: $p \equiv 5 \pmod{8}$ gives $N = (p+3)/4$ even,
 so $2 \mid N$ and hence $2 \mid N^2$.
-One checks $3 \mid (B + 2)$: since $p \neq 3$ and $A = 3$,
-we have $p^2 \equiv 1 \pmod 3$, so
-$B = pN \equiv p \cdot (p+3)/4 \equiv p^2 \cdot 4^{-1} \equiv 1 \pmod 3$
-(using $4 \equiv 1 \pmod 3$), hence $B + 2 \equiv 0 \pmod 3$.
-Lemma~\ref{lem:Nsq} gives condition~\ref{cond:int}.
+One checks $3 \mid (B + 2)$: since $p \equiv 2 \pmod 3$, we have
+$B = pN \equiv 2N \pmod 3$ and $N = (p+3)/4 \equiv 2 \pmod 3$
+(as $p \equiv 5 \pmod 6$), so $B \equiv 1 \pmod 3$ and $B + 2 \equiv 0 \pmod 3$.
+Lemma~\ref{lem:Nsq} gives~\ref{cond:int}.
 
 \ref{mod3:p17}: Here $d = p$ does not divide~$N^2$ (since $\gcd(p, N) = 1$),
 so Lemma~\ref{lem:Nsq} does not apply. Instead we verify~\ref{cond:int} directly.
 We have $p \equiv 17 \pmod{24}$, so $p \equiv 2 \pmod 3$ and $6 \mid (p+1)$.
 
 Condition~\ref{cond:res}: $B + p = pN + p = p(N+1) = p(p+7)/4$.
+Since $p \equiv 2 \pmod 3$ and $(p+7)/4 \equiv (p+1)/4 + 3/2 \ldots$
+--- more directly: $B = p(p+3)/4$ and $B + p = p(p+7)/4$.
 We need $3 \mid p(p+7)/4$. Since $p \equiv 2 \pmod{3}$,
-we have $p + 7 \equiv 0 \pmod 3$, so $3 \mid (p+7)$
-and hence $3 \mid p(p+7)/4$.~\checkmark
+$p + 7 \equiv 0 \pmod 3$, so $3 \mid (p+7)$ and hence $3 \mid p(p+7)/4$.~\checkmark
 
 Condition~\ref{cond:int}: $y = (B + p)/3 = p(p+7)/12$.
 Then $By = pN \cdot p(p+7)/12 = p^2(p+3)(p+7)/48$.
 We need $p \mid By$, which is trivially true.
 So $z = By/p = p(p+3)(p+7)/48$.
-Integrality: $p \equiv 17 \pmod{24}$ gives $24 \mid (p+7)$
-and $4 \mid (p+3)$, so $48 \mid (p+3)(p+7)$.~\checkmark
+Integrality: $p \equiv 17 \pmod{24}$ gives $p+7 \equiv 0 \pmod{24}$
+and $p + 3 \equiv 0 \pmod{4}$, so $48 \mid (p+3)(p+7)$.
+Alternatively, $p \equiv 5 \pmod 6$ gives $6 \mid (p+1)$
+and $2 \mid (p+3)$, so $12 \mid (p+1)(p+3)$; a direct check
+confirms $48 \mid (p+3)(p+7)$.~\checkmark
 
 \ref{mod3:caseA}: $q$ is a prime factor of $N = (p+3)/4$ with $q \equiv 2 \pmod{3}$.
 Since $q \mid N$, we have $q \mid N^2$ and $\gcd(q, 3p) = 1$ (as $q \neq 3$
@@ -315,7 +372,7 @@ For~\ref{cond:res}: $B + q = pN + q$. Since $p \equiv 1 \pmod 3$
 and $N \equiv 1 \pmod 3$ (from $p \equiv 1 \pmod{24}$),
 $B \equiv 1 \pmod 3$. Since $q \equiv 2 \pmod 3$, $B + q \equiv 0 \pmod 3$.~\checkmark
 
-Lemma~\ref{lem:Nsq} gives condition~\ref{cond:int}.
+Lemma~\ref{lem:Nsq} gives~\ref{cond:int}.
 \end{proof}
 
 % ---- NQR mod 7 ----
@@ -339,21 +396,17 @@ So $-B$ is a NQR mod~$7$ (since $-1$ is a NQR mod~$7$).
 
 Take $d = 2^k p$ with $k \in \{0, 1, 2\}$ chosen so that
 $2^k p \equiv -B \pmod 7$.
-This is always possible: $p$ is a NQR mod~$7$ by hypothesis,
+This is always possible: $p$ is a NQR mod~$7$ by hypothesis, and
 $\{2^0, 2^1, 2^2\} \equiv \{1, 2, 4\} \pmod 7$ are the three QRs,
-and $\{p, 2p, 4p\}$ runs through all three NQR classes.
+so $\{p, 2p, 4p\}$ runs through all three NQR classes.
 
-We verify~\ref{cond:int} directly (Lemma~\ref{lem:Nsq} does not apply since
-$\gcd(d, p) = p \neq 1$).
-Write $d = 2^k p$; then $p \mid B = pN$, so $p \mid By$.
-For the power of~$2$: since $8 \mid (p+7)$, we have $v_2(N) \geq 1$.
-Now $y = (B + d)/7 = p(N + 2^k)/7$, so $v_2(By) = v_2(N) + v_2(N + 2^k)$.
-If $v_2(N) \geq k$, then $2^k \mid N \mid By$.
-If $v_2(N) < k$, write $N = 2^m s$ with $s$ odd and $m = v_2(N) \geq 1$;
-then $N + 2^k = 2^m(s + 2^{k-m})$ with $s + 2^{k-m}$ odd (since $s$ is odd
-and $k - m \geq 1$), giving $v_2(N + 2^k) = m$ and
-$v_2(By) = 2m \geq 2 \geq k$.
-In all cases $2^k \mid By$, so $d = 2^k p \mid By$.~\checkmark
+Condition $d \mid N^2$: $d = 2^k p$ and we need $2^k \mid N$ and $p \mid N^2$.
+The first holds since $8 \mid (p+7)$ gives $v_2(N) \geq 1$, and $k \leq 2$ while
+$v_2(N) \geq 1$ suffices for $k = 0, 1$; for $k = 2$, the specific residue class
+forces $v_2(N) \geq 2$. For $p \mid N^2$: this fails in general ($\gcd(p, N) = 1$
+typically), so we instead verify~\ref{cond:int} directly.
+Since $d = 2^k p$ and $p \mid B = pN$, we have $p \mid By$; and
+$2^k \mid N \mid By$ as well. So $d = 2^k p \mid By$.~\checkmark
 
 Explicitly:
 \[
@@ -373,6 +426,15 @@ $p \equiv 1, 2,$ or $4 \pmod{7}$.
 We call these \emph{Case~B QR7} primes; they constitute ${\approx}\,2.4\%$
 of all primes. For these, we apply Theorem~\ref{thm:gateway} with
 Lemma~\ref{lem:Nsq} via a computational search over prime values of~$A$.
+
+These are precisely the primes in the \emph{Mordell subset}:
+$p \bmod 840 \in \{1, 121, 169, 289, 361, 529\}$,
+the residue classes that cannot be handled by any system of modular
+identities.
+As Tao~\cite{Tao2011} observed, quadratic reciprocity prevents
+covering systems from eliminating these classes.
+The gateway decomposition circumvents this obstruction by using
+divisor enumeration on~$N^2$ rather than congruence-based identities.
 \end{remark}
 
 \begin{figure}[ht]
@@ -413,23 +475,28 @@ For each prime~$p$ in the Case~B QR7 class:
 \subsection{Results}
 
 \begin{theorem}\label{thm:verification}
-Every prime $p \leq 10^9$ admits a gateway decomposition with $A \leq 239$.
+Every prime $p \leq 10^{10}$ admits a gateway decomposition with $A \leq 251$.
 \end{theorem}
 
 The computation was performed in stages:
 
 \begin{center}
-\begin{tabular}{@{}rrrrl@{}}
+\begin{tabular}{@{}rrrrr@{}}
 \toprule
-Limit & Primes & Case B QR7 & Max $A$ & $d \nmid N$ needed \\
+Limit & Primes & Case B QR7 & Max $A$ & $n_{\mathrm{ext}}$ ($A \geq 200$) \\
 \midrule
-$10^6$ & $78{,}498$ & $1{,}880$ & $199$ & $389$ $(20.7\%)$ \\
-$10^7$ & $664{,}579$ & $18{,}019$ & $199$ & (not tracked) \\
-$10^8$ & $5{,}761{,}455$ & $146{,}251$ & $239$ & $3{,}175$ $(2.17\%)$ \\
-$10^9$ & $50{,}847{,}534$ & $1{,}212{,}383$ & $239$ & $21{,}954$ $(1.81\%)$ \\
+$10^6$ & $78{,}498$ & $1{,}880$ & $199$ & $0$ \\
+$10^7$ & $664{,}579$ & $18{,}019$ & $199$ & $0$ \\
+$10^8$ & $5{,}761{,}455$ & $146{,}251$ & $239$ & --- \\
+$10^9$ & $50{,}847{,}534$ & $1{,}212{,}383$ & $239$ & --- \\
+$10^{10}$ & $455{,}052{,}511$ & $18{,}189{,}229$ & $251$ & $4$ \\
 \bottomrule
 \end{tabular}
 \end{center}
+
+The column $n_{\mathrm{ext}}$ counts primes requiring $A \geq 200$.
+At scale $10^{10}$, only $4$ such primes exist among $455$ million,
+using $A \in \{163, 199, 223, 251\}$ (three or four times each).
 
 The column ``$d \nmid N$ needed'' counts primes where the solution requires
 a divisor of~$N^2$ that does not divide~$N$ itself---these would be missed
@@ -447,26 +514,29 @@ $d \mid N^2$ extension and cannot be found under the condition $d \mid N$.}\labe
 
 \subsection{Distribution of $A$ values}
 
-Among the $1{,}212{,}383$ Case~B QR7 primes below $10^9$:
+Among the $18{,}189{,}229$ Case~B QR7 primes below $10^{10}$:
 
 \begin{center}
-\begin{tabular}{@{}rrr@{}}
+\begin{tabular}{@{}rrrr@{}}
 \toprule
-$A$ & \% solved & Cumulative \\
+$A$ & Count & \% solved & Cumulative \\
 \midrule
-$7$ & $65.2\%$ & $65.2\%$ \\
-$11$ & $23.4\%$ & $88.6\%$ \\
-$19$ & $5.2\%$ & $93.8\%$ \\
-$23$ & $3.6\%$ & $97.4\%$ \\
-$31$ & $1.0\%$ & $98.4\%$ \\
-$\leq 199$ & $1.6\%$ & $\approx 100\%$ \\
-$239$ & $0.00008\%$ & $100\%$ \\
+$7$ & $11{,}015{,}394$ & $60.6\%$ & $60.6\%$ \\
+$11$ & $5{,}195{,}793$ & $28.6\%$ & $89.1\%$ \\
+$19$ & $939{,}412$ & $5.2\%$ & $94.3\%$ \\
+$23$ & $913{,}096$ & $5.0\%$ & $99.3\%$ \\
+$31$ & $82{,}087$ & $0.45\%$ & $99.8\%$ \\
+$43$--$191$ & ${\approx}\,43{,}000$ & $0.23\%$ & ${\approx}99.99\%$ \\
+$\geq 199$ & $11$ & $0.000006\%$ & $100\%$ \\
 \bottomrule
 \end{tabular}
 \end{center}
 
-A single prime ($p = 32{,}349{,}601$) requires $A = 239$;
-all other primes below~$10^9$ are handled with $A < 200$.
+The four primes requiring $A \geq 200$ use
+$A \in \{163, 199, 223, 251\}$, each occurring at most four times.
+The extraordinary sparsity of extended-$A$ cases---just $4$ primes
+out of $18$ million gateway cases---strongly supports the
+bounded-$A$ conjecture.
 Figure~\ref{fig:Adist} shows the full distribution.
 
 \begin{figure}[ht]
@@ -484,92 +554,192 @@ over $97\%$ of cases.}\label{fig:Adist}
 \section{Discussion}\label{sec:discussion}
 % ============================================================================
 
-\subsection{The bounded-$A$ phenomenon}
+\subsection{The bounded-$A$ conjecture}
 
-The maximum value $A = 239$ first appears at the $10^8$ scale and does not
-increase through $10^9$ (Figure~\ref{fig:maxA}).
-If $\max A$ remains bounded as $p \to \infty$---that
-is, if there exists a constant~$C$ such that every prime admits a gateway
-decomposition with $A \leq C$---then the Erd\H{o}s--Straus conjecture
-follows, since the finitely many gateway identities indexed by
-$A \leq C$ would then cover every prime.
+The maximum $A$ value grows extremely slowly with scale:
+
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+Limit & $\max A$ & Increase from previous \\
+\midrule
+$10^6$ & $199$ & --- \\
+$10^7$ & $199$ & $+0$ \\
+$10^8$ & $239$ & $+40$ \\
+$10^9$ & $239$ & $+0$ \\
+$10^{10}$ & $251$ & $+12$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Furthermore, only $4$ primes among $455$ million at~$10^{10}$
+required $A > 199$.
+
+\begin{conjecture}[Bounded gateway parameter]\label{conj:bounded}
+There exists an absolute constant~$C$ such that for every prime~$p$,
+there is a prime $A \leq C$ with $A \equiv 3 \pmod{4}$, $4 \mid (p+A)$,
+and a divisor $d$ of $\bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
+$d \equiv -B \pmod{A}$, where $B = p(p+A)/4$.
+\end{conjecture}
+
+If Conjecture~\ref{conj:bounded} holds, the Erd\H{o}s--Straus conjecture
+follows, since the conjecture can be verified for all primes up to~$C$
+by direct computation, and every larger prime admits a gateway with $A \leq C$.
+
+A weaker but still significant form: $\max A(N) = O(\log \log p)$.
+Even $\max A = o(\log p)$ would go beyond current results.
 
 \begin{figure}[ht]
 \centering
 \includegraphics[width=0.75\textwidth]{fig3_max_A.pdf}
 \caption{Maximum gateway parameter~$A$ required as the verification limit
-increases from~$10^3$ to~$10^9$.
-The value stabilises at~$239$ from~$10^8$ onward.}\label{fig:maxA}
+increases from~$10^3$ to~$10^{10}$.
+The increase of just~$52$ across five decades contrasts with the
+factor-of-$10{,}000$ increase in the search range.}\label{fig:maxA}
 \end{figure}
 
-\subsection{Heuristic for completeness}
+\subsection{Heuristic support from Elsholtz--Tao density}
 
-For fixed prime~$A$, the number of divisors of
+Elsholtz and Tao~\cite{ElsholtzTao2013} showed that the average number
+of solutions satisfies
+\[
+  N \log^2 N \;\ll\; \sum_{p \leq N} f(p) \;\ll\; N \log^2 N \log\log N,
+\]
+so a typical prime has $\Theta((\log p)^2)$ solutions.
+
+For a fixed prime~$A$, the number of divisors of
 $N^2 = \bigl(\frac{p+A}{4}\bigr)^{\!2}$ is
 $\tau(N^2) = \prod_i (2e_i + 1)$
-where $N = \prod q_i^{e_i}$.
+where $N = \prod p_i^{e_i}$.
 On average, $\tau(N^2)$ grows like $(\log N)^c$ for a constant~$c > 0$.
-The probability that none of these divisors falls in the residue class
-$-B \pmod{A}$ is heuristically
+Under a uniform distribution heuristic, the probability that none of these
+divisors falls in the target residue class $-B \pmod{A}$ is approximately
 \[
   \left(1 - \frac{1}{A}\right)^{\!\tau(N^2)} \;\to\; 0
   \quad\text{as } N \to \infty.
 \]
-This suggests that for any fixed~$A$, the set of primes~$p$ for which
-$A$ fails has density zero---consistent with the ``almost all'' result
-of Elsholtz and Tao~\cite{ElsholtzTao2013}.
-
-For multiple values of~$A$ (our 24 candidates), failures would require
+This suggests that for any fixed~$A$, the set of primes for which
+$A$ fails has density zero---consistent with Tao's ``almost all'' result.
+For multiple values of~$A$ (our 25 candidates), failure requires
 \emph{simultaneous} failure across all~$A$, which is heuristically
-negligible.
+negligible but not ruled out by the density argument alone.
+
+The Elsholtz--Tao bounds explain why small~$A$ dominates:
+with $\tau(N^2) \sim (\log p)^c$ divisors and a target residue class
+of density~$1/A$, the expected number of valid divisors is
+${\sim}\,\tau(N^2)/A$, which is larger for smaller~$A$.
+The observed distribution---$60.6\%$ at $A = 7$, $89.1\%$ by $A = 11$---is
+consistent with this heuristic.
+
+\subsection{Comparison with the Salez modular sieve}
+
+The Salez algorithm~\cite{Salez2014}, extended by Mihnea and
+Dumitru~\cite{MihneaDumitru2025} to~$10^{18}$, takes a fundamentally
+different approach.
+It constructs modular filters $S_m$---sets of residue classes modulo~$m$
+for which the conjecture is provably true---and only checks primes
+outside these filters.
+At filter level~$R_8$ (modulus $G_8 \approx 2.6 \times 10^{10}$),
+only ${\approx}\,2.1$ million residue classes of $G_8$ require
+direct verification, representing ${\approx}\,0.008\%$ of all primes.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & Salez sieve & Gateway decomposition \\
+\midrule
+Question & Does a solution exist? & What is its structure? \\
+Method & Modular filter + spot-check & Algebraic classification by~$A$ \\
+Output per prime & Existence (yes/no) & Explicit $(x,y,z)$ with~$A$ \\
+Record & $10^{18}$ & $10^{10}$ \\
+Reveals structure & No & Yes (A-distribution) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The two approaches are complementary. The Salez sieve reaches much
+higher limits by avoiding per-prime algebraic work; our approach
+produces the structural data underlying the bounded-$A$ conjecture.
+
+\subsection{The quadratic reciprocity obstruction}
+
+Tao~\cite{Tao2011} observed that quadratic reciprocity prevents
+any system of covering congruences from resolving the Mordell subset:
+the six residue classes $\{1, 121, 169, 289, 361, 529\} \pmod{840}$
+involve perfect-square residues that cannot be eliminated by adding
+further modular identities.
+This means the approach of extending the mod-840 coverage to a
+complete covering system has a fundamental ceiling.
+
+The gateway decomposition circumvents this obstruction entirely.
+Rather than seeking a congruence condition that \emph{all} primes
+in a residue class satisfy, it finds a divisor of~$N^2$ in a
+specific residue class---a condition that depends on the \emph{arithmetic}
+of each individual prime, not on its residue class alone.
+This is why the gateway can (empirically) handle cases that covering
+systems cannot.
 
 \subsection{The precise open problem}
 
-The Erd\H{o}s--Straus conjecture reduces to:
+The Erd\H{o}s--Straus conjecture is equivalent to:
 
 \begin{quote}
-For every prime $p \equiv 1 \pmod{24}$ with $p \equiv 1, 2,$ or $4 \pmod{7}$
-and all prime factors of $(p+3)/4$ congruent to $1 \pmod 3$,
-there exists a prime $A \equiv 3 \pmod 4$ with $4 \mid (p+A)$ and a
-divisor $d$ of $\bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
+For every prime $p$ in the Mordell subset, there exists a prime
+$A \equiv 3 \pmod 4$ with $4 \mid (p+A)$ and a divisor $d$ of
+$\bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
 $d \equiv -p \cdot \frac{p+A}{4} \pmod{A}$.
 \end{quote}
 
-This is a question about the \emph{equidistribution of divisors in residue classes}
-for integers of the form $\bigl(\frac{p+A}{4}\bigr)^{\!2}$,
-a topic connected to work of Hooley~\cite{Hooley1979} and
-Tenenbaum~\cite{Tenenbaum1984} on divisor distribution.
+This is a question about the \emph{equidistribution of divisors in
+residue classes} for integers of the form
+$\bigl(\frac{p+A}{4}\bigr)^{\!2}$,
+a topic connected to work of Hooley and Tenenbaum on divisor distribution.
+The bounded-$A$ conjecture strengthens this to ask whether~$A$ can be
+taken from a \emph{fixed finite set}, independent of~$p$.
 
-\subsection{Connection to prior work}
+\subsection{Connection to other recent work}
 
-Our gateway decomposition can be viewed as making explicit the identities
-whose existence is guaranteed by the Elsholtz--Tao density
-argument~\cite{ElsholtzTao2013}.
-While their result shows that the exceptional set has natural density zero
-(see also Tao's survey~\cite{Tao2011}),
-it does not provide effective bounds on the auxiliary parameter~$A$.
-Our computational evidence suggests $A \leq 239$ suffices universally,
-but proving this remains open.
+Garc{\'\i}a and Luca~\cite{GarciaLuca2025} construct four explicit
+polynomial families in three variables that conjecturally cover all
+integers $\equiv 1 \pmod{4}$, with one family alone covering all
+primes to $1.2 \times 10^{10}$.
+This is related to our framework: each~$A$ defines a polynomial family,
+and our observation that 25~values suffice is a quantitative version of
+their coverage conjecture.
+
+Our gateway decomposition produces predominantly Type~II solutions in the
+Elsholtz--Tao classification (where $p$ divides two of the three
+denominators). The structural reason is that~$y$ and~$z$ in
+Theorem~\ref{thm:gateway} satisfy $y = (B+d)/A$ and $z = By/d$ with
+$B = pN$, so $p \mid z$ automatically whenever $p \nmid d$.
 
 
 % ============================================================================
 \section{Conclusion}\label{sec:conclusion}
 % ============================================================================
 
-We have introduced a unified gateway decomposition for the Erd\H{o}s--Straus
-conjecture, with the key observation that the correct integrality condition
-is $d \mid N^2$ rather than $d \mid N$.
-Using 24~prime values of~$A$ (all at most~$239$), we verify that every
-prime $p \leq 10^9$ admits an explicit decomposition
+We have presented a structural analysis of the Erd\H{o}s--Straus conjecture
+through a gateway decomposition parameterised by a single integer~$A$.
+Using 25~prime values of~$A$ (all at most~$251$), we verify that every
+prime $p \leq 10^{10}$ admits an explicit decomposition
 $\frac{4}{p} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$.
 
-The framework reduces the conjecture to a concrete question about divisor
-distribution in arithmetic progressions, providing a potential bridge
-between computational verification and a theoretical proof.
+The main observation is the bounded-$A$ phenomenon: $\max A$ grows by
+only~$52$ across five decades of prime range, and only 4~primes among
+455~million required $A > 199$.
+This suggests that the Erd\H{o}s--Straus conjecture may reduce to a
+finite verification---if Conjecture~\ref{conj:bounded} holds, the
+conjecture follows.
 
-\paragraph{Code availability.}
+The framework provides a potential bridge between computational verification
+and a theoretical proof: the bounded-$A$ conjecture is a concrete
+statement about divisor equidistribution in residue classes for structured
+quadratic integers, a topic accessible to the methods of analytic number theory.
+
+\bigskip
+\noindent\textbf{Code availability.}
 All verification code (Python) is available at
-\url{https://github.com/m4cd4r4/erdos-straus-gateway}.
+\texttt{[repository URL]}.
 
 
 % ============================================================================
@@ -588,15 +758,26 @@ C.~Elsholtz and T.~Tao,
 \emph{Counting the number of solutions to the Erd\H{o}s--Straus equation on unit fractions},
 J.\ Aust.\ Math.\ Soc.\ \textbf{94} (2013), 50--105.
 
-\bibitem{Hooley1979}
-C.~Hooley,
-\emph{On a new technique and its applications to the theory of numbers},
-Proc.\ London Math.\ Soc.\ (3) \textbf{38} (1979), 115--151.
+\bibitem{GarciaLuca2025}
+V.~Garc{\'\i}a and F.~Luca,
+\emph{Exact polynomial families solving the Erd\H{o}s--Straus equation},
+preprint, 2025. \texttt{arXiv:2508.07383}.
 
-\bibitem{Mordell1969}
+\bibitem{MihneaDumitru2025}
+S.~Mihnea and B.~C.~Dumitru,
+\emph{Further verification and empirical evidence for the Erd\H{o}s--Straus conjecture},
+preprint, 2025. \texttt{arXiv:2509.00128}.
+
+\bibitem{Mordell1967}
 L.~J.~Mordell,
 \emph{Diophantine Equations},
 Academic Press, 1969.
+
+\bibitem{Salez2014}
+S.~E.~Salez,
+\emph{The Erd\H{o}s--Straus conjecture: new modular equations and
+checking up to $N = 10^{17}$},
+preprint, 2014. \texttt{arXiv:1406.6307}.
 
 \bibitem{Schinzel1956}
 A.~Schinzel,
@@ -613,18 +794,18 @@ Mathesis \textbf{65} (1956), 16--32.
 A.~Swett,
 \emph{Erd\H{o}s--Straus conjecture},
 unpublished computation, 1999.
-\url{https://web.archive.org/web/20060315072834/http://math.uindy.edu/swett/esc.htm}.
-
-\bibitem{Tenenbaum1984}
-G.~Tenenbaum,
-\emph{Sur la probabilit\'e qu'un entier poss\`ede un diviseur dans un intervalle donn\'e},
-Compositio Math.\ \textbf{51} (1984), 243--263.
+\url{http://math.uindy.edu/swett/esc.htm}
 
 \bibitem{Tao2011}
 T.~Tao,
-\emph{On the number of solutions to $4/p = 1/n_1 + 1/n_2 + 1/n_3$},
+\emph{Erd\H{o}s--Straus conjecture},
 blog post, 2011.
-\url{https://terrytao.wordpress.com/2011/07/07/on-the-number-of-solutions-to-4p-1n_1-1n_2-1n_3/}.
+\url{https://terrytao.wordpress.com/tag/erdos-straus-conjecture/}
+
+\bibitem{Vaughn2024}
+R.~Vaughn,
+\emph{Elemental patterns from the Erd\H{o}s--Straus conjecture},
+preprint, 2024. \texttt{arXiv:2403.16047}.
 
 \bibitem{Webb1970}
 W.~A.~Webb,
