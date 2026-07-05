@@ -2,7 +2,7 @@
 """
 ERDŐS-STRAUS -- SESSION 19: SCALE TO 10^11 (exploratory)
 =========================================================
-Session 18: 100% at 10^10 (maxA=251, n_ext=4, 455,052,511 primes).
+Session 18: VOID (inverted Case A/B split; see 2026-07-05 bug fix note below).
 Session 19: Push to 10^11 using Pollard-Brent factorization.
 
 Key upgrade over session18:
@@ -185,9 +185,12 @@ def chk(p, t, d):
     z  = By // d
     return z > 0 and 4 * x * y * z == p * (y * z + x * z + x * y)
 
+# BUG FIX (2026-07-05): predicate was inverted (returned True for Case B,
+# the hard class), so pre-fix session-19 runs skipped every hard prime and
+# gateway-searched the easy Case A ∩ QR7 set. Pre-fix output logs and
+# results/session19_checkpoint.json are void for the hard class.
+# See session20_corrected_10B.py for the corrected 10^10 re-verification.
 def is_case_a(p):
-    """Case A: (p+3)/4 has at least one prime factor NOT equiv 1 mod 3.
-    Returns True if Case A (solvable algebraically), False if Case B (needs gateway)."""
     n2 = (p + 3) // 4
     d2 = 2
     while d2 * d2 <= n2:
@@ -425,11 +428,11 @@ for A, cnt in Au.most_common(30):
 print("\n" + "=" * 60)
 print("SCALE PROGRESSION")
 print("=" * 60)
-print("  10^6 :       78,498 primes  100%  maxA=199")
-print("  10^7 :      664,579 primes  100%  maxA=199")
+print("  10^6 :       78,498 primes  100%  maxA=79")
+print("  10^7 :      664,579 primes  100%  maxA=167")
 print("  10^8 :    5,761,455 primes  100%  maxA=239")
 print("  10^9 :   50,847,534 primes  100%  maxA=239")
-print("  10^10:  455,052,511 primes  100%  maxA=251  n_ext=4")
+print("  10^10:  session-18 run VOID (inverted classifier); session 20 re-verification")
 pct = "100" if not opens else f"{100*total_proven/tot:.4f}"
 print(f"  10^11: {tot:,} primes  {pct}%  maxA={mxA}  n_ext={totals['n_ext']}")
 

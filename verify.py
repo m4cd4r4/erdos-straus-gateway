@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """
 Verification script for:
-  "A Finite Algebraic Covering System for the Erdos-Straus Conjecture to 10^9"
+  "Bounded Gateway Parameters for the Erdos-Straus Conjecture"
 
 Verifies Theorem 1.1: every prime p <= LIMIT admits a gateway decomposition
-4/p = 1/x + 1/y + 1/z with A <= 239.
+4/p = 1/x + 1/y + 1/z (max A = 79 at 10^6, 167 at 10^7, 239 at 10^8/10^9,
+359 at 10^10; this script searches prime A < 10^4).
 
 Usage:
   python verify.py              # default: verify to 10^6 (~10s)

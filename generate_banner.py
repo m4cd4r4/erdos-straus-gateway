@@ -146,6 +146,7 @@ scale_data = {
     20_000: 47, 50_000: 47, 100_000: 59, 200_000: 59,
     500_000: 79, 1_000_000: 79,
     10_000_000: 167, 100_000_000: 239, 1_000_000_000: 239,
+    10_000_000_000: 359, 100_000_000_000: 359,
 }
 prog = stats.get("max_A_progressive", {})
 for k, v in prog.items():
@@ -158,26 +159,29 @@ ax3.semilogx(limits, max_As, 'o-', color=PINK, markersize=6,
              linewidth=2, markeredgecolor='#d63384', markeredgewidth=1,
              zorder=5)
 
-# Stabilisation line
-ax3.axhline(y=239, color=GOLD, linestyle='--', linewidth=1, alpha=0.6)
-ax3.text(2.5e9, 245, '$A = 239$', va='bottom', ha='right', fontsize=9,
+# Earlier plateau (239) and current maximum (359)
+ax3.axhline(y=239, color=GOLD, linestyle=':', linewidth=0.9, alpha=0.4)
+ax3.text(1.5e5, 245, '$A = 239$', va='bottom', ha='left', fontsize=8,
+         color=GOLD, style='italic', alpha=0.7)
+ax3.axhline(y=359, color=GOLD, linestyle='--', linewidth=1, alpha=0.6)
+ax3.text(2.5e11, 365, '$A = 359$', va='bottom', ha='right', fontsize=9,
          color=GOLD, style='italic')
 
-# Shade stable region
-ax3.axvspan(1e8, 1e9, alpha=0.08, color=PINK)
-ax3.text(2.5e8, 25, 'Stable', fontsize=9, color=PINK, alpha=0.7,
+# Shade the flat 10^10 -> 10^11 region
+ax3.axvspan(1e10, 1e11, alpha=0.08, color=PINK)
+ax3.text(3.2e10, 25, 'Stable', fontsize=9, color=PINK, alpha=0.7,
          fontweight='bold')
 
 ax3.set_ylabel('Max $A$ needed', color=PINK, fontsize=9)
-ax3.set_ylim(0, 280)
-ax3.set_xlim(500, 3e9)
+ax3.set_ylim(0, 400)
+ax3.set_xlim(500, 3e11)
 ax3.tick_params(axis='y', colors=PINK, labelsize=8)
 ax3.tick_params(axis='x', colors=DIMMED, labelsize=8)
 
-xticks = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9]
+xticks = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11]
 ax3.set_xticks(xticks)
-ax3.set_xticklabels(['$10^3$', '$10^4$', '$10^5$', '$10^6$',
-                      '$10^7$', '$10^8$', '$10^9$'], color=DIMMED)
+ax3.set_xticklabels(['$10^3$', '', '$10^5$', '', '$10^7$', '',
+                      '$10^9$', '', '$10^{11}$'], color=DIMMED)
 ax3.grid(True, alpha=0.1, color='#30363d')
 
 ax3.set_title('Max $A$ Stabilisation', pad=8,
@@ -192,14 +196,13 @@ for spine in ['top', 'right']:
 # Main title
 # ============================================================================
 fig.suptitle(
-    r'Erdős–Straus Conjecture: Gateway Decompositions to $10^9$',
+    r'Erdős–Straus Conjecture: Gateway Decompositions to $10^{11}$',
     fontsize=17, color=WHITE, fontweight='bold', y=1.06
 )
 fig.text(0.5, 0.99,
-         '24 algebraic identities cover all 50,847,534 primes  |  max $A$ = 239  |  key insight: $d \\mid N^2$',
+         '32 values of $A$ resolve all 4,118,054,813 primes  |  max $A$ = 359  |  key insight: $d \\mid N^2$',
          ha='center', fontsize=10, color=GOLD, style='italic')
 
 plt.savefig('banner.png', bbox_inches='tight', facecolor=BG, edgecolor='none', pad_inches=0.3)
 print("Banner saved: banner.png")
-print(f"  Full path: I:\\Scratch\\erdos-straus-gateway\\banner.png")
 plt.close()

@@ -178,7 +178,8 @@ def fig2_a_distribution():
 # ============================================================================
 
 def fig3_max_A_stabilisation():
-    # Data from sessions 14-17
+    # Data from sessions 14-17 (10^3..10^9) and the corrected session-20
+    # re-verification (10^10); see REFEREE_FINDINGS_2026-07-05.md
     scale_data = {
         1_000: 7,
         2_000: 7,
@@ -193,6 +194,8 @@ def fig3_max_A_stabilisation():
         10_000_000: 167,
         100_000_000: 239,
         1_000_000_000: 239,
+        10_000_000_000: 359,
+        100_000_000_000: 359,
     }
     # Override with our progressive data where available
     prog = stats.get("max_A_progressive", {})
@@ -207,26 +210,33 @@ def fig3_max_A_stabilisation():
     ax.semilogx(limits, max_As, 'o-', color='#E91E63', markersize=7,
                 linewidth=2, markeredgecolor='#880E4F', markeredgewidth=1)
 
-    # Highlight the stabilisation at 239
-    ax.axhline(y=239, color='gray', linestyle='--', linewidth=1, alpha=0.7)
-    ax.text(2e9, 239, '$A = 239$', va='bottom', ha='right', fontsize=10,
+    # Reference lines at the plateau and the current maximum
+    ax.axhline(y=239, color='gray', linestyle='--', linewidth=1, alpha=0.5)
+    ax.text(2e9, 239, '$A = 239$', va='bottom', ha='right', fontsize=9,
+            color='gray', style='italic')
+    ax.axhline(y=359, color='gray', linestyle='--', linewidth=1, alpha=0.5)
+    ax.text(2e11, 359, '$A = 359$', va='bottom', ha='right', fontsize=9,
             color='gray', style='italic')
 
-    # Shade the verified region
-    ax.axvspan(1e8, 1e9, alpha=0.1, color='#E91E63')
-    ax.text(3e8, 30, 'Stable at 239', fontsize=9, color='#880E4F', alpha=0.8)
+    # Logarithmic growth guide, then the flat 10^10 -> 10^11 step
+    ax.text(3e7, 30, 'Roughly linear in $\\log N$', fontsize=9,
+            color='#880E4F', alpha=0.8)
+    ax.annotate('no growth\n$10^{10}\\to10^{11}$', xy=(1e11, 359),
+                xytext=(4e9, 300), fontsize=8, color='#880E4F',
+                ha='center', arrowprops=dict(arrowstyle='->', color='#880E4F',
+                                             alpha=0.7))
 
     ax.set_xlabel('Verification limit')
     ax.set_ylabel('Maximum $A$ needed')
-    ax.set_title('Stabilisation of max $A$ across scales')
-    ax.set_ylim(0, 280)
-    ax.set_xlim(500, 3e9)
+    ax.set_title('Growth of max $A$ across scales')
+    ax.set_ylim(0, 400)
+    ax.set_xlim(500, 4e11)
 
     # Custom x-ticks
-    xticks = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9]
+    xticks = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11]
     ax.set_xticks(xticks)
     ax.set_xticklabels(['$10^3$', '$10^4$', '$10^5$', '$10^6$',
-                        '$10^7$', '$10^8$', '$10^9$'])
+                        '$10^7$', '$10^8$', '$10^9$', '$10^{10}$', '$10^{11}$'])
     ax.grid(True, alpha=0.3)
 
     plt.tight_layout()

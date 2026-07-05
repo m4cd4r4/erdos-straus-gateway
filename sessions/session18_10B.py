@@ -100,11 +100,15 @@ def chk(p, t, d):
     z  = By // d
     return z > 0 and 4*x*y*z == p*(y*z + x*z + x*y)
 
-# ── Thm5 case-A check: all prime factors of (p+3)//4 must be ≡ 1 (mod 3) ───
+# ── Thm5 Case-A check: some prime factor of (p+3)//4 is ≢ 1 (mod 3) ────────
+# BUG FIX (2026-07-05): this predicate was inverted — it returned True when
+# ALL prime factors were ≡ 1 (mod 3), which is Case B, the hard class. Runs
+# of the buggy version skipped every hard prime (counting it as thm5) and
+# gateway-searched the easy Case A ∩ QR7 set instead, so the 10^10 dataset
+# in results/session18_checkpoint.json is void for the hard class.
+# Superseded by session20_corrected_10B.py.
 
 def is_case_a(p):
-    """Case A: (p+3)/4 has at least one prime factor NOT equiv 1 mod 3.
-    Returns True if Case A (solvable algebraically), False if Case B (needs gateway)."""
     n2 = (p + 3) // 4
     d2 = 2
     while d2 * d2 <= n2:
@@ -343,8 +347,8 @@ for A, cnt in Au.most_common(30):
 print("\n" + "=" * 60)
 print("SCALE PROGRESSION")
 print("=" * 60)
-print("  10^6:  78,498 primes       100%  (maxA=199)")
-print("  10^7:  664,579 primes      100%  (maxA=199)")
+print("  10^6:  78,498 primes       100%  (maxA=79)")
+print("  10^7:  664,579 primes      100%  (maxA=167)")
 print("  10^8:  5,761,455 primes    100%  (maxA=239)")
 print("  10^9:  ~50,847,534 primes  100%  (maxA=?  — see session17 output)")
 print(f"  10^10: {tot:,} primes  "

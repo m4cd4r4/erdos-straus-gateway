@@ -12,73 +12,55 @@ The [Erdos-Straus conjecture](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93S
 
 has a solution in positive integers x, y, z.
 
-This repository contains the paper, verification code, and figures for a unified algebraic approach that covers **all 50,847,534 primes up to 10^9** using just **24 values** of a single auxiliary parameter A (all prime, all <= 239).
+This repository contains the paper, verification code, and figures for a unified algebraic approach to the prime case. Every prime `p = 3 (mod 4)` is handled classically with `A = 1`. For every prime `p = 1 (mod 4)`, a single auxiliary parameter `A` produces an explicit decomposition: three algebraic propositions cover all but a density-zero residual class, and a short search over prime values of `A` resolves the rest.
 
-A GPU-accelerated extension to 5 x 10^9 found one prime (p = 3,807,728,761) requiring A = 359 - the first to exceed the original 24-element set. The extended set of 87 candidates (up to A = 991) resolves all primes tested so far.
+Verification to **10^11** (all 4,118,054,813 primes) succeeds with just **32 values of A** for the `p = 1 (mod 4)` primes - the value `A = 3` for the algebraic classes plus 31 distinct gateway values, all `= 3 (mod 4)` and all `<= 359`.
 
 ## Key Result
 
-**Theorem.** For every prime p <= 10^9, there exists a prime A <= 239 with A = 3 (mod 4) and a divisor d of ((p+A)/4)^2 satisfying d = -p^2 * 4^{-1} (mod A), such that
+**Theorem.** For every prime `p = 1 (mod 4)` in the residual class, there exists a prime `A <= 359` with `A = 3 (mod 4)`, `4 | (p + A)`, and a divisor `d` of `((p+A)/4)^2` satisfying `d = -p^2 * 4^{-1} (mod A)`, such that
 
-    x = (p+A)/4,  y = (pN+d)/A,  z = pNy/d
+    x = (p+A)/4,  y = (p*x + d)/A,  z = p*x*y/d
 
-are positive integers giving 4/p = 1/x + 1/y + 1/z.
+are positive integers giving `4/p = 1/x + 1/y + 1/z`.
 
-The critical insight is that the integrality condition requires d | N^2 (where N = (p+A)/4), which is **strictly weaker** than d | N. About 1.8% of the hardest primes require this extension.
+The critical insight is that the integrality condition requires `d | N^2` (where `N = (p+A)/4`), which is **strictly weaker** than `d | N`. A nontrivial fraction of the hardest primes use a divisor `d > N` that is invisible under the stronger condition.
 
 ## Bounded-A Phenomenon
 
-The maximum A value grows extremely slowly with scale:
+The maximum `A` grows extremely slowly with scale, and does not grow at all across the most recent decade:
 
 | Limit | max A | Increase |
 |-------|-------|----------|
-| 10^6 | 199 | - |
-| 10^7 | 199 | +0 |
-| 10^8 | 239 | +40 |
+| 10^6 | 79 | - |
+| 10^7 | 167 | +88 |
+| 10^8 | 239 | +72 |
 | 10^9 | 239 | +0 |
-| 5 x 10^9 | 359 | +120 |
+| 10^10 | 359 | +120 |
+| 10^11 | 359 | +0 |
 
-This suggests the conjecture may reduce to a finite verification.
+The record-setting prime is `p = 3,807,728,761` (`A = 359`, `d = 1935`), which lies **below 10^10** - nothing in `(10^10, 10^11]` beats it. Across 4.1 billion primes, only **47** require `A >= 199` and only **5** require `A >= 251`. This slow, eventually-flat growth motivates the **bounded-A conjecture**: `max A` is absolutely bounded. If true, the full Erdos-Straus conjecture follows.
 
 ## Paper
 
 The main paper (`erdos_straus_gateway.tex`) contains:
 
-- **Section 3**: The Gateway Decomposition theorem and the d | N^2 lemma
-- **Section 4**: Algebraic existence proofs covering ~97.6% of all primes
-- **Section 5**: Computational verification for the remaining ~2.4% (Case B QR7 primes)
+- **Section 3**: The Gateway Decomposition theorem and the `d | N^2` lemma
+- **Section 4**: Algebraic existence proofs covering ~97.1% of all primes (at 10^6, rising with the bound)
+- **Section 5**: Computational verification for the remaining residual class (Case B QR7 primes)
 - **Section 6**: Discussion of the bounded-A phenomenon and the path to a full proof
 
-### Companion Documents
-
-- **`closure_attempt.tex`** - Explores algebraic routes toward unconditional proof, including the NQR Target Lemma, Failure Characterisation Theorem, and the A=7 Sharp Theorem.
-- **`unconditional_bound.tex`** - Develops an unconditional O(log^{2/3} p) bound on the gateway parameter A using sieve methods.
+The residual class - `p = 1 (mod 24)`, a quadratic residue mod 7, with every prime factor of `(p+3)/4` congruent to `1 (mod 3)` - is related to but **not identical with** the classical Mordell subset `{1, 121, 169, 289, 361, 529} (mod 840)`; Remark 4.5 distinguishes them with explicit examples.
 
 ## Verification
 
-Run the self-contained verification script:
+Run the self-contained verification script (Python 3.6+, standard library only):
 
 ```bash
-# Verify all primes to 10^6 (~10 seconds)
-python verify.py
-
-# Verify to 10^7 (~2 minutes)
-python verify.py 10000000
-
-# Verify to 10^8 (~30 minutes)
-python verify.py 100000000
-
-# Verify to 10^9 (~90 minutes, ~1GB RAM)
-python verify.py 1000000000
-```
-
-No dependencies beyond Python 3.6+ standard library.
-
-For GPU-accelerated verification to higher limits:
-
-```bash
-# Verify to 5 x 10^9 using 87 candidate A values
-python verify_gpu.py
+python verify.py              # all primes to 10^6  (~10 seconds)
+python verify.py 10000000     # to 10^7             (~2 minutes)
+python verify.py 100000000    # to 10^8             (~30 minutes)
+python verify.py 1000000000   # to 10^9             (~90 minutes, ~1 GB RAM)
 ```
 
 Example output at 10^6:
@@ -90,46 +72,59 @@ Category                                            Count        %
 -------------------------------------------------------------------
   p = 2                                                 1    0.001%
   p = 3 (mod 4)  [Prop. 4.1]                      39,322   50.093%
-  p = 5 (mod 8)  [Prop. 4.2a]                     19,617   24.990%
-  p = 17 (mod 24) [Prop. 4.2b]                     9,828   12.521%
-  Case A  [Prop. 4.2c]                              5,192    6.614%
-  Case B NQR7  [Prop. 4.3]                          2,271    2.893%
-  Case B QR7  [Thm. 5.1]                            2,267    2.889%
+  p = 5 (mod 8)  [Prop. 4.2a]                     19,623   24.998%
+  p = 17 (mod 24) [Prop. 4.2b]                     9,820   12.510%
+  Case A  [Prop. 4.2c]                             5,192    6.614%
+  Case B NQR7  [Prop. 4.3]                         2,271    2.893%
+  Case B QR7  [Thm. 5.1]                           2,269    2.891%
 -------------------------------------------------------------------
-  PROVEN                                           78,498  100.0000%
-  OPEN                                                  0    0.00000%
+  PROVEN                                          78,498  100.0000%
+  OPEN                                                 0    0.00000%
 
+Max A needed: 79
 ALL 78,498 PRIMES TO 1,000,000 VERIFIED.
 ```
+
+For the full-scale segmented, checkpointed verification to 10^10 / 10^11 (16-worker pool, GPU sieve if CuPy is present):
+
+```bash
+python sessions/session20_corrected_10B.py 10000000000  results/session20_checkpoint.json   # 10^10
+python sessions/session20_corrected_10B.py 100000000000 results/session21_checkpoint.json   # 10^11
+```
+
+Each run validates against three independent baselines (the full A-distribution at 10^6, the residual count at 10^7, and the residual count and max A at 10^9) before extending the range, and verifies every solution by direct evaluation of the identity. The `results/` directory holds the resulting checkpoints with per-decade milestone snapshots.
 
 ## Figures
 
 Generate the paper figures (requires matplotlib):
 
 ```bash
-python collect_stats.py    # Generates stats_1M.json
-python generate_figures.py # Generates fig1-fig5 as PDF and PNG
+python collect_stats.py     # regenerate stats_1M.json (10^6 sample)
+python generate_figures.py  # fig1-fig5 as PDF and PNG
+python generate_banner.py   # the README banner
 ```
 
 | Figure | Description |
 |--------|-------------|
 | fig1_coverage | Prime classification hierarchy (pie charts) |
 | fig2_A_distribution | Gateway parameter A distribution (bar + cumulative) |
-| fig3_max_A | Max A stabilisation across scales (10^3 to 5 x 10^9) |
-| fig4_d_over_N | d/N ratio distribution showing N^2 extension |
+| fig3_max_A | Max A growth across scales (10^3 to 10^11) |
+| fig4_d_over_N | d/N ratio distribution showing the N^2 extension |
 | fig5_gateway_diagram | Conceptual schematic of the decomposition |
 
 ## The Open Problem
 
-The conjecture reduces to:
+Since every prime outside the residual class is covered algebraically, the conjecture reduces to:
 
-> For every prime p = 1 (mod 24) that is a quadratic residue mod 7 with all prime factors of (p+3)/4 congruent to 1 (mod 3), does there exist a bounded prime A = 3 (mod 4) such that ((p+A)/4)^2 has a divisor in the residue class -p^2 * 4^{-1} (mod A)?
+> For every prime `p = 1 (mod 24)` that is a quadratic residue mod 7 with all prime factors of `(p+3)/4` congruent to `1 (mod 3)`, does there exist a bounded prime `A = 3 (mod 4)` such that `((p+A)/4)^2` has a divisor in the residue class `-p^2 * 4^{-1} (mod A)`?
 
 This is a question about **equidistribution of divisors in residue classes** for structured integers, connected to work of Hooley and Tenenbaum.
 
-## Citation
+## Data Provenance
 
-If you use this work, please cite:
+The verification pipeline was corrected in July 2026: an earlier run of the 10^10 stage inverted the Case A / Case B classification and searched the wrong set of primes. All figures in this repository derive from the corrected, baseline-validated pipeline (`sessions/session20_corrected_10B.py`) and are cross-checked against the checkpoints in `results/`. Section 5 of the paper documents the correction.
+
+## Citation
 
 ```bibtex
 @article{erdos-straus-gateway-2026,
