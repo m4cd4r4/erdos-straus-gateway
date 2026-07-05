@@ -630,6 +630,103 @@ A handful of small primes ($A = 7, 11, 19, 23$) handle
 over $97\%$ of cases.}\label{fig:Adist}
 \end{figure}
 
+\subsection{Anatomy of the hardest prime}\label{subsec:anatomy}
+
+The unique hardest prime $p = 3{,}807{,}728{,}761$---the only prime below
+$10^{11}$ requiring $A = 359$---shows why the Case~B QR7 class is the
+computational bottleneck and why the $d \mid N^2$ extension is necessary.
+
+\paragraph{Why $p$ is Case~B.}
+Here $(p+3)/4 = 951{,}932{,}191 = 7 \cdot 73 \cdot 1{,}862{,}881$, and all
+three prime factors are $\equiv 1 \pmod 3$. There is no factor
+$q \equiv 2 \pmod 3$ to supply the shortcut of
+Proposition~\ref{prop:mod3}\ref{mod3:caseA}, so $p$ falls to the search.
+
+\paragraph{Why every $A < 359$ fails.}
+For each of the $35$ candidate primes $A \equiv 3 \pmod 4$ below $359$, the
+target residue $t \equiv -p^2 4^{-1} \pmod A$ must be met by a divisor of
+$N_A^2$, where $N_A = (p+A)/4$. The divisor-residue set
+$\mathcal{R}_A = \{\,d \bmod A : d \mid N_A^2\,\}$ never contains~$t$: across
+all $35$ values it covers at most $184$ of the $A-1$ nonzero residues (at most
+$83\%$), because each $N_A$ has only two to six distinct prime factors and its
+divisors cannot generate enough residues. The obstruction is arithmetic, not
+congruential.
+
+\paragraph{Why $A = 359$ succeeds.}
+The factorisation
+\[
+  N_{359} = \tfrac{p+359}{4} = 951{,}932{,}280
+          = 2^3 \cdot 3 \cdot 5 \cdot 13 \cdot 23 \cdot 43 \cdot 617
+\]
+has \emph{seven} distinct prime factors---more than any smaller candidate---and
+its divisor-residue set attains all $358$ nonzero residues modulo~$359$:
+$|\mathcal{R}_{359}| = 358$. The target $t = 140$ is covered by
+$d = 1935 = 3^2 \cdot 5 \cdot 43$, giving the explicit solution
+\begin{align*}
+  x &= 951{,}932{,}280, \\
+  y &= 10{,}096{,}657{,}161{,}783{,}585, \\
+  z &= 18{,}913{,}360{,}422{,}476{,}412{,}211{,}734{,}567{,}822{,}280 .
+\end{align*}
+
+\paragraph{The $d \mid N^2$, $d \nmid N$ phenomenon.}
+The solving divisor $d = 3^2 \cdot 5 \cdot 43$ divides $N_{359}^2$ but not
+$N_{359}$: $v_3(N_{359}) = 1$ while $v_3(d) = 2$. This is a genuine instance of
+Lemma~\ref{lem:Nsq}---for this prime the weaker condition $d \mid N^2$ is
+exactly what is needed.
+
+\paragraph{Isolation.}
+The difficulty is a property of $p$ alone, not its residue class: every Case~B
+QR7 prime within $\pm 2000$ of~$p$ is solved by some $A \leq 19$. The hardness
+comes from the factorisation $(p+3)/4 = 7 \cdot 73 \cdot 1{,}862{,}881$,
+dominated by the large prime~$1{,}862{,}881$.
+
+\paragraph{Why full coverage occurs.}
+A discrete-logarithm analysis (base $g = 13$, a primitive root mod~$359$)
+explains $|\mathcal{R}_{359}| = 358$. With $359 - 1 = 2 \cdot 179$ and $179$
+prime, the index group is $\mathbb{Z}/358\mathbb{Z}$. The seven prime factors
+of $N_{359}$ split by Legendre symbol into quadratic residues $\{2, 3, 5, 23\}$
+(even index, order~$179$) and primitive roots $\{13, 43, 617\}$ (odd index,
+order~$358$). Coverage is forced in four steps:
+\begin{enumerate}
+  \item Since $A \equiv 7 \pmod 8$ and $p \equiv 1 \pmod 8$, $8 \mid (p+A)$, so
+    $v_2(N_{359}) = 3$: the factor~$2$ is unavoidable.
+  \item The residue factors $\{2,3,5,23\}$ generate an arc sumset
+    $E \subset \mathbb{Z}/179\mathbb{Z}$ with $|E| = 147$ and
+    $E \cup (E+1) = \mathbb{Z}/179\mathbb{Z}$: $E$ is \emph{$1$-spanning}.
+  \item The primitive root~$13$ (index~$1$) shifts the even layer onto the odd
+    layer, reaching all $179$ even and $147$ odd residues of
+    $\mathbb{Z}/358\mathbb{Z}$.
+  \item The primitive root~$43$ (index~$3$, $\gcd(3,179)=1$) fills the
+    remaining $32$ odd residues, completing coverage.
+\end{enumerate}
+The factor~$617$ is redundant: six of the seven factors already suffice. Full
+coverage comes not from primitive roots per se, but from factors whose index
+generates the correct quotient of $\mathbb{Z}/(A-1)\mathbb{Z}$.
+
+\paragraph{A second mechanism.}
+Below $10^{11}$, five primes require $A \geq 251$:
+\begin{center}
+\begin{tabular}{@{}rrl@{}}
+\toprule
+$p$ & $A$ & $(p+3)/4$ \\
+\midrule
+$3{,}807{,}728{,}761$  & $359$ & $7 \cdot 73 \cdot 1{,}862{,}881$ \\
+$31{,}048{,}497{,}481$ & $347$ & $33{,}457 \cdot 232{,}003$ \\
+$6{,}372{,}847{,}849$  & $311$ & $7 \cdot 43 \cdot 1{,}951 \cdot 2{,}713$ \\
+$26{,}147{,}464{,}729$ & $251$ & $37 \cdot 1{,}291 \cdot 136{,}849$ \\
+$94{,}604{,}730{,}049$ & $251$ & $7 \cdot 37 \cdot 367 \cdot 248{,}821$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The second-largest, $p = 6{,}372{,}847{,}849$ with $A = 311$, reaches full
+coverage differently. Here $N_{311} = 2^3 \cdot 3^2 \cdot 5 \cdot 7 \cdot
+632{,}227$, and the single large factor $632{,}227$ has multiplicative
+order~$10$ mod~$311$---not a primitive root---yet its index~$217$ satisfies
+$\gcd(217, 310) = 31$, so adjoining it lifts coverage from the even subgroup
+($155/310$) to all $310$ residues in one step. Where $A = 359$ needs two
+primitive roots in sequence, $A = 311$ is completed by a single non-primitive
+factor of the right index.
+
 
 % ============================================================================
 \section{Discussion}\label{sec:discussion}

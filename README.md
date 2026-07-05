@@ -47,7 +47,7 @@ The main paper (`erdos_straus_gateway.tex`) contains:
 
 - **Section 3**: The Gateway Decomposition theorem and the `d | N^2` lemma
 - **Section 4**: Algebraic existence proofs covering ~97.1% of all primes (at 10^6, rising with the bound)
-- **Section 5**: Computational verification for the remaining residual class (Case B QR7 primes)
+- **Section 5**: Computational verification for the remaining residual class (Case B QR7 primes), including an *Anatomy of the hardest prime* - a discrete-log proof of why `p = 3,807,728,761` forces `A = 359` (its N^2 divisors fill every unit mod 359)
 - **Section 6**: Discussion of the bounded-A phenomenon and the path to a full proof
 
 The residual class - `p = 1 (mod 24)`, a quadratic residue mod 7, with every prime factor of `(p+3)/4` congruent to `1 (mod 3)` - is related to but **not identical with** the classical Mordell subset `{1, 121, 169, 289, 361, 529} (mod 840)`; Remark 4.5 distinguishes them with explicit examples.
@@ -61,6 +61,12 @@ python verify.py              # all primes to 10^6  (~10 seconds)
 python verify.py 10000000     # to 10^7             (~2 minutes)
 python verify.py 100000000    # to 10^8             (~30 minutes)
 python verify.py 1000000000   # to 10^9             (~90 minutes, ~1 GB RAM)
+```
+
+Reproduce the hardest-prime analysis (Section 5.4):
+
+```bash
+python verify_hardest_prime.py   # checks every claim for p = 3,807,728,761
 ```
 
 Example output at 10^6:
