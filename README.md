@@ -1,5 +1,14 @@
 # Bounded Gateway Parameters for the Erdos-Straus Conjecture
 
+[![paper](https://img.shields.io/badge/paper-17pp%20PDF-blue)](erdos_straus_gateway.pdf)
+[![verified](https://img.shields.io/badge/verified-4.1B%20primes%20%E2%89%A4%2010%5E11-brightgreen)](#verification)
+[![max A](https://img.shields.io/badge/max%20A-%E2%89%A4%20359-success)](#bounded-a-phenomenon)
+[![figures & data](https://img.shields.io/badge/figures%20%26%20data-reproducible-blue)](#figures)
+![license](https://img.shields.io/badge/license-MIT-lightgrey)
+
+![scope](https://img.shields.io/badge/scope-verified%20p%20%E2%89%A4%2010%5E11-orange)
+![not a proof of](https://img.shields.io/badge/not%20a%20proof%20of-Erdos--Straus%20%28all%20n%29-critical)
+
 **Gateway Decompositions via Divisors of N^2**
 
 ![Results overview: prime classification, A-value distribution, and max A stabilisation](banner.png)
