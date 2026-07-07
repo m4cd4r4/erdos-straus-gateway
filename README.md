@@ -61,6 +61,10 @@ The main paper (`erdos_straus_gateway.tex`) contains:
 
 The residual class - `p = 1 (mod 24)`, a quadratic residue mod 7, with every prime factor of `(p+3)/4` congruent to `1 (mod 3)` - is related to but **not identical with** the classical Mordell subset `{1, 121, 169, 289, 361, 529} (mod 840)`; Remark 4.5 distinguishes them with explicit examples.
 
+### Companion Document
+
+- **`unconditional_bound.tex`** - An unconditional density bound `E(X) = O(X/(log X)^{3/2})` on the count of primes not covered by any known algebraic or gateway decomposition, via the sharpness of gateway `A = 7` and a half-dimensional Selberg sieve. Also proves `A = 7` is the unique sharp gateway among the original 28-candidate list and discusses the character-sum barrier to an unconditional finiteness result.
+
 ## Verification
 
 Run the self-contained verification script (Python 3.6+, standard library only):

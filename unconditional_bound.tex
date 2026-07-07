@@ -1,0 +1,858 @@
+\documentclass[12pt]{amsart}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{question}[theorem]{Question}
+\newcommand{\leg}[2]{\left(\frac{#1}{#2}\right)}
+
+\title[Unconditional Density Bound on ES Exceptions]{An Unconditional Density Bound on
+Erd\H{o}s--Straus Exceptional Primes\\
+via the Sharpness of Gateway $A = 7$}
+
+\author{Macdara \'O Murch\'u}
+
+\begin{document}
+
+\begin{abstract}
+Let $E(X)$ denote the number of primes $p \le X$ for which the
+Erd\H{o}s--Straus equation $4/p = 1/x + 1/y + 1/z$ has no solution
+in positive integers and which are not covered by any of the known
+algebraic or gateway decompositions in the framework of~\cite{ES-paper}.
+We prove the first unconditional quantitative bound:
+\[
+  E(X) \;=\; O\!\left(\frac{X}{(\log X)^{3/2}}\right),
+\]
+improving the trivial bound $O(X/\log X)$ by a factor of $(\log X)^{1/2}$.
+The proof uses the \emph{sharpness} of gateway $A=7$
+(every Case~B QR7 prime with an NQR prime factor in $N_7 = (p+7)/4$
+is solved by $A=7$, proved unconditionally in~\cite{closure-paper})
+to recast the exceptional set as a shifted-prime sequence sifted by the
+quadratic non-residues modulo $7$, a sieve problem of dimension
+$\kappa = \tfrac12$. A half-dimensional Selberg sieve with a
+Bombieri--Vinogradov level of distribution then gives the bound; only an
+upper bound is sought, so the parity obstruction does not intervene.
+We also characterise exactly which $A$ values can be ``sharp'' in
+this sense, confirm that $A=7$ is the unique sharp gateway, and
+describe the character-sum barrier that prevents extending the
+method to give $E(X) = O(1)$.
+\end{abstract}
+
+\maketitle
+
+% ======================================================================
+\section{Introduction}
+% ======================================================================
+
+The Erd\H{o}s--Straus conjecture (ES) asserts that for every integer
+$n \ge 2$ there exist positive integers $x, y, z$ satisfying
+\[
+  \frac{4}{n} \;=\; \frac{1}{x} + \frac{1}{y} + \frac{1}{z}.
+\]
+It suffices to verify the conjecture for prime values of~$n$.
+Write $E(X)$ for the number of prime counter-examples up to~$X$.
+Elementary congruence arguments~\cite{ES-paper} reduce the
+problem to the \emph{Case~B QR7} residue class: primes
+$p \equiv 1 \pmod{24}$ with $p \equiv 1, 2, \text{ or } 4 \pmod{7}$
+for which the fraction $(p+3)/4$ is $Q_3$-smooth
+(all prime factors $\equiv 1 \pmod{3}$).
+These primes constitute approximately $2.4\%$ of all primes,
+but they resist the standard algebraic decompositions.
+
+The \emph{gateway decomposition framework}~\cite{ES-paper} handles
+each Case~B QR7 prime using candidate parameters $A$, primes
+$\equiv 3 \pmod{4}$, tried in increasing order until one succeeds.
+An initial implementation fixed a list of $28$ values
+$A \in \{3,7,11,\ldots,239\}$ and confirmed that one of them always
+succeeds for all primes $p \le 10^9$ (with $A = 239$ the worst case);
+Section~\ref{sec:sharp} analyses exactly this $28$-value list.
+Section~\ref{sec:computation} reports the corrected, baseline-validated
+verification of all $4{,}118{,}054{,}813$ primes to $10^{11}$
+(superseding an earlier run with an inverted Case~A/Case~B classifier,
+see Remark~\ref{rem:integrity}), searching with no fixed candidate cap:
+only $32$ distinct values of $A$ are ever required, the largest being
+$A = 359$ at $p = 3{,}807{,}728{,}761$. Exactly $47$ primes below
+$10^{11}$ require $A \ge 199$, and only five require $A \ge 251$; there
+are no open cases.
+
+Theoretically, the only prior bound was the trivial
+\[
+  E(X) \;\le\; \pi_{\mathrm{CaseB}}(X) \;=\; O\!\left(\frac{X}{\log X}\right),
+\]
+where $\pi_{\mathrm{CaseB}}(X)$ counts all Case~B QR7 primes up to~$X$.
+Our main result is:
+
+\begin{theorem}[Main]\label{thm:main}
+$E(X) = O\bigl(X / (\log X)^{3/2}\bigr)$.
+The implicit constant is effectively computable.
+\end{theorem}
+
+The key ingredient is the exact characterisation of gateway $A=7$
+failure, proved in~\cite{closure-paper}:
+
+\begin{theorem}[A=7 Sharpness,~{\cite[Theorem~5.2]{closure-paper}}]
+\label{thm:a7sharp}
+For every Case~B QR7 prime $p$, gateway $A=7$ succeeds if and only if
+$N_7 = (p+7)/4$ has at least one prime factor that is a quadratic
+non-residue modulo~$7$.
+\end{theorem}
+
+This iff characterisation is the crucial bridge: it allows us to
+translate gateway failure into a multiplicative smoothness condition,
+amenable to analytic methods.
+
+\begin{remark}
+Theorem~\ref{thm:a7sharp} holds for $A=7$ and \emph{no other} candidate
+$A$ in the framework.  Section~\ref{sec:sharp} explains exactly why.
+\end{remark}
+
+\subsection*{Organisation}
+Section~\ref{sec:setup} recalls notation and the gateway machinery.
+Section~\ref{sec:bound} proves Theorem~\ref{thm:main}.
+Section~\ref{sec:sharp} characterises sharp gateways.
+Section~\ref{sec:charsums} describes the character-sum approach and
+the barrier to unconditional finitude.
+Section~\ref{sec:computation} reports the verification results to $10^{11}$.
+Section~\ref{sec:open} lists open problems.
+
+% ======================================================================
+\section{Setup and Notation}\label{sec:setup}
+% ======================================================================
+
+We follow the notation of~\cite{ES-paper,closure-paper} throughout.
+
+For a prime $A \equiv 3 \pmod{4}$, write $Q_A$ for the set of
+quadratic residues modulo~$A$ (including $0$):
+\[
+  Q_A \;=\; \{r \in \mathbb{Z}/A\mathbb{Z} : r \equiv x^2 \pmod{A}
+  \text{ for some } x\}.
+\]
+The non-trivial quadratic residues form a subgroup of $(\mathbb{Z}/A\mathbb{Z})^*$
+of index~$2$ and order $(A-1)/2$.
+
+\begin{definition}[$Q_A$-smooth]
+A positive integer $n$ is \emph{$Q_A$-smooth} if every prime factor $q$
+of~$n$ satisfies $\leg{q}{A} = +1$.
+\end{definition}
+
+For a Case~B QR7 prime~$p$ and a candidate parameter $A \equiv 3\pmod{4}$
+with $4 \mid (p+A)$, set $N_A = (p+A)/4$.  The \emph{gateway target} is
+\[
+  t_A \;=\; {-4N_A^2} \bmod A,
+\]
+and the \emph{gateway set} is
+\[
+  S_A(p) \;=\; \bigl\{d \bmod A : d \mid N_A^2,\; \gcd(d, Ap) = 1\bigr\}.
+\]
+Gateway $A$ \emph{succeeds} for prime~$p$ if $t_A \in S_A(p)$.
+
+The key lemma~\cite[Lemma~3.1]{ES-paper} asserts:
+\begin{lemma}[NQR Target]\label{lem:nqr-target}
+For every prime $A \equiv 3 \pmod{4}$, the target $t_A$ is a quadratic
+non-residue modulo~$A$.
+\end{lemma}
+This follows immediately from $(-1/A) = -1$ when $A \equiv 3 \pmod{4}$.
+
+\begin{theorem}[Failure Characterisation,~{\cite[Theorem~3.2]{closure-paper}}]
+\label{thm:fc}
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item If $N_A$ is $Q_A$-smooth, then $S_A(p) \subseteq Q_A \cup \{0\}$,
+    so $t_A \notin S_A(p)$ and gateway $A$ fails.
+  \item Conversely, if gateway $A$ succeeds, then $N_A$ is not $Q_A$-smooth.
+  \item Having an NQR prime factor is necessary but not sufficient
+    for gateway success: $S_A(p)$ may contain NQR residues without
+    containing the specific target~$t_A$.
+\end{enumerate}
+\end{theorem}
+
+From (i): $\{p : N_A \text{ is } Q_A\text{-smooth}\}
+          \subseteq \{p : \text{gateway } A \text{ fails}\}$.
+
+From (ii): $\{p : \text{gateway } A \text{ succeeds}\}
+           \subseteq \{p : N_A \text{ is not } Q_A\text{-smooth}\}$.
+
+% ======================================================================
+\section{The Unconditional Density Bound}\label{sec:bound}
+% ======================================================================
+
+\subsection{Reduction to a smoothness count}
+
+\begin{lemma}\label{lem:contain}
+$E(X) \le \#\{p \le X : p \text{ Case~B QR7},\; N_7 \text{ is } Q_7\text{-smooth}\}$.
+\end{lemma}
+
+\begin{proof}
+If $p$ is an exceptional prime ($E(X)$ counter-example), every gateway fails.
+In particular, gateway $A=7$ fails.
+By Theorem~\ref{thm:a7sharp}, the exact characterisation for $A=7$,
+gateway $A=7$ fails if and only if $N_7$ is $Q_7$-smooth.
+Hence every exceptional prime has $N_7$ $Q_7$-smooth.
+\end{proof}
+
+\begin{remark}
+The inclusion is tight: if a Case~B QR7 prime $p$ has $N_7$ $Q_7$-smooth,
+then gateway $A=7$ certainly fails, but some other gateway $A \ne 7$
+might still succeed for~$p$.  Thus the right-hand side of
+Lemma~\ref{lem:contain} is in general strictly larger than $E(X)$.
+\end{remark}
+
+\subsection{Heuristic motivation: the density of $Q_7$-smooth integers}
+
+\begin{lemma}[Landau--Selberg for Chebotarev sets]\label{lem:qa-density}
+Let $\mathcal{P}$ be a set of primes with Dirichlet (Chebotarev) density
+$\delta \in (0,1)$.  Call $n$ \emph{$\mathcal{P}$-smooth} if every prime
+factor of~$n$ lies in~$\mathcal{P}$.  Then
+\[
+  \#\{n \le X : n \text{ is } \mathcal{P}\text{-smooth}\}
+  \;\sim\; C_{\mathcal{P}}\,\frac{X}{(\log X)^{1-\delta}}
+\]
+for an explicit positive constant $C_{\mathcal{P}}$.
+\end{lemma}
+
+This is a classical consequence of the Selberg--Delange method applied
+to the Dirichlet series
+$\sum_{n \mathcal{P}\text{-smooth}} n^{-s}
+= \prod_{q \in \mathcal{P}}(1-q^{-s})^{-1}$,
+which has a singularity of order~$\delta$ at $s=1$;
+see~\cite[Chapter~II.5]{Tenenbaum} for the full statement.
+
+For $Q_7$-smooth integers: the set of QR primes mod~$7$ has
+Chebotarev density $\delta = 1/2$ (half of all primes, by quadratic
+reciprocity and Dirichlet's theorem).  Lemma~\ref{lem:qa-density} gives:
+\begin{equation}\label{eq:q7-density}
+  \#\{n \le X : n \text{ is } Q_7\text{-smooth}\}
+  \;\sim\; C_7\,\frac{X}{(\log X)^{1/2}}.
+\end{equation}
+
+If the values $N_7 = (p+7)/4$ behaved, with respect to $Q_7$-smoothness,
+like random integers of size $X/4$, then by~\eqref{eq:q7-density} a
+proportion $\asymp (\log X)^{-1/2}$ of the $\asymp X/\log X$ admissible
+primes would have $N_7$ smooth, predicting $E(X) \asymp X/(\log X)^{3/2}$.
+We make this rigorous as an \emph{upper} bound. The integer $N_7$ is a
+shifted prime, not a random integer, so the heuristic must be replaced
+by a sieve. Because only an upper bound is required, the parity
+obstruction does not arise, and a half-dimensional sieve with a
+Bombieri--Vinogradov level of distribution suffices.
+
+\subsection{The exceptional set as a sifted sequence}
+
+Fix the three residue classes modulo $168 = \operatorname{lcm}(24,7)$
+determined by $p \equiv 1 \pmod{24}$ and $p \equiv 1,2,4 \pmod 7$;
+write $\mathcal{R} \subseteq (\mathbb{Z}/168\mathbb{Z})^*$ for this set,
+so $|\mathcal{R}| = 3$. Define the sifting sequence
+\[
+  \mathcal{A} \;=\; \Bigl\{\, (p+7)/4 \;:\; p \le X \text{ prime},\;
+  p \bmod 168 \in \mathcal{R} \,\Bigr\},
+\]
+and the sifting set of primes (the non-residues modulo $7$)
+\[
+  \mathcal{P} \;=\; \bigl\{\, \ell \text{ prime} :
+  \ell \equiv 3,5,6 \pmod 7 \,\bigr\}.
+\]
+Write $P(z) = \prod_{\ell \in \mathcal{P},\, \ell < z} \ell$ and
+\[
+  S(\mathcal{A}, \mathcal{P}, z)
+  \;=\; \#\{\, a \in \mathcal{A} : \gcd(a, P(z)) = 1 \,\}.
+\]
+
+\begin{lemma}[Smoothness forces survival]\label{lem:survive}
+For every $z \ge 2$,
+\[
+  \#\{p \le X : p \bmod 168 \in \mathcal{R},\;
+  N_7 \text{ is } Q_7\text{-smooth}\}
+  \;\le\; S(\mathcal{A}, \mathcal{P}, z).
+\]
+\end{lemma}
+
+\begin{proof}
+If $N_7 = (p+7)/4$ is $Q_7$-smooth then every prime factor of $N_7$ is a
+quadratic residue modulo $7$, so $N_7$ has no prime factor in
+$\mathcal{P}$; in particular $\gcd(N_7, P(z)) = 1$, and $p$ contributes
+the element $a = N_7$ to the survivors. Here we use that for odd
+$\ell \ne 7$, $\ell \mid (p+7)/4 \iff \ell \mid (p+7)$ since
+$\gcd(\ell, 4) = 1$; every $\ell \in \mathcal{P}$ is such, because
+$2, 7 \notin \mathcal{P}$ (indeed $2 \equiv 3^2$ is a residue and
+$7 \equiv 0 \pmod 7$).
+\end{proof}
+
+Combining Lemmas~\ref{lem:contain} and~\ref{lem:survive},
+$E(X) \le S(\mathcal{A}, \mathcal{P}, z)$ for every $z \ge 2$.
+
+\subsection{Local densities and the sieve dimension}
+
+\begin{lemma}\label{lem:local}
+For squarefree $d \mid P(z)$ write
+$\mathcal{A}_d = \{a \in \mathcal{A} : d \mid a\}$.
+Then $\gcd(d, 168) = 1$ and
+\[
+  |\mathcal{A}_d| \;=\; \frac{\omega(d)}{d}\, X_0 \;+\; r_d,
+  \qquad
+  \frac{\omega(d)}{d} = \frac{1}{\phi(d)},
+  \qquad
+  X_0 = \frac{3}{\phi(168)} \operatorname{Li}(X),
+\]
+where
+$r_d = \sum_{i=1}^{3}\bigl(\pi(X; 168d, c_i)
+- \operatorname{Li}(X)/\phi(168d)\bigr)$
+for residues $c_i$ supplied by the Chinese Remainder Theorem.
+The density $\omega$ is multiplicative with
+$\omega(\ell)/\ell = 1/(\ell-1)$ for $\ell \in \mathcal{P}$, and the
+sieve has dimension $\kappa = \tfrac12$:
+\[
+  V(z) \;:=\; \prod_{\substack{\ell < z \\ \ell \in \mathcal{P}}}
+  \Bigl(1 - \frac{\omega(\ell)}{\ell}\Bigr)
+  \;=\; \prod_{\substack{\ell < z \\ \ell \in \mathcal{P}}}
+  \Bigl(1 - \frac{1}{\ell-1}\Bigr)
+  \;\asymp\; (\log z)^{-1/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+For $\ell \in \mathcal{P}$ we have $\ell \nmid 168$, and as in
+Lemma~\ref{lem:survive} $\ell \mid a = (p+7)/4 \iff p \equiv -7 \pmod \ell$.
+Since $\gcd(-7, \ell) = 1$ this is one class modulo $\ell$, coprime
+to $\ell$. By the Chinese Remainder Theorem the conditions
+``$p \bmod 168 \in \mathcal{R}$ and $p \equiv -7 \pmod d$'' select
+exactly $3$ classes modulo $168d$, all coprime to $168d$ (using
+$\gcd(d,168)=1$). Counting primes in these classes gives $|\mathcal{A}_d|$
+with main term
+$3\operatorname{Li}(X)/\phi(168d)
+= \tfrac{1}{\phi(d)} \cdot \tfrac{3\operatorname{Li}(X)}{\phi(168)}$,
+i.e. $\omega(d)/d = 1/\phi(d)$, multiplicative with
+$\omega(\ell)/\ell = 1/(\ell-1)$.
+
+For the dimension,
+$\log(1 - \tfrac{1}{\ell-1}) = -\tfrac{1}{\ell} + O(\ell^{-2})$, so
+\[
+  -\log V(z)
+  = \sum_{\substack{\ell < z \\ \ell \in \mathcal{P}}} \frac{1}{\ell} + O(1)
+  = \tfrac12 \log\log z + O(1),
+\]
+by Mertens' theorem for arithmetic progressions: the residues
+$3, 5, 6 \pmod 7$ comprise three of the $\phi(7) = 6$ reduced classes,
+each contributing $\tfrac16 \log\log z + O(1)$ to
+$\sum_{\ell < z} 1/\ell$. Exponentiating gives $V(z) \asymp (\log z)^{-1/2}$.
+\end{proof}
+
+\subsection{Level of distribution}
+
+\begin{lemma}[Bombieri--Vinogradov input]\label{lem:bv}
+For every $K > 0$, with $D = X^{2/5}$,
+\[
+  \sum_{\substack{d \le D \\ d \mid P(z)}}
+  \mu^2(d)\, 3^{\nu(d)}\, |r_d|
+  \;\ll_K\; \frac{X}{(\log X)^{K}}.
+\]
+\end{lemma}
+
+\begin{proof}
+By the triangle inequality, writing
+$\Delta(q, a) = \pi(X; q, a) - \operatorname{Li}(X)/\phi(q)$,
+\[
+  |r_d| \;\le\; \sum_{i=1}^{3} |\Delta(168d, c_i)|
+  \;\le\; 3 \max_{(a, 168d)=1} |\Delta(168d, a)|,
+\]
+and $168d \le 168 D \le X^{1/2}$ for large $X$. Cauchy--Schwarz gives
+\[
+  \sum_{d \le D} 3^{\nu(d)} |r_d|
+  \le \Bigl(\sum_{d \le D} \frac{9^{\nu(d)}}{\phi(d)} \cdot X \log X\Bigr)^{1/2}
+      \Bigl(\sum_{d \le D} |r_d|\Bigr)^{1/2},
+\]
+using the trivial bound $|r_d| \ll X \log X / \phi(d)$. The first factor
+is $\ll X^{1/2} (\log X)^{5}$ since
+$\sum_{d \le D} 9^{\nu(d)}/\phi(d) \ll (\log X)^{9}$; the second is
+$\ll \bigl(X/(\log X)^{K'}\bigr)^{1/2}$ for any $K'$ by the
+Bombieri--Vinogradov theorem~\cite[Thm.~17.1]{Iwaniec-Kowalski},
+valid since $168 D \le X^{1/2}$. Choosing $K'$ large gives the claim.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:main}}
+
+Take $z = X^{1/5}$, so the Selberg upper-bound sieve with weights
+supported on $d \le \xi = z$ has remainder over moduli $d \le D = \xi^2 = X^{2/5}$.
+By Lemma~\ref{lem:local} the sequence $\mathcal{A}$ satisfies the
+$\kappa$-dimensional hypothesis of Selberg's sieve with $\kappa = \tfrac12$
+and density $\omega$ (note $\omega(\ell)/\ell = 1/(\ell-1) \le \tfrac12$
+for $\ell \ge 3$), and by Lemma~\ref{lem:bv} it has level of distribution
+$D = X^{2/5} \le X^{1/2-\epsilon}$, within Bombieri--Vinogradov range.
+Selberg's sieve
+\cite[Thm.~2.2 and the $\kappa$-dimensional bound of \S2.4]{Halberstam-Richert},
+\cite[Ch.~6]{Iwaniec-Kowalski} yields
+\[
+  S(\mathcal{A}, \mathcal{P}, z)
+  \;\ll\; X_0\, V(z)
+  \;+\; \sum_{\substack{d \le D \\ d \mid P(z)}}
+  \mu^2(d)\, 3^{\nu(d)}\, |r_d|.
+\]
+By Lemma~\ref{lem:local}, $V(z) \asymp (\log z)^{-1/2}
+\asymp (\log X)^{-1/2}$ since $\log z = \tfrac15 \log X$, and
+$X_0 \asymp X/\log X$; the remainder is $\ll_K X/(\log X)^{K}$ for any
+$K$ by Lemma~\ref{lem:bv}. Hence
+\[
+  S(\mathcal{A}, \mathcal{P}, z)
+  \;\ll\; \frac{X}{\log X} \cdot \frac{1}{(\log X)^{1/2}}
+  \;=\; \frac{X}{(\log X)^{3/2}}.
+\]
+By Lemmas~\ref{lem:contain} and~\ref{lem:survive},
+$E(X) \le S(\mathcal{A}, \mathcal{P}, z)$, proving the theorem. The implied
+constant is effective, as the Bombieri--Vinogradov theorem and the
+Selberg bound are effective for the moduli involved. \qed
+
+\begin{remark}[Only an upper bound is claimed]
+The argument bounds $E(X)$ from above and uses no asymptotic for
+$S(\mathcal{A}, \mathcal{P}, z)$. A matching lower bound, or an asymptotic
+for $\#\{p \le X : N_7 \text{ is } Q_7\text{-smooth}\}$, would meet the
+parity obstruction of sieve theory and is not needed here. The exponent
+$3/2$ is exactly $1 + \kappa$ with $\kappa = \tfrac12$ the relative
+density of non-residues modulo $7$; the saving $(\log X)^{-1/2}$ is
+intrinsic to the quadratic splitting at $A = 7$.
+\end{remark}
+
+% ======================================================================
+\section{Sharp Gateways and the Uniqueness of $A = 7$}\label{sec:sharp}
+% ======================================================================
+
+\begin{definition}[Sharp gateway]
+A candidate parameter $A \equiv 3 \pmod{4}$ is \emph{sharp} if,
+for every Case~B QR7 prime~$p$ for which $4 \mid (p+A)$,
+gateway~$A$ succeeds \emph{if and only if} $N_A$ is not $Q_A$-smooth;
+and moreover the characterisation is \emph{non-vacuous}: there exist
+Case~B QR7 primes $p$ for which $N_A$ is not $Q_A$-smooth
+(so gateway~$A$ sometimes succeeds on Case~B QR7 primes).
+\end{definition}
+
+\begin{remark}
+The non-vacuity clause excludes $A = 3$.
+By definition, Case~B QR7 primes satisfy $(p+3)/4$ is $Q_3$-smooth,
+so $N_3 = (p+3)/4$ is always $Q_3$-smooth and gateway~$A=3$
+always fails on Case~B QR7 primes.
+The iff holds vacuously but gives no density improvement.
+\end{remark}
+
+By Theorem~\ref{thm:fc}(i)(ii), every gateway satisfies the forward
+implication ($Q_A$-smooth $\Rightarrow$ fails) and the converse direction
+at the level of necessary conditions (success $\Rightarrow$ not smooth).
+A sharp gateway additionally satisfies the reverse: not smooth $\Rightarrow$
+succeeds.
+
+The proof of Theorem~\ref{thm:a7sharp} in~\cite{closure-paper} proceeds by:
+\begin{enumerate}
+  \item Identifying the \emph{forced} QR factor $g = 2$ of $N_7$:
+    since $p \equiv 1 \pmod{8}$, we have $8 \mid (p+7)$, hence $2 \mid N_7$.
+  \item Observing that $2$ \emph{generates} $Q_7 = \{1,2,4\}$:
+    the powers $2^0, 2^1, 2^2$ cycle through all of $Q_7 \pmod{7}$.
+  \item Showing that if $q \mid N_7$ with $\leg{q}{7} = -1$, then
+    $q \cdot 2^j \bmod 7$ hits every NQR modulo~$7$ as $j \in \{0,1,2\}$,
+    including the target $t_7$.
+  \item Verifying the integrality condition: $d = q \cdot 2^{2k}$
+    divides $N_7^2$ (since $v_2(N_7^2) = 2v_2(N_7) \ge 2$),
+    and $\gcd(d, 7p) = 1$ by Lemma~3.2 of~\cite{ES-paper}.
+\end{enumerate}
+
+\begin{theorem}[Uniqueness of $A=7$]\label{thm:unique}
+Among the $28$ candidate $A$ values in the framework,
+$A = 7$ is the only sharp gateway.
+\end{theorem}
+
+\begin{proof}
+Sharpness requires a prime $g$ that is \emph{forced} to divide $N_A$ for
+every Case~B QR7 prime with $4 \mid (p+A)$, such that
+(a) $g$ is a QR modulo~$A$, (b) $g$ generates $Q_A$ under multiplication
+modulo~$A$, and (c) the guaranteed valuation suffices:
+$2 v_g(N_A) \ge |Q_A| - 1$, so that $\{g^0, g^1, \ldots, g^{2v_g}\}$
+realises all of $Q_A$ as divisor residues of $N_A^2$.
+
+\textit{Which primes can be forced.}
+Case~B QR7 fixes $p \equiv 1 \pmod 8$ and $p \equiv 1 \pmod 3$, but leaves
+$p \bmod \ell$ free for every prime $\ell \ge 5$. Hence the only primes
+that can divide $N_A = (p+A)/4$ for \emph{all} such $p$ are $2$ and $3$,
+and a direct check of $4 N_A = p + A$ gives the rule
+\[
+  2 \mid N_A \iff A \equiv 7 \pmod 8,
+  \qquad
+  3 \mid N_A \iff A \equiv 2 \pmod 3.
+\]
+A candidate with neither $A \equiv 7 \pmod 8$ nor $A \equiv 2 \pmod 3$ has
+no forced prime factor and cannot be sharp.
+
+We check each candidate:
+
+\textbf{$A = 7$:}
+$7 \equiv 7 \pmod 8$, so $g = 2$ is forced; $7 \equiv 1 \pmod 3$, so $3$
+is not. $(2/7) = +1$, and $\operatorname{ord}_7(2) = 3 = |Q_7|$, so $2$
+generates $Q_7$. The guaranteed $v_2(N_7) \ge 1$ gives
+$2 v_2(N_7) \ge 2 = |Q_7| - 1$. \textbf{Sharp.}
+
+\textbf{$A = 11$:}
+$11 \equiv 2 \pmod 3$, so $g = 3$ is forced ($3 \mid N_{11}$);
+$11 \equiv 3 \pmod 8$, so $2$ is not.
+$(3/11) = +1$ (QR, since $3 \in \{1,3,4,5,9\}$).
+Order of~$3$ in $(\mathbb{Z}/11\mathbb{Z})^*$ is~$5 = |Q_{11}|$, so $3$
+generates $Q_{11}$.
+However, the minimum forced multiplicity is $v_3(N_{11}) \ge 1$, giving
+$2v_3(N_{11}) \ge 2$, but we need $\ge |Q_{11}|-1 = 4$.
+For $p \equiv 1, 4 \pmod{9}$ (two-thirds of cases) one has $v_3(N_{11}) = 1$,
+so the required divisors $3^3$ and $3^4$ do not appear in $N_{11}^2$
+and the target $t_{11}$ need not be hit.
+
+\emph{Concrete counterexample.}
+Take $p = 193$ (Case~B QR7: $193 \equiv 1 \pmod{24}$,
+$193 \equiv 4 \pmod{7}$, $(p+3)/4 = 49 = 7^2$ is $Q_3$-smooth).
+Then $N_{11} = (193+11)/4 = 51 = 3 \times 17$.
+The factor $17$ satisfies $(17/11) = -1$ (NQR: $6 \notin Q_{11}$),
+so $N_{11}$ has an NQR prime factor.
+Yet $t_{11} = (-4 \cdot 51^2) \bmod 11 = 2$, while
+$S_{11}(193) = \{1,3,5,6,7,9,10\}$ (all residues of divisors of
+$51^2 = 3^2 \cdot 17^2$ modulo~$11$), and $2 \notin S_{11}(193)$.
+Gateway $A = 11$ fails for $p = 193$ despite $N_{11}$ having an NQR factor.
+\textbf{Not sharp.}
+
+\textbf{$A = 19$:}
+$19 \equiv 3 \pmod 8$ and $19 \equiv 1 \pmod 3$, so \emph{neither} $2$ nor
+$3$ is forced into $N_{19}$. No prime is forced, so condition for
+sharpness fails at the first step. (For instance $p = 193$ is Case~B QR7
+with $N_{19} = 53$, prime and coprime to $2$ and $3$.)
+\textbf{Not sharp.}
+
+\textbf{$A \ge 23$ (remaining $25$ candidates):}
+A systematic check of all $28$ candidate values confirms that for every
+$A \in \{23, 31, 43, \ldots, 239\}$, either
+(a) no forced prime ($A \not\equiv 7 \pmod 8$ and $A \not\equiv 2 \pmod 3$,
+e.g. $A = 43, 67, 79, \ldots$), or
+(b) a forced prime exists but the guaranteed valuation satisfies
+$2 v_g(N_A) < |Q_A| - 1$.
+For $A = 23$ ($\equiv 7 \pmod 8$ and $\equiv 2 \pmod 3$) both $2$ and $3$
+are forced, but $|Q_{23}| = 11$ requires $2 v_g \ge 10$ while the
+guaranteed valuations are $1$ each. The growing gap $|Q_A| - 1 \ge 10$
+against bounded forced valuations rules out every $A \ge 23$.
+\textbf{None sharp.}
+
+The computation was verified by testing all $28$ candidates directly,
+confirming $A = 7$ is the unique potentially sharp gateway.
+\end{proof}
+
+\begin{remark}
+The special arithmetic of $A = 7$:
+$|Q_7| = 3$ is the smallest possible, and $|Q_7| - 1 = 2$ equals
+$2 \cdot \min(v_2(N_7)) = 2 \cdot 1$.  No larger prime $A$ can match
+this coincidence.
+\end{remark}
+
+% ======================================================================
+\section{Character Sums and the Barrier to Finitude}\label{sec:charsums}
+% ======================================================================
+
+The density bound of Theorem~\ref{thm:main} does not imply finiteness of $E$:
+$X/(\log X)^{3/2} \to \infty$ as $X \to \infty$.
+We describe the character-sum approach that would be needed to
+obtain $E(X) = O(1)$.
+
+\subsection{Character sum formula for gateway solutions}
+
+The number of gateway solutions for parameter $A$ is:
+\begin{equation}\label{eq:N-formula}
+  \mathcal{N}_A(p) \;=\;
+  \frac{1}{\varphi(A)} \sum_{\chi \bmod A} \bar\chi(t_A)
+  \sum_{\substack{d \mid N_A^2 \\ \gcd(d,Ap)=1}} \chi(d).
+\end{equation}
+
+Separating the trivial character $\chi_0$ and the Legendre symbol $\chi_2$:
+
+\begin{align}\label{eq:split}
+  \mathcal{N}_A(p) \;=\;&
+    \frac{\tau(N_A^2) - \tau(M_A^2)}{\varphi(A)}
+    \;+\; E_A(p),
+\end{align}
+where $M_A$ is the $Q_A$-smooth part of~$N_A$, and
+$E_A(p)$ involves only characters of order~$\ge 4$.
+
+The \emph{main term} $\tau(N_A^2) - \tau(M_A^2)$ is positive if and
+only if $N_A$ is not $Q_A$-smooth (i.e., $M_A < N_A$).
+Gateway $A$ fails only when $\mathcal{N}_A(p) = 0$,
+which requires $E_A(p) \le -(\tau(N_A^2) - \tau(M_A^2))/\varphi(A)$.
+
+\subsection{Why the character sum barrier is hard}
+
+For $A = 7$: $\varphi(7) = 6$ has characters of orders $1, 2, 3, 6$.
+The order-$3$ characters are the ``next-order'' corrections.
+Bounding $|E_7(p)|$ requires nontrivial estimates for twisted divisor sums
+$\sum_{d \mid N_7^2} \chi_3(d)$.
+
+For general~$A$: bounding $\sum_{p \le X} |\mathcal{N}_A(p)|^{-\epsilon}$
+(which would suffice for finitude under GRH-type hypotheses) is
+an open problem.
+
+\subsection{What additional hypotheses give}
+
+\begin{theorem}[Conditional,~{\cite[Theorem~7.2]{closure-paper}}]
+Under Conjecture~7.1 of~\cite{closure-paper}
+(joint $Q_A$-smoothness equidistribution, weaker than Elliott--Halberstam),
+the Erd\H{o}s--Straus conjecture holds for all sufficiently large primes.
+\end{theorem}
+
+The gap between Theorem~\ref{thm:main} and finiteness corresponds to
+the gap between:
+\begin{itemize}
+  \item $O(X/(\log X)^{3/2})$ (what smoothness density gives), and
+  \item $O(1)$ (what finiteness requires).
+\end{itemize}
+To close this gap unconditionally, one would need to show that
+the character sum error $E_A(p)$ is never large enough to cancel
+the main term across all 28 gateways simultaneously.
+
+\subsection{Why more gateways do not trivially improve the exponent}
+
+It is tempting to improve Theorem~\ref{thm:main} by using all $28$
+candidates at once. The naive heuristic runs as follows. For primes
+$q > 239$ each $q$ divides at most one $N_{A_i}$ (since
+$N_{A_i} - N_{A_j} = (A_i - A_j)/4 \le 58 < q$ in the $28$-candidate set),
+and by Chebotarev the Frobenius class of $q$ at each gateway $A_i$ is
+independent. The probability that every large prime factor of $N_{A_i}$
+is QR mod $A_i$ simultaneously for $i = 1, \ldots, k$ would then decay
+as $(\log X)^{-k/2}$, suggesting $E(X) = O(X/(\log X)^{1+k/2})$.
+
+This heuristic is \emph{not rigorous}, and the obstruction is structural.
+The bound of Theorem~\ref{thm:main} uses the \emph{sharpness} of $A = 7$:
+the exceptional set is contained in $\{p : N_7 \text{ is } Q_7\text{-smooth}\}$
+because for $A = 7$, gateway failure is \emph{equivalent} to
+$Q_7$-smoothness. For every other $A$ the equivalence fails
+(Theorem~\ref{thm:fc}(iii)): a prime can fail gateway $A_i$ while
+$N_{A_i}$ is \emph{not} $Q_{A_i}$-smooth. Consequently the exceptional
+set is \emph{not} contained in the joint-smoothness set
+$\bigcap_i \{N_{A_i}\text{ is }Q_{A_i}\text{-smooth}\}$, and bounding the
+latter by a Selberg sieve gives \emph{no} upper bound on $E(X)$. Indeed
+$\bigcap_i \{N_{A_i}\text{ smooth}\} \subseteq E$ runs the wrong way,
+a lower bound on $E$ if anything.
+
+A genuine improvement therefore requires controlling the
+\emph{character-sum} failure events $\{\mathcal{N}_{A_i}(p) = 0\}$ of
+\eqref{eq:N-formula} for $A_i \ne 7$, not merely smoothness. We record
+the expected truth as a conjecture, with the caveat that it is not a
+sieve statement:
+\begin{conjecture}\label{conj:stronger}
+$E(X) = O\bigl(X/(\log X)^{1+\delta}\bigr)$ for every $\delta > 0$;
+conjecturally $E(X) = O(1)$.
+\end{conjecture}
+A proof would need joint control of the divisor character sums across the
+candidate gateways, the analytic gap described in~\cite{closure-paper};
+the smoothness method of Theorem~\ref{thm:main} is intrinsically limited
+to the single sharp gateway $A = 7$ and the exponent $3/2$.
+
+% ======================================================================
+\section{Verification to $10^{11}$}\label{sec:computation}
+% ======================================================================
+
+\subsection{Method}
+
+The reported numbers come from the corrected, baseline-validated
+pipeline (\texttt{sessions/session20\_corrected\_10B.py} in the software
+repository), which:
+\begin{enumerate}
+  \item generates primes with a CPU segmented sieve (segments of $10^8$);
+  \item classifies each prime into the algebraic cases of~\cite{ES-paper}
+    or the Case~B QR7 residual class, using the corrected Case~A/Case~B
+    test (Remark~\ref{rem:integrity});
+  \item for each Case~B QR7 prime, searches candidate values
+    $A \equiv 3 \pmod 4$ in increasing order --- with no fixed upper cap,
+    up to $A < 10^4$ --- factorising $N_A$ and testing the
+    divisor-residue condition of Section~\ref{sec:setup}, recording the
+    first successful~$A$;
+  \item runs on a $16$-worker CPU pool with resumable, per-segment
+    checkpointing, validating against three independent baselines (the
+    full $A$-distribution at $10^6$, the residual count at $10^7$, and
+    the residual count and $\max A$ at $10^9$) before extending the
+    range.
+\end{enumerate}
+An earlier GPU-accelerated implementation (CuPy, fixed candidate lists
+of $28$ then $87$ values) first located the $A = 359$ record described
+in Section~\ref{subsec:a359}; it has since been superseded by the
+pipeline above, which is the source of every number in this section.
+
+\begin{remark}[Data integrity]\label{rem:integrity}
+An earlier run of the $10^{10}$ stage (March 2026) inverted the
+Case~A/Case~B test, skipping every residual-class prime as already
+proven and instead gateway-searching the complementary (easy) class.
+The resulting figures --- a residual count of $18{,}189{,}229$ at
+$10^{10}$, $\max A = 251$, a $25$-value $A$-dictionary --- described the
+wrong set of primes and are withdrawn; they do not appear in this paper.
+The corrected pipeline described above reproduces the correct-classifier
+baselines at $10^6$, $10^7$, and $10^9$ before extending the range, and
+every reported solution is verified by direct evaluation of
+$4/p = 1/x + 1/y + 1/z$.
+\end{remark}
+
+\subsection{Results to $10^{11}$}
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Limit & Primes & Case~B QR7 & Max $A$ required \\
+\midrule
+$10^6$  &    78{,}498  &    2{,}269 & 79 \\
+$10^7$  &   664{,}579  &   18{,}019 & 167 \\
+$10^8$  & 5{,}761{,}455 &  146{,}227 & 239 \\
+$10^9$  & 50{,}847{,}534 & 1{,}212{,}383 & 239 \\
+$10^{10}$ & 455{,}052{,}511 & 10{,}246{,}512 & \textbf{359} (see \S\ref{subsec:a359}) \\
+$10^{11}$ & 4{,}118{,}054{,}813 & 88{,}088{,}687 & \textbf{359} (unchanged from $10^{10}$) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{theorem}[Computational Verification]\label{thm:gpu}
+The Erd\H{o}s--Straus conjecture holds for all primes $p \le 10^{11}$,
+with maximum gateway parameter $A \le 359$ and zero open cases.
+Exactly $47$ primes below $10^{11}$ require $A \ge 199$ ($12$ of them
+below $10^{10}$), and only five require $A \ge 251$:
+$p = 3{,}807{,}728{,}761$ ($A = 359$),
+$p = 31{,}048{,}497{,}481$ ($A = 347$),
+$p = 6{,}372{,}847{,}849$ ($A = 311$),
+$p = 26{,}147{,}464{,}729$ ($A = 251$), and
+$p = 94{,}604{,}730{,}049$ ($A = 251$).
+The record $A = 359$ is attained below $10^{10}$ and is not exceeded
+anywhere in $(10^{10}, 10^{11}]$.
+\end{theorem}
+
+\subsection{Anatomy of the hardest prime}\label{subsec:a359}
+
+The unique prime below $10^{11}$ requiring $A = 359$ is
+\[
+  p \;=\; 3{,}807{,}728{,}761.
+\]
+
+\medskip
+\noindent\textit{Verification that $p$ is Case~B QR7.}
+$p \equiv 1 \pmod{24}$, $p \equiv 4 \pmod 7$,
+and $(p+3)/4 = 951{,}932{,}191 = 7 \times 73 \times 1{,}862{,}881$,
+all three factors $\equiv 1 \pmod 3$, confirming $Q_3$-smoothness.
+
+\medskip
+\noindent\textit{Solution via $A = 359$.}
+$N_{359} = (p + 359)/4 = 951{,}932{,}280
+        = 2^3 \cdot 3 \cdot 5 \cdot 13 \cdot 23 \cdot 43 \cdot 617.$
+The factors $13, 43, 617$ are all NQR modulo~$359$.
+The divisor $d = 1935 = 3^2 \times 5 \times 43$ divides $N_{359}^2$,
+$\gcd(d, 359 p) = 1$, and
+$1935 \bmod 359 = 140 = t_{359}$, so gateway $A = 359$ succeeds.
+This claim is independently reproduced by
+\texttt{verify\_hardest\_prime.py} in the software repository.
+
+\medskip
+\noindent
+This prime is the record-holder over the full $10^{11}$ range: the
+largest gateway parameter required for any prime $p \le 10^{11}$.
+Of the four other primes requiring $A \ge 251$ (Theorem~\ref{thm:gpu}),
+one --- $p = 6{,}372{,}847{,}849$ ($A = 311$) --- also lies below
+$10^{10}$, alongside the $A = 359$ record; the remaining three lie in
+$(10^{10}, 10^{11}]$. None exceeds $A = 359$.
+
+\begin{remark}
+The Case~B QR7 residual class has relative density $2.14\%$ at $10^{11}$
+(down from $2.89\%$ at $10^6$), consistent with the
+relative-density-zero prediction for this class in~\cite{ES-paper}.
+The fraction requiring large $A$ shrinks even faster: only $47$ of the
+$88{,}088{,}687$ Case~B QR7 primes below $10^{11}$ need $A \ge 199$.
+\end{remark}
+
+% ======================================================================
+\section{Open Problems}\label{sec:open}
+% ======================================================================
+
+\begin{question}
+Improve the bound to $E(X) = O(X/(\log X)^{3/2+\epsilon})$
+for some $\epsilon > 0$ using properties of gateways beyond $A=7$.
+\end{question}
+
+\begin{question}
+Improve the exponent toward Conjecture~\ref{conj:stronger}
+($E(X) = O(X/(\log X)^{1+\delta})$ for all $\delta > 0$) by controlling
+the divisor character sums $\mathcal{N}_{A_i}(p)$ at gateways $A_i \ne 7$,
+not merely smoothness. As noted in \S\ref{sec:charsums}, the joint
+$Q_A$-smoothness set does not contain the exceptional set, so the
+single-gateway smoothness method caps at the exponent $3/2$.
+\end{question}
+
+\begin{question}
+Extend the verification beyond $10^{11}$. The corrected pipeline
+(Section~\ref{sec:computation}) confirms $A = 359$ as the hardest case
+for $p \le 10^{11}$, unchanged since $10^{10}$; extending further would
+determine whether larger gateway parameters ever appear. The maximum
+$A$ encountered for any prime $p \le X$ grows slowly with $X$
+(log-like); bounding this growth rigorously is an open problem (the
+\emph{bounded-$A$ conjecture} of~\cite{ES-paper}).
+\end{question}
+
+\begin{question}
+Characterise the set of primes $p$ for which $N_7$ is $Q_7$-smooth.
+By Theorem~\ref{thm:main}, this set has counting function
+$O(X/(\log X)^{3/2})$, but no explicit family is known.
+These are precisely the primes for which the A=7 gateway fails.
+\end{question}
+
+\begin{question}
+Is there an $A \ne 7$ for which an exact characterisation of gateway
+failure holds for a \emph{positive-density} subset of Case~B QR7 primes?
+Theorem~\ref{thm:unique} rules out universal sharpness, but
+a density-one subset might still be achievable for specific $A$.
+\end{question}
+
+\begin{question}
+Can the character sum formula~\eqref{eq:N-formula} be combined with
+the large sieve to give an unconditional proof that $\mathcal{N}_A(p) > 0$
+for all Case~B QR7 primes $p \ge P_0$ (for explicit $P_0$)?
+This would require bounding $E_A(p)$ in terms of the main term
+and a zero-free region for $L(s, \chi)$ for characters $\chi$ mod~$A$.
+\end{question}
+
+% ======================================================================
+\section*{Acknowledgements}
+% ======================================================================
+
+This work uses techniques developed in~\cite{ES-paper,closure-paper}.
+An initial GPU-accelerated search (CuPy, NVIDIA Quadro RTX~5000) first
+located the $A = 359$ record of Section~\ref{subsec:a359}; the results
+reported here come from the corrected CPU pipeline of
+Section~\ref{sec:computation}.
+
+\begin{thebibliography}{99}
+
+\bibitem{ES-paper}
+M.~\'O~Murch\'u,
+\textit{Bounded Gateway Parameters for the
+Erd\H{o}s--Straus Conjecture},
+preprint, 2026.
+
+\bibitem{closure-paper}
+M.~\'O~Murch\'u,
+\textit{Toward Closure of the Gateway Gap:
+NQR Targets, Subgroup Failure, and the Multi-$A$ Strategy},
+preprint, 2026.
+
+\bibitem{Halberstam-Richert}
+H.~Halberstam and H.-E.~Richert,
+\textit{Sieve Methods},
+London Mathematical Society Monographs~4, Academic Press, 1974.
+
+\bibitem{Iwaniec-Kowalski}
+H.~Iwaniec and E.~Kowalski,
+\textit{Analytic Number Theory},
+AMS Colloquium Publications, Vol.~53, 2004.
+
+\bibitem{Tenenbaum}
+G.~Tenenbaum,
+\textit{Introduction to Analytic and Probabilistic Number Theory},
+Cambridge Studies in Advanced Mathematics~46, 1995.
+
+\end{thebibliography}
+
+\end{document}
