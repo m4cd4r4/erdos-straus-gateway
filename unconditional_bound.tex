@@ -571,16 +571,27 @@ Separating the trivial character $\chi_0$ and the Legendre symbol $\chi_2$:
 
 \begin{align}\label{eq:split}
   \mathcal{N}_A(p) \;=\;&
-    \frac{\tau(N_A^2) - \tau(M_A^2)}{\varphi(A)}
+    \frac{\tau'(N_A^2) - \tau'(M_A^2)}{\varphi(A)}
     \;+\; E_A(p),
 \end{align}
-where $M_A$ is the $Q_A$-smooth part of~$N_A$, and
-$E_A(p)$ involves only characters of order~$\ge 4$.
+where $\tau'(n)$ counts the divisors of~$n$ coprime to~$A$,
+$M_A$ is the $Q_A$-smooth part of~$N_A$, and
+$E_A(p)$ involves only characters of order~$\ge 3$.
 
-The \emph{main term} $\tau(N_A^2) - \tau(M_A^2)$ is positive if and
+\begin{remark}
+The restriction in $\tau'$ is inherited from $\gcd(d, Ap) = 1$
+in~\eqref{eq:N-formula} and is vacuous here: $4 N_A = p + A$, so
+$A \mid N_A$ would force $A \mid p$, impossible for $A < p$ prime.
+Hence $\tau'(N_A^2) = \tau(N_A^2)$ throughout, and likewise for $M_A$.
+The prime is kept because the identity $\sum_{d \mid N_A^2,\, (d,A) = 1}
+\chi_2(d) = \tau'(M_A^2)$, which produces the second term, is stated for
+the coprime-restricted sum.
+\end{remark}
+
+The \emph{main term} $\tau'(N_A^2) - \tau'(M_A^2)$ is positive if and
 only if $N_A$ is not $Q_A$-smooth (i.e., $M_A < N_A$).
 Gateway $A$ fails only when $\mathcal{N}_A(p) = 0$,
-which requires $E_A(p) \le -(\tau(N_A^2) - \tau(M_A^2))/\varphi(A)$.
+which requires $E_A(p) \le -(\tau'(N_A^2) - \tau'(M_A^2))/\varphi(A)$.
 
 \subsection{Why the character sum barrier is hard}
 
