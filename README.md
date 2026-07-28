@@ -53,7 +53,7 @@ The record-setting prime in this range is `p = 3,807,728,761` (`A = 359`, `d = 1
 
 **This flatness does not, by itself, support the bounded-A conjecture.** A distributional analysis of the tail of `A(p)` over this range (see the paper, §6.1, and [the companion analysis](extended-search/phase3a_growth_law.md)) shows two candidate growth models - one giving an absolutely bounded maximum, the other unbounded but extremely slow - that fit these six data points *identically*. A single decade of flatness cannot distinguish them.
 
-Consistent with that, an **exploratory search past 10^11** (same validated engine as above, but only the record witnesses independently re-derived - not the full classification of every intervening prime, so reported separately from the verified table) has since found two further records, at two separate jumps, before the search stopped at `1.212x10^12` with no further record:
+Consistent with that, an **exploratory search past 10^11** (same validated engine as above; every witness with `A >= 100` - all 19,540 of them, not a sample - has since been independently re-derived, but the classification of the ordinary small-A primes has not, so still reported separately from the verified table) has since found two further records, at two separate jumps, before the search stopped at `1.212x10^12` with no further record:
 
 | p | max A | Increase | |
 |---|-------|----------|---|
@@ -62,7 +62,7 @@ Consistent with that, an **exploratory search past 10^11** (same validated engin
 | 418,383,886,321 | 479 | +112 | second new record |
 | 1.212x10^12 (endpoint) | 479 | +0 | search stopped here |
 
-Both witnesses were independently re-derived from scratch by a separate reviewer, including an exhaustive check (every gateway below the claimed record, not spot-checked) that no smaller `A` succeeds. The two jumps are different sizes (`+8`, then `+112`) - together `+120` over the interval, comparable to the single `239 -> 359` jump, but as two separate events rather than one. Either way, the occasional-large-jump pattern from the verified range continues past `10^11` rather than flattening further.
+Both record witnesses were independently re-derived from scratch by a separate reviewer, and - since - every witness with `A >= 100` in the range has been independently re-confirmed the same way: primality, that the divisor genuinely divides `N_A^2`, and an exhaustive check that every smaller gateway fails. Zero discrepancies across 19,540 witnesses ([full results](extended-search/tier1_verification.md)). The two jumps are different sizes (`+8`, then `+112`) - together `+120` over the interval, comparable to the single `239 -> 359` jump, but as two separate events rather than one. Either way, the occasional-large-jump pattern from the verified range continues past `10^11` rather than flattening further.
 
 None of this refutes the **bounded-A conjecture** - `479` is a modest value, and the flat-vs-growing question remains genuinely open - but the flatness argument for it should be retired. The conjecture stands on its own as an open question, not as one the `10^10 -> 10^11` data supports. If true, the full Erdos-Straus conjecture follows.
 
