@@ -19,3 +19,6 @@ Thumbs.db
 
 # Generated data (can be regenerated)
 stats_1M.json
+
+# Local tooling config, not repo content
+.claude/
