@@ -66,6 +66,8 @@ Both record witnesses were independently re-derived from scratch by a separate r
 
 None of this refutes the **bounded-A conjecture** - `479` is a modest value, and the flat-vs-growing question remains genuinely open - but the flatness argument for it should be retired. The conjecture stands on its own as an open question, not as one the `10^10 -> 10^11` data supports. If true, the full Erdos-Straus conjecture follows.
 
+**Closing the remaining gap - independently classifying every ordinary prime, not just the large-A witnesses - was costed and deliberately not done.** An independent implementation classifies primes at 13,000-19,000/second depending on scale ([calibration](extended-search/calibrate_tier2_verify.py)), so the 33,489,857,205 primes in `[10^11, 10^12]` alone would cost roughly 1-3 days of wall time even parallelised. The value of `max A` is already exhaustively settled by the witness check above, and a bug severe enough to silently misclassify billions of easy primes would very likely also have corrupted the gateway search already re-verified - so the additional confidence didn't justify several days of compute. Reported at this standard deliberately.
+
 ## Paper
 
 The main paper (`erdos_straus_gateway.tex`) contains:
