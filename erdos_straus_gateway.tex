@@ -51,9 +51,12 @@ Among the $88$~million residual primes, $68.9\%$ are solved at $A = 7$
 and $91.0\%$ by $A = 11$.
 We observe a \emph{slow-growth phenomenon} in the gateway parameter:
 the maximum~$A$ required is $79$ at $10^6$, $167$ at $10^7$, $239$ at
-$10^8$ and $10^9$, and $359$ at $10^{10}$---and this value is
-\emph{unchanged} at $10^{11}$: no prime in $(10^{10}, 10^{11}]$ requires
-$A > 359$.
+$10^8$ and $10^9$, and $359$ at $10^{10}$, unchanged through $10^{11}$.
+This flatness is consistent with an absolute bound but, as
+Section~\ref{sec:discussion} discusses, does not by itself distinguish
+a bounded maximum from unbounded growth that is merely slow; an
+exploratory search beyond $10^{11}$ has since found two further
+records, $A = 367$ and $A = 479$, before $1.3 \times 10^{12}$.
 We conjecture that $\max A$ is absolutely bounded and show that
 this would imply the full conjecture.
 The observation connects to divisor equidistribution
@@ -108,9 +111,12 @@ previously noted in the literature:
 
 \begin{quote}
 \itshape The maximum value of~$A$ required to solve all primes up to~$N$
-grows extremely slowly---roughly like a small multiple of $\log N$
-across five decades of prime range, and does not increase at all from
-$10^{10}$ to $10^{11}$---and may be absolutely bounded.
+grows extremely slowly, over the range verified in this paper: roughly
+like a small multiple of $\log N$ across five decades, and unchanged
+from $10^{10}$ to $10^{11}$. Section~\ref{sec:discussion} shows this
+flatness does not by itself distinguish an absolute bound from
+unbounded but extremely slow growth, and an exploratory search past
+$10^{11}$ has already found two further records.
 \end{quote}
 
 We call this the \emph{bounded-$A$ conjecture} (Conjecture~\ref{conj:bounded}).
@@ -617,7 +623,10 @@ $\geq 199$ & $47$ & $0.00005\%$ & $100\%$ \\
 
 The extreme sparsity of large-$A$ cases---only 47 primes out of
 $88$~million require $A \geq 199$, and only five require $A \geq
-251$---supports the bounded-$A$ conjecture.
+251$---establishes that large-$A$ primes are rare within this range;
+Section~\ref{sec:discussion} discusses why sparsity of this kind does
+not, by itself, distinguish a bounded maximum from unbounded but
+extremely slow growth.
 Figure~\ref{fig:Adist} shows the distribution at~$10^6$.
 
 \begin{figure}[ht]
@@ -630,11 +639,13 @@ A handful of small primes ($A = 7, 11, 19, 23$) handle
 over $97\%$ of cases.}\label{fig:Adist}
 \end{figure}
 
-\subsection{Anatomy of the hardest prime}\label{subsec:anatomy}
+\subsection{Anatomy of the hardest prime below \texorpdfstring{$10^{11}$}{10\^{}11}}\label{subsec:anatomy}
 
-The unique hardest prime $p = 3{,}807{,}728{,}761$---the only prime below
-$10^{11}$ requiring $A = 359$---shows why the Case~B QR7 class is the
-computational bottleneck and why the $d \mid N^2$ extension is necessary.
+The hardest prime below $10^{11}$, $p = 3{,}807{,}728{,}761$---the only
+one in that range requiring $A = 359$---shows why the Case~B QR7 class
+is the computational bottleneck and why the $d \mid N^2$ extension is
+necessary. (An exploratory search past $10^{11}$ has since found
+harder primes; Section~\ref{sec:discussion}.)
 
 \paragraph{Why $p$ is Case~B.}
 Here $(p+3)/4 = 951{,}932{,}191 = 7 \cdot 73 \cdot 1{,}862{,}881$, and all
@@ -734,7 +745,8 @@ factor of the right index.
 
 \subsection{The bounded-$A$ conjecture}
 
-The maximum $A$ value grows extremely slowly with scale:
+The maximum $A$ value grows extremely slowly with scale, over the
+range formally verified in this paper:
 
 \begin{center}
 \begin{tabular}{@{}rrr@{}}
@@ -754,10 +766,52 @@ $10^{11}$ & $359$ & $+0$ \\
 Every prime below $10^9$ is solved by some $A \leq 239$, and only two
 primes below $10^9$ require $A > 191$.
 At $10^{10}$ the maximum rises to $359$; it then holds at $359$ through
-$10^{11}$, so across the last decade $\max A$ does not grow at all.
-Over $10^6 \to 10^{10}$ the growth of $\max A$ is roughly linear in
-$\log N$, and the flat step to $10^{11}$ is consistent with an eventual
-absolute bound.
+$10^{11}$, so across that decade $\max A$ does not grow at all.
+
+It is tempting to read this flatness as evidence for
+Conjecture~\ref{conj:bounded}, and the original version of this paper
+did so. That reading does not survive scrutiny. A distributional
+analysis of the tail of $A(p)$ over this range shows that
+$\Pr[A(p) \geq T]$ decays as a power of a slowly growing function of
+$\log X$, and that two candidate models for this decay --- one giving
+an absolutely bounded maximum, the other giving unbounded but
+extremely slow growth --- fit the six data points above
+\emph{identically}: both predict $79, 167, 239, 239, 359, 359$ exactly,
+and diverge only far outside the verified range. A single decade of
+flatness cannot distinguish them; it is what both models predict.
+The full analysis, including the fitted models and their
+extrapolations, is available in the companion
+repository.\footnote{\url{https://github.com/m4cd4r4/tough-math},
+\texttt{erdos-straus/phase3a\_growth\_law.md}.}
+
+Consistent with this, an exploratory search beyond $10^{11}$ (same
+verified pipeline, not independently cross-validated at the same
+standard as the table above --- see the remark below) has since found
+two further records, at two separate jumps, before reaching
+$1.212 \times 10^{12}$ with no further record:
+\begin{center}
+\begin{tabular}{@{}rrrl@{}}
+\toprule
+$p$ & $\max A$ & Increase from previous & \\
+\midrule
+--- & $359$ & --- & (carried from $10^{11}$) \\
+$235{,}229{,}251{,}009$ & $367$ & $+8$ & first new record \\
+$418{,}383{,}886{,}321$ & $479$ & $+112$ & second new record \\
+$1.212 \times 10^{12}$ (endpoint) & $479$ & $+0$ & search stopped here \\
+\bottomrule
+\end{tabular}
+\end{center}
+Both witnesses were independently re-derived by a separate reviewer,
+including an exhaustive check that no smaller gateway succeeds. The
+two jumps are of different sizes ($+8$, then $+112$); together they
+total $+120$ over the interval, comparable to the single $239 \to 359$
+jump, but as two separate events rather than one. Either way, the
+occasional-large-jump pattern from the verified range continues past
+$10^{11}$ rather than flattening further.
+None of this refutes Conjecture~\ref{conj:bounded} --- $479$ is a
+modest value, and both models above remain live possibilities --- but
+it removes the flatness argument as evidence for it. The conjecture
+is stated below as an open question, not as one the data supports.
 
 \begin{conjecture}[Bounded gateway parameter]\label{conj:bounded}
 There exists an absolute constant~$C$ such that for every prime~$p$,
@@ -770,6 +824,18 @@ If Conjecture~\ref{conj:bounded} holds, the Erd\H{o}s--Straus conjecture
 follows, since the conjecture can be verified for all primes up to~$C$
 by direct computation, and every larger prime admits a gateway with $A \leq C$.
 
+\begin{remark}[Verification standard for the extended range]
+The table to $10^{11}$ is verified to the same standard throughout this
+paper: the classification of every prime is cross-checked by an
+independently written implementation sharing no code with the primary
+pipeline (Section~\ref{sec:computation}). The extension to $1.3
+\times 10^{12}$ uses the same, separately validated search engine, but
+only the two record witnesses --- not the classification of every
+intervening prime --- have been independently re-derived. It is
+reported at that lower standard deliberately, rather than folded into
+the $10^{11}$ table.
+\end{remark}
+
 A weaker but still significant form: $\max A(N) = O(\log \log p)$.
 Even $\max A = o(\log p)$ would go beyond current results.
 
@@ -777,9 +843,12 @@ Even $\max A = o(\log p)$ would go beyond current results.
 \centering
 \includegraphics[width=0.75\textwidth]{fig3_max_A.pdf}
 \caption{Maximum gateway parameter~$A$ required as the verification limit
-increases from~$10^3$ to~$10^{11}$.
-The growth is roughly logarithmic in the limit, in contrast with the
-factor-of-$10^{8}$ increase in the search range.}\label{fig:maxA}
+increases from~$10^3$ to~$10^{11}$ (solid) and, from an exploratory
+search at the same standard described in the remark above, to
+$1.3 \times 10^{12}$ (dashed).
+The growth is not well described as ``roughly logarithmic'' once the
+extended range is included: two of the four jumps in the entire
+record sequence occur after $10^{11}$.}\label{fig:maxA}
 \end{figure}
 
 \subsection{Heuristic support from Elsholtz--Tao density}
@@ -916,12 +985,16 @@ prime $p \leq 10^{11}$ admits an explicit decomposition
 $\frac{4}{p} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$.
 
 The main observation is the slow growth of the gateway parameter:
-$\max A$ increases roughly logarithmically in the verification limit
-($79$ at $10^6$, $239$ at $10^8$, $359$ at $10^{10}$) and then holds at
-$359$ through $10^{11}$, while the
+$\max A$ increases in occasional large jumps separated by long flat
+stretches ($79$ at $10^6$, $239$ at $10^8$, $359$ at $10^{10}$, holding
+through $10^{11}$), while the
 residual class itself thins out (relative density
 $\sim c/\sqrt{\log x}$).
-If $\max A$ is absolutely bounded
+A flat stretch of this kind is not, by itself, evidence of an eventual
+ceiling: Section~\ref{sec:discussion} shows two models fitting the
+verified data identically, one bounded and one not, and an exploratory
+search past $10^{11}$ has already found two further jumps, to $367$
+and $479$. If $\max A$ is absolutely bounded
 (Conjecture~\ref{conj:bounded}), the full conjecture follows.
 
 The framework provides a potential bridge between computational verification

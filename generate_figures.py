@@ -178,8 +178,8 @@ def fig2_a_distribution():
 # ============================================================================
 
 def fig3_max_A_stabilisation():
-    # Data from sessions 14-17 (10^3..10^9) and the corrected session-20
-    # re-verification (10^10); see REFEREE_FINDINGS_2026-07-05.md
+    # Verified range (10^3..10^11): sessions 14-17 and the corrected
+    # session-20 re-verification; see REFEREE_FINDINGS_2026-07-05.md.
     scale_data = {
         1_000: 7,
         2_000: 7,
@@ -197,6 +197,20 @@ def fig3_max_A_stabilisation():
         10_000_000_000: 359,
         100_000_000_000: 359,
     }
+    # Exploratory extension past 10^11 (2026-07-25/28 sweep; validated
+    # engine, but only the record witnesses independently re-derived -
+    # see the verification-standard remark in the paper). Plotted at the
+    # actual record-witness primes, not milestone buckets - bucketing at
+    # 5x10^11 previously hid the 367 record inside the 479 point and
+    # made the two separate jumps (359->367, 367->479) read as one.
+    # Plotted separately from scale_data so the two standards stay visually
+    # distinct.
+    extended_data = {
+        100_000_000_000: 359,       # overlap point, joins the two segments
+        235_229_251_009: 367,       # record witness p
+        418_383_886_321: 479,       # record witness p
+        1_212_100_000_000: 479,     # sweep endpoint, no further record
+    }
     # Override with our progressive data where available
     prog = stats.get("max_A_progressive", {})
     for k, v in prog.items():
@@ -204,39 +218,55 @@ def fig3_max_A_stabilisation():
 
     limits = sorted(scale_data.keys())
     max_As = [scale_data[l] for l in limits]
+    ext_limits = sorted(extended_data.keys())
+    ext_max_As = [extended_data[l] for l in ext_limits]
 
     fig, ax = plt.subplots(figsize=(9, 5))
 
     ax.semilogx(limits, max_As, 'o-', color='#E91E63', markersize=7,
-                linewidth=2, markeredgecolor='#880E4F', markeredgewidth=1)
+                linewidth=2, markeredgecolor='#880E4F', markeredgewidth=1,
+                label='Verified to $10^{11}$')
+    ax.semilogx(ext_limits, ext_max_As, 'o--', color='#E91E63', alpha=0.55,
+                markersize=7, linewidth=2, markeredgecolor='#880E4F',
+                markeredgewidth=1, markerfacecolor='white',
+                label='Exploratory, to $1.3{\\times}10^{12}$')
 
-    # Reference lines at the plateau and the current maximum
+    # Reference lines at successive plateaus
     ax.axhline(y=239, color='gray', linestyle='--', linewidth=1, alpha=0.5)
     ax.text(2e9, 239, '$A = 239$', va='bottom', ha='right', fontsize=9,
             color='gray', style='italic')
     ax.axhline(y=359, color='gray', linestyle='--', linewidth=1, alpha=0.5)
     ax.text(2e11, 359, '$A = 359$', va='bottom', ha='right', fontsize=9,
             color='gray', style='italic')
+    ax.axhline(y=479, color='gray', linestyle=':', linewidth=1, alpha=0.5)
+    ax.text(9e11, 479, '$A = 479$', va='bottom', ha='right', fontsize=9,
+            color='gray', style='italic')
 
-    # Logarithmic growth guide, then the flat 10^10 -> 10^11 step
-    ax.text(3e7, 30, 'Roughly linear in $\\log N$', fontsize=9,
-            color='#880E4F', alpha=0.8)
-    ax.annotate('no growth\n$10^{10}\\to10^{11}$', xy=(1e11, 359),
-                xytext=(4e9, 300), fontsize=8, color='#880E4F',
+    ax.annotate('flat\n$10^{10}\\to10^{11}$', xy=(3e10, 359),
+                xytext=(9e8, 290), fontsize=8, color='#880E4F',
                 ha='center', arrowprops=dict(arrowstyle='->', color='#880E4F',
                                              alpha=0.7))
+    ax.annotate('$A=367$', xy=(2.35e11, 367), xytext=(2.35e11, 250),
+                fontsize=8, color='#880E4F', ha='center',
+                arrowprops=dict(arrowstyle='->', color='#880E4F', alpha=0.7))
+    ax.annotate('two separate jumps past $10^{11}$\n(359 to 367, then 367 to 479)',
+                xy=(4.18e11, 460), xytext=(2e10, 470), fontsize=8,
+                color='#880E4F', ha='center',
+                arrowprops=dict(arrowstyle='->', color='#880E4F', alpha=0.7))
 
     ax.set_xlabel('Verification limit')
     ax.set_ylabel('Maximum $A$ needed')
     ax.set_title('Growth of max $A$ across scales')
-    ax.set_ylim(0, 400)
-    ax.set_xlim(500, 4e11)
+    ax.set_ylim(0, 520)
+    ax.set_xlim(500, 1.5e12)
+    ax.legend(loc='upper left', fontsize=9, frameon=False)
 
     # Custom x-ticks
-    xticks = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11]
+    xticks = [1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10, 1e11, 1e12]
     ax.set_xticks(xticks)
     ax.set_xticklabels(['$10^3$', '$10^4$', '$10^5$', '$10^6$',
-                        '$10^7$', '$10^8$', '$10^9$', '$10^{10}$', '$10^{11}$'])
+                        '$10^7$', '$10^8$', '$10^9$', '$10^{10}$',
+                        '$10^{11}$', '$10^{12}$'])
     ax.grid(True, alpha=0.3)
 
     plt.tight_layout()

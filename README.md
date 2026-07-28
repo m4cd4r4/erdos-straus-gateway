@@ -1,8 +1,9 @@
 # Bounded Gateway Parameters for the Erdos-Straus Conjecture
 
-[![paper](https://img.shields.io/badge/paper-17pp%20PDF-blue)](erdos_straus_gateway.pdf)
+[![paper](https://img.shields.io/badge/paper-18pp%20PDF-blue)](erdos_straus_gateway.pdf)
 [![verified](https://img.shields.io/badge/verified-4.1B%20primes%20%E2%89%A4%2010%5E11-brightgreen)](#verification)
-[![max A](https://img.shields.io/badge/max%20A-%E2%89%A4%20359-success)](#bounded-a-phenomenon)
+[![max A verified](https://img.shields.io/badge/max%20A%20verified-%E2%89%A4%20359-success)](#bounded-a-phenomenon)
+[![max A exploratory](https://img.shields.io/badge/max%20A%20exploratory-%E2%89%A4%20479%20to%201.2%C3%9710%5E12-yellow)](#bounded-a-phenomenon)
 [![figures & data](https://img.shields.io/badge/figures%20%26%20data-reproducible-blue)](#figures)
 ![license](https://img.shields.io/badge/license-MIT-lightgrey)
 
@@ -27,7 +28,7 @@ Verification to **10^11** (all 4,118,054,813 primes) succeeds with just **32 val
 
 ## Key Result
 
-**Theorem.** For every prime `p = 1 (mod 4)` in the residual class, there exists a prime `A <= 359` with `A = 3 (mod 4)`, `4 | (p + A)`, and a divisor `d` of `((p+A)/4)^2` satisfying `d = -p^2 * 4^{-1} (mod A)`, such that
+**Theorem.** For every prime `p <= 10^11` with `p = 1 (mod 4)` in the residual class, there exists a prime `A <= 359` with `A = 3 (mod 4)`, `4 | (p + A)`, and a divisor `d` of `((p+A)/4)^2` satisfying `d = -p^2 * 4^{-1} (mod A)`, such that
 
     x = (p+A)/4,  y = (p*x + d)/A,  z = p*x*y/d
 
@@ -37,7 +38,7 @@ The critical insight is that the integrality condition requires `d | N^2` (where
 
 ## Bounded-A Phenomenon
 
-The maximum `A` grows extremely slowly with scale, and does not grow at all across the most recent decade:
+The maximum `A` grows extremely slowly with scale, over the range formally verified in this repository (every prime independently cross-checked by a separate implementation, per [Verification](#verification)):
 
 | Limit | max A | Increase |
 |-------|-------|----------|
@@ -48,7 +49,22 @@ The maximum `A` grows extremely slowly with scale, and does not grow at all acro
 | 10^10 | 359 | +120 |
 | 10^11 | 359 | +0 |
 
-The record-setting prime is `p = 3,807,728,761` (`A = 359`, `d = 1935`), which lies **below 10^10** - nothing in `(10^10, 10^11]` beats it. Across 4.1 billion primes, only **47** require `A >= 199` and only **5** require `A >= 251`. This slow, eventually-flat growth motivates the **bounded-A conjecture**: `max A` is absolutely bounded. If true, the full Erdos-Straus conjecture follows.
+The record-setting prime in this range is `p = 3,807,728,761` (`A = 359`, `d = 1935`), which lies below 10^10 - nothing in `(10^10, 10^11]` beats it. Across 4.1 billion primes, only **47** require `A >= 199` and only **5** require `A >= 251`.
+
+**This flatness does not, by itself, support the bounded-A conjecture.** A distributional analysis of the tail of `A(p)` over this range (see the paper, §6.1, and [the companion analysis](https://github.com/m4cd4r4/tough-math/blob/master/erdos-straus/phase3a_growth_law.md)) shows two candidate growth models - one giving an absolutely bounded maximum, the other unbounded but extremely slow - that fit these six data points *identically*. A single decade of flatness cannot distinguish them.
+
+Consistent with that, an **exploratory search past 10^11** (same validated engine as above, but only the record witnesses independently re-derived - not the full classification of every intervening prime, so reported separately from the verified table) has since found two further records, at two separate jumps, before the search stopped at `1.212x10^12` with no further record:
+
+| p | max A | Increase | |
+|---|-------|----------|---|
+| - | 359 | - | (carried from 10^11) |
+| 235,229,251,009 | 367 | +8 | first new record |
+| 418,383,886,321 | 479 | +112 | second new record |
+| 1.212x10^12 (endpoint) | 479 | +0 | search stopped here |
+
+Both witnesses were independently re-derived from scratch by a separate reviewer, including an exhaustive check (every gateway below the claimed record, not spot-checked) that no smaller `A` succeeds. The two jumps are different sizes (`+8`, then `+112`) - together `+120` over the interval, comparable to the single `239 -> 359` jump, but as two separate events rather than one. Either way, the occasional-large-jump pattern from the verified range continues past `10^11` rather than flattening further.
+
+None of this refutes the **bounded-A conjecture** - `479` is a modest value, and the flat-vs-growing question remains genuinely open - but the flatness argument for it should be retired. The conjecture stands on its own as an open question, not as one the `10^10 -> 10^11` data supports. If true, the full Erdos-Straus conjecture follows.
 
 ## Paper
 
@@ -127,7 +143,7 @@ python generate_banner.py   # the README banner
 |--------|-------------|
 | fig1_coverage | Prime classification hierarchy (pie charts) |
 | fig2_A_distribution | Gateway parameter A distribution (bar + cumulative) |
-| fig3_max_A | Max A growth across scales (10^3 to 10^11) |
+| fig3_max_A | Max A growth across scales (10^3 to 10^11 verified, to 1.3x10^12 exploratory) |
 | fig4_d_over_N | d/N ratio distribution showing the N^2 extension |
 | fig5_gateway_diagram | Conceptual schematic of the decomposition |
 
