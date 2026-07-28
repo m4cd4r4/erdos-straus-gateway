@@ -51,7 +51,7 @@ The maximum `A` grows extremely slowly with scale, over the range formally verif
 
 The record-setting prime in this range is `p = 3,807,728,761` (`A = 359`, `d = 1935`), which lies below 10^10 - nothing in `(10^10, 10^11]` beats it. Across 4.1 billion primes, only **47** require `A >= 199` and only **5** require `A >= 251`.
 
-**This flatness does not, by itself, support the bounded-A conjecture.** A distributional analysis of the tail of `A(p)` over this range (see the paper, §6.1, and [the companion analysis](https://github.com/m4cd4r4/tough-math/blob/master/erdos-straus/phase3a_growth_law.md)) shows two candidate growth models - one giving an absolutely bounded maximum, the other unbounded but extremely slow - that fit these six data points *identically*. A single decade of flatness cannot distinguish them.
+**This flatness does not, by itself, support the bounded-A conjecture.** A distributional analysis of the tail of `A(p)` over this range (see the paper, §6.1, and [the companion analysis](extended-search/phase3a_growth_law.md)) shows two candidate growth models - one giving an absolutely bounded maximum, the other unbounded but extremely slow - that fit these six data points *identically*. A single decade of flatness cannot distinguish them.
 
 Consistent with that, an **exploratory search past 10^11** (same validated engine as above, but only the record witnesses independently re-derived - not the full classification of every intervening prime, so reported separately from the verified table) has since found two further records, at two separate jumps, before the search stopped at `1.212x10^12` with no further record:
 
