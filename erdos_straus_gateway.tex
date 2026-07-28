@@ -800,8 +800,10 @@ $1.212 \times 10^{12}$ (endpoint) & $479$ & $+0$ & search stopped here \\
 \bottomrule
 \end{tabular}
 \end{center}
-Both witnesses were independently re-derived by a separate reviewer,
-including an exhaustive check that no smaller gateway succeeds. The
+Both record witnesses were independently re-derived by a separate
+reviewer, and --- since --- every witness with $A \geq 100$ in the
+range, $19{,}540$ in total, has been independently re-confirmed the
+same way (Remark~\ref{rem:verification-standard}). The
 two jumps are of different sizes ($+8$, then $+112$); together they
 total $+120$ over the interval, comparable to the single $239 \to 359$
 jump, but as two separate events rather than one. Either way, the
@@ -823,16 +825,22 @@ If Conjecture~\ref{conj:bounded} holds, the Erd\H{o}s--Straus conjecture
 follows, since the conjecture can be verified for all primes up to~$C$
 by direct computation, and every larger prime admits a gateway with $A \leq C$.
 
-\begin{remark}[Verification standard for the extended range]
+\begin{remark}[Verification standard for the extended range]\label{rem:verification-standard}
 The table to $10^{11}$ is verified to the same standard throughout this
 paper: the classification of every prime is cross-checked by an
 independently written implementation sharing no code with the primary
-pipeline (Section~\ref{sec:computation}). The extension to $1.3
-\times 10^{12}$ uses the same, separately validated search engine, but
-only the two record witnesses --- not the classification of every
-intervening prime --- have been independently re-derived. It is
-reported at that lower standard deliberately, rather than folded into
-the $10^{11}$ table.
+pipeline (Section~\ref{sec:computation}). The extension to $1.212
+\times 10^{12}$ uses the same, separately validated search engine.
+Every witness with $A \geq 100$ in that range --- all $19{,}540$ of
+them, not a sample --- has since been independently re-derived: an
+exhaustive check, for each, that the claimed divisor is genuine and
+that every smaller candidate gateway fails, with zero discrepancies
+(\texttt{extended-search/tier1\_verification.md} in the companion
+repository). What remains below that standard is the classification
+of the ordinary primes solved by small $A$ --- the vast majority of
+the range --- which has not been independently cross-checked. It is
+reported at that standard deliberately, rather than folded into the
+$10^{11}$ table.
 \end{remark}
 
 A weaker but still significant form: $\max A(N) = O(\log \log p)$.
