@@ -1,0 +1,123 @@
+==============================================================================
+DATA - session 20/21 authoritative sweep
+              X        primes   gw-resolved  gw fraction  max A
+        1000000         78498          2269     0.028905     79
+       10000000        664579         18019     0.027113    167
+      100000000       5761455        146227     0.025380    239
+     1000000000      50847534       1212383     0.023843    239
+    10000000000     455052511      10246512     0.022517    359
+   100000000000    4118054813      88088687     0.021391    359
+  smallest A occurring at 10^11: 7  (A = 3 never appears - earlier stages take those primes)
+
+==============================================================================
+PASS 1 - the distribution of A(p) is not stable; its tail thins as X grows
+  P(A >= T) over gateway-resolved primes. CUMULATIVE (all p <= X):
+      T       1e+06       1e+07       1e+08       1e+09       1e+10       1e+11
+     11   4.359e-01   3.965e-01   3.708e-01   3.476e-01   3.276e-01   3.109e-01
+     19   1.741e-01   1.488e-01   1.290e-01   1.134e-01   1.007e-01   9.019e-02
+     31   3.482e-02   2.897e-02   2.257e-02   1.794e-02   1.434e-02   1.147e-02
+     47   1.146e-02   9.268e-03   6.852e-03   5.078e-03   3.736e-03   2.728e-03
+     71   3.085e-03   1.942e-03   1.210e-03   8.248e-04   5.368e-04   3.469e-04
+    103   0.000e+00   2.220e-04   1.026e-04   9.898e-05   5.865e-05   3.628e-05
+    151   0.000e+00   1.110e-04   2.735e-05   2.227e-05   8.491e-06   3.962e-06
+    199   0.000e+00   0.000e+00   6.839e-06   1.650e-06   1.171e-06   5.336e-07
+
+  PER-DECADE (p in (X/10, X]) - guards against the cumulative-overlap trap,
+  since the 10^11 cumulative sample contains all the earlier ones:
+      T       1e+06       1e+07       1e+08       1e+09       1e+10       1e+11
+     11   4.359e-01   3.908e-01   3.672e-01   3.444e-01   3.250e-01   3.087e-01
+     19   1.741e-01   1.451e-01   1.263e-01   1.112e-01   9.897e-02   8.881e-02
+     31   3.482e-02   2.813e-02   2.167e-02   1.730e-02   1.386e-02   1.110e-02
+     47   1.146e-02   8.952e-03   6.513e-03   4.835e-03   3.556e-03   2.595e-03
+     71   3.085e-03   1.778e-03   1.108e-03   7.719e-04   4.981e-04   3.219e-04
+    103   0.000e+00   2.540e-04   8.580e-05   9.848e-05   5.324e-05   3.334e-05
+    151   0.000e+00   1.270e-04   1.560e-05   2.157e-05   6.641e-06   3.366e-06
+    199   0.000e+00   0.000e+00   7.800e-06   9.379e-07   1.107e-06   4.496e-07
+
+  Monotone decreasing at every threshold in BOTH tables, with essentially the
+  same magnitude, so the decay is not an artifact of cumulative overlap.
+  The gateway fraction is itself falling (0.0289 -> 0.0214), so the
+  conditioning population changes too - but earlier stages taking a GROWING
+  share would bias P(A>=T | gateway) UP, not down, so this is conservative.
+
+==============================================================================
+PASS 2 - two tail models with indistinguishable fit and opposite conclusions
+  regressor log log X (-> unbounded)
+      T  g(T)       a_T       c_T  R^2 (per T)
+     11     2     0.615    0.5520      0.99934
+     19     3     1.110    1.0858      0.99949
+     31     5     1.570    1.8535      0.98890
+     47     7     1.903    2.3889      0.98048
+     71    10     3.664    3.5739      0.99488
+    103    13     1.816    3.7016      0.94956
+    151    18    10.096    6.9514      0.96671
+    199    23    10.028    7.5869      0.95091
+    a_T = -1.0049 + 0.4795 g(T)   R^2 = 0.8256  (se 0.0900)
+    c_T = -0.0124 + 0.3431 g(T)   R^2 = 0.9718  (se 0.0239)
+
+  regressor log X     (-> bounded)  
+      T  g(T)       a_T       c_T  R^2 (per T)
+     11     2    -0.450    0.0289      0.99003
+     19     3    -0.982    0.0570      0.99567
+     31     5    -1.988    0.0979      0.99897
+     47     7    -2.674    0.1266      0.99696
+     71    10    -3.206    0.1882      0.99917
+    103    13    -5.594    0.1816      0.94966
+    151    18    -3.836    0.3403      0.96252
+    199    23    -5.732    0.3472      0.93640
+    a_T = -0.7015 + -0.2327 g(T)   R^2 = 0.7913  (se 0.0488)
+    c_T = 0.0118 + 0.0157 g(T)   R^2 = 0.9542  (se 0.0014)
+
+  Per-T comparison - which regressor wins where:
+      T   R^2 log log X    R^2 log X     winner
+     11         0.99934      0.99003  log log X
+     19         0.99949      0.99567  log log X
+     31         0.98890      0.99897      log X
+     47         0.98048      0.99696      log X
+     71         0.99488      0.99917      log X
+    103         0.94956      0.94966      log X
+    151         0.96671      0.96252  log log X
+    199         0.95091      0.93640  log log X
+
+  log log X spans 2.626 -> 3.232 across the whole sweep - a factor of 1.23.
+  Six points over a 23% regressor range cannot separate these two forms.
+
+  gateway fraction fitted as log frac = -2.219 + -0.502 log log X (R^2 = 0.9974); used below instead of freezing it at its 10^11 value.
+
+  Predicted max A under each model:
+           X   log log X model   log X model  observed
+       1e+06               127           127        79
+       1e+07               151           151       167
+       1e+08               167           167       239
+       1e+09               199           199       239
+       1e+10               223           223       359
+       1e+11               239           239       359
+       1e+13               283           271         -
+       1e+18               419           359         -
+       1e+30               647           463         -
+      1e+100              2027           599         -
+  The log X model saturates: it needs c_T * log X <= a_T + log gw(X), and
+  since c_T grows in g(T) while log gw(X) ~ log X, the largest admissible
+  g is finite. Its ceiling is max A = 643.
+
+  Sensitivity: a_T slope se = 0.0900 on a slope of 0.4795. A one-se shift moves the
+  unbounded model's 10^18 prediction by roughly 50, so its 1-sigma band at
+  10^18 already contains 359 - the currently observed maximum.
+
+==============================================================================
+PASS 3 - the plan's three named families against max A vs X, for completeness
+  family                      R^2   at 10^18   at 10^30
+  constant                    n/a        240        240
+  log log p                0.9484        603        842
+  log p / log log p        0.9392        741       1310
+  log p                    0.9363        777       1454
+  (log log p)^2            0.9458        649        974
+
+  max A is flat at 239 across 10^8-10^9 and at 359 across 10^10-10^11, so six
+  points carry ~4 degrees of freedom and the R^2 ordering is noise. The
+  constant model has no R^2 by construction (it is fitted as a mean), so its
+  0.0 is definitional and is NOT evidence against it.
+  Salez's 10^18 verification of Erdos-Straus does not help: it records
+  solvability, not the least successful gateway, so it carries no A(p) data.
+
+wrote I:/Scratch/tough-math/erdos-straus/results/phase3a_growth.json
