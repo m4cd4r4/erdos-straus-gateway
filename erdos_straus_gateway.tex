@@ -983,6 +983,35 @@ Bombieri--Vinogradov input, which was neither available nor, as it
 turned out, necessary.
 \end{remark}
 
+\begin{remark}[Relation to the divisor literature]
+\label{rem:divisor-literature}
+The nearest published relative is the work of Banks, Friedlander and
+Luca~\cite{BanksFriedlanderLuca2008}, who obtain an asymptotic for the
+count of integers $n \leq x$ having \emph{no} divisor $d > 1$ in a fixed
+residue class $a \pmod q$.  Their answer is governed by $H(a)$, the
+subgroup of $(\mathbb{Z}/q\mathbb{Z})^\times$ of largest order not
+containing~$a$: writing $\mathcal{P} = [(\mathbb{Z}/q\mathbb{Z})^\times :
+H(a)]$, the count is
+$\asymp x (\log\log x)^{\mathcal{P}-2} (\log x)^{-(1 - 1/\mathcal{P})}$.
+For $q = A \equiv 3 \pmod 4$ and $a = -4$ the relevant subgroup is
+$\operatorname{QR}(A)$ and $\mathcal{P} = 2$, giving exponent $1/2$ ---
+the same exponent that governs the Landau count in
+Remark~\ref{rem:landau-gap}, and for the same structural reason.
+
+Their result does not cover the question studied here, on three counts:
+it concerns divisors of~$n$ rather than of~$n^2$; the target class is
+fixed, whereas the target $-4N^2 \pmod A$ moves with~$N$; and it excludes
+the divisor $d = 1$, which is admissible in
+condition~\ref{cond:res}.  Most importantly it is a statement about
+integers, and Remark~\ref{rem:landau-gap} records why a count over
+integers does not transfer to the primes.  The theorems of this section
+are for primes, for $k$ gateways simultaneously, and at $k$ distinct
+shifted arguments; the extra full unit in the exponent $1 + k/2$ is
+exactly the cost of detecting primality, for which
+\cite{BanksFriedlanderLuca2008} has no analogue.  Their paper is also
+explicitly non-uniform in~$q$.
+\end{remark>
+
 
 % ============================================================================
 \section{Computational Results}\label{sec:computation}
@@ -1520,7 +1549,8 @@ and $479$. If $\max A$ is absolutely bounded
 The framework provides a potential bridge between computational verification
 and a theoretical proof: the bounded-$A$ conjecture is a concrete
 statement about divisor equidistribution in residue classes for structured
-quadratic integers, a topic accessible to the methods of analytic number theory.
+quadratic integers, a topic accessible to the methods of analytic number theory
+(Remark~\ref{rem:divisor-literature} locates the nearest published results).
 
 \bigskip
 \noindent\textbf{Code availability.}
@@ -1533,6 +1563,11 @@ All verification code (Python) and reproducibility data are available at
 % ============================================================================
 
 \begin{thebibliography}{99}
+
+\bibitem{BanksFriedlanderLuca2008}
+W.~D.~Banks, J.~B.~Friedlander and F.~Luca,
+\emph{Integers without divisors from a fixed arithmetic progression},
+Forum Math.\ \textbf{20} (2008), 1005--1037.
 
 \bibitem{Elsholtz2001}
 C.~Elsholtz,
