@@ -1,6 +1,6 @@
 # Bounded Gateway Parameters for the Erdos-Straus Conjecture
 
-[![paper](https://img.shields.io/badge/paper-28pp%20PDF-blue)](erdos_straus_gateway.pdf)
+[![paper](https://img.shields.io/badge/paper-29pp%20PDF-blue)](erdos_straus_gateway.pdf)
 [![verified](https://img.shields.io/badge/verified-4.1B%20primes%20%E2%89%A4%2010%5E11-brightgreen)](#verification)
 [![max A verified](https://img.shields.io/badge/max%20A%20verified-%E2%89%A4%20359-success)](#bounded-a-phenomenon)
 [![max A exploratory](https://img.shields.io/badge/max%20A%20exploratory-%E2%89%A4%20479%20to%201.2%C3%9710%5E12-yellow)](#bounded-a-phenomenon)
