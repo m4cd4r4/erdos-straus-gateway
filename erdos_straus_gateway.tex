@@ -36,11 +36,33 @@ A \emph{gateway decomposition} produces an explicit representation
 $\frac{4}{p} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$
 from any divisor $d \mid \bigl(\frac{p+A}{4}\bigr)^{\!2}$ in a
 specific residue class modulo~$A$.
+For $p \equiv 1 \pmod 4$ let $A(p)$ denote the least prime
+$A \equiv 3 \pmod 4$ whose gateway succeeds, so that $A(p) \geq 3$
+always.
 Three propositions handle all primes outside a residual class ---
 $p \equiv 1 \pmod{24}$, $p$ a quadratic residue mod~$7$, and every
-prime factor of $(p+3)/4$ congruent to $1 \pmod 3$ --- which has
-relative density zero among the primes and requires a computational
-search over~$A$.
+prime factor of $(p+3)/4$ congruent to $1 \pmod 3$ --- which requires
+a computational search over~$A$.
+
+We prove unconditionally that this residual class is negligible:
+\[
+  \#\{p \leq X : p \equiv 1 \!\!\pmod 4,\ A(p) > 3\}
+  \;\ll\; X (\log X)^{-3/2},
+\]
+so $A(p) = 3$ for a set of primes of density one, and the residual
+class has relative density $O\bigl((\log X)^{-1/2}\bigr)$ among the
+primes.  The value $3$ is optimal, since $A(p) \geq 3$ by definition.
+More generally, for each fixed~$T$,
+$\#\{p \leq X : p \equiv 1 \pmod 4,\ A(p) > T\} \ll_T
+X(\log X)^{-1-k(T)/2}$, where $k(T)$ counts the primes $A \leq T$ with
+$A \equiv 3 \pmod 4$; the case $T = 7$ gives $O(X(\log X)^{-2})$.
+The proofs are elementary Selberg upper-bound sieves applied to the
+integers, with ``$4n-3$ has no small prime factor'' used as a majorant
+for the primality of~$4n-3$; no equidistribution theorem
+(Bombieri--Vinogradov, the large sieve, GRH) is used anywhere.
+An earlier version of this paper asserted the density-zero conclusion
+from a Landau-type count of \emph{integers}; that inference was
+invalid, and these theorems are what establish the conclusion.
 
 Verification to~$10^{11}$ shows that 32~prime values of~$A$, all
 congruent to $3 \pmod 4$ and all at most~359, suffice for every prime
@@ -145,16 +167,32 @@ Since~\eqref{eq:es} for composite~$n$ reduces to the prime
 case~\cite{Mordell1967}, Theorem~\ref{thm:main} implies that
 \eqref{eq:es} holds for all $n \leq 10^{11}$.
 
+Alongside this computational result, Section~\ref{sec:density} proves
+two unconditional theorems about the gateway parameter itself
+(Theorems~\ref{thm:densityone} and~\ref{thm:generalT}): the residual
+class left behind by the algebraic propositions is not merely small in
+the verified range but has relative density zero among the primes, at
+the rate $O((\log X)^{-1/2})$, and $A(p) = 3$ for a set of primes of
+density one.  These are statements about \emph{almost all} primes and
+say nothing about the boundedness of $A(p)$ for \emph{every} prime,
+which remains Conjecture~\ref{conj:bounded}.
+
 The paper is organised as follows.
 Section~\ref{sec:prelim} fixes notation and recalls the Type~I/Type~II
 solution classification of Elsholtz and Tao.
 Section~\ref{sec:gateway} states and proves the gateway decomposition,
 noting its equivalence to the formulation of~\cite{Vaughn2024}.
 Section~\ref{sec:existence} proves that suitable parameters exist
-for all primes outside a residual class of relative density zero
+for all primes outside a residual class
 (over $97\%$ of primes up to any fixed bound in our range), and relates
 this residual class to---while carefully distinguishing it from---the
 classical Mordell subset.
+Section~\ref{sec:density} proves the unconditional density-one results
+quoted in the abstract, which show that the residual class left behind
+by Section~\ref{sec:existence} has relative density zero among the
+primes, at the rate $O((\log X)^{-1/2})$; it also corrects an invalid
+density argument given in an earlier version of this paper
+(Remark~\ref{rem:landau-gap}).
 Section~\ref{sec:computation} presents the computational verification
 for the remaining primes, including A-value distribution data.
 Section~\ref{sec:discussion} states the bounded-$A$ conjecture,
@@ -321,8 +359,9 @@ the parameter~$A$ stays remarkably small---the bounded-$A$ phenomenon
 % ============================================================================
 
 We show that a suitable~$d$ exists for specific classes of primes,
-covering all but a residual class of relative density zero
-(Remark~\ref{rem:coverage}); at $10^6$ the three propositions cover
+covering all but a residual class (Remark~\ref{rem:coverage}), which
+Section~\ref{sec:density} proves has relative density zero among the
+primes; at $10^6$ the three propositions cover
 $97.1\%$ of primes, rising towards $100\%$ with the bound.
 
 Throughout this section we use the observation that for $A = 3$ and
@@ -455,12 +494,13 @@ $p \equiv 1, 2,$ or $4 \pmod{7}$.
 We call these \emph{Case~B QR7} primes.
 At $10^6$ they constitute $2.89\%$ of all primes ($2{,}269$ of
 $78{,}498$), and their relative density decreases with the bound
-($2.38\%$ at $10^9$, $2.14\%$ at $10^{11}$): the Case-B condition
-forces every prime factor
-of $(p+3)/4$ into the residue class $1 \pmod 3$, and by Landau-type
-counting the integers with this property have counting function
-$\sim c\,x/\sqrt{\log x}$, so the residual class has relative density
-zero among the primes.
+($2.38\%$ at $10^9$, $2.14\%$ at $10^{11}$).
+That this relative density in fact tends to zero is
+Corollary~\ref{cor:caseB} below; the argument offered for it in an
+earlier version of this paper---a Landau-type count of the
+\emph{integers} all of whose prime factors are $\equiv 1 \pmod 3$---does
+not support the conclusion, and is withdrawn.
+Remark~\ref{rem:landau-gap} explains precisely why.
 For these primes we apply Theorem~\ref{thm:gateway} with
 Lemma~\ref{lem:Nsq} via a computational search over prime values of~$A$.
 
@@ -503,6 +543,474 @@ Propositions~\ref{prop:3mod4}--\ref{prop:nqr7}.
 showing the split between Case~A, Case~B NQR mod~$7$, and
 Case~B QR mod~$7$.}\label{fig:coverage}
 \end{figure}
+
+
+% ============================================================================
+\section{The Residual Class Has Density Zero}\label{sec:density}
+% ============================================================================
+
+Section~\ref{sec:existence} leaves a residual class of primes to a
+computational search.  This section proves, unconditionally, that the
+residual class is negligible: it has relative density zero among the
+primes, with an explicit rate, and in fact the very first gateway
+$A = 3$ already succeeds for a set of primes of density one.
+The proofs are elementary sieve arguments; they use no
+equidistribution theorem of any kind.
+
+\subsection{The gateway function \texorpdfstring{$A(p)$}{A(p)}}
+
+\begin{definition}\label{def:Ap}
+Let $p \equiv 1 \pmod 4$ be prime.  For a prime $A \equiv 3 \pmod 4$ we
+have $4 \mid (p+A)$, and we say that \emph{gateway~$A$ succeeds
+at~$p$} if there is a divisor $d$ of $N_A^2$, where $N_A = (p+A)/4$,
+with
+\[
+  d \equiv -B_A \pmod{A}, \qquad B_A = p N_A,
+\]
+that is, if condition~\ref{cond:res} of Theorem~\ref{thm:gateway} can be
+met by a divisor of $N_A^2$; otherwise gateway~$A$ \emph{fails at~$p$}.
+We write $A(p)$ for the least prime $A \equiv 3 \pmod 4$ whose gateway
+succeeds at~$p$, and $A(p) = \infty$ if none does.  Since $3$ is the
+least prime $\equiv 3 \pmod 4$, we have $A(p) \geq 3$ for every~$p$.
+\end{definition}
+
+By Remark~\ref{rem:residue} the condition of
+Definition~\ref{def:Ap} may equivalently be written
+$d \equiv -4N_A^2 \pmod A$.  The next lemma records that a success in
+the sense of Definition~\ref{def:Ap} always produces an actual
+decomposition, so that the definition is not weaker than it appears.
+
+\begin{lemma}\label{lem:gcdNA}
+Let $p \equiv 1 \pmod 4$ be prime and $A \equiv 3 \pmod 4$ a prime.
+Then $\gcd(N_A, A) = 1$.  Consequently, if gateway~$A$ succeeds at~$p$
+with divisor~$d$, then $\gcd(d, pA) = 1$, Lemma~\ref{lem:Nsq} applies,
+and Theorem~\ref{thm:gateway} yields an explicit decomposition
+$\frac{4}{p} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$.
+\end{lemma}
+
+\begin{proof}
+If $A \mid N_A$ then $A \mid 4N_A = p + A$, so $A \mid p$ and $p = A$,
+impossible since $p \equiv 1$ and $A \equiv 3 \pmod 4$.
+Hence $\gcd(N_A, A) = 1$, and also $\gcd(N_A, p) = 1$ because
+$p \mid N_A$ would force $p \mid 4N_A - p = A$.
+A divisor $d$ of $N_A^2$ therefore satisfies $\gcd(d, pA) = 1$, and
+Lemma~\ref{lem:Nsq} gives condition~\ref{cond:int}.
+\end{proof}
+
+\subsection{Case~B is exactly the failure of gateway \texorpdfstring{$3$}{3}}
+
+The residual class of Section~\ref{sec:existence} was defined by a
+congruence condition together with the multiplicative Case-B condition.
+The following lemma identifies it exactly with the failure of the first
+gateway, which is what connects Section~\ref{sec:existence} to the
+sieve theorems below.
+
+\begin{lemma}\label{lem:caseB}
+Let $p \equiv 1 \pmod 4$ be prime.  The following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+  \item\label{cb:fail} gateway~$3$ fails at~$p$, i.e.\ $A(p) > 3$;
+  \item\label{cb:mult} every prime factor of $N_3 = (p+3)/4$ is
+    $\equiv 1 \pmod 3$;
+  \item\label{cb:caseB} $p \equiv 1 \pmod{24}$ and every prime factor
+    of $(p+3)/4$ is $\equiv 1 \pmod 3$, i.e.\ $p$ is a Case~B prime in
+    the sense of Proposition~\ref{prop:nqr7}.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Write $N = N_3$.  By~\eqref{eq:Bmod3} the target residue is
+$d \equiv 2 \pmod 3$, and by Lemma~\ref{lem:gcdNA} we have
+$\gcd(N, 3) = 1$, so every prime factor of~$N$ is $\equiv 1$ or
+$2 \pmod 3$.
+
+\ref{cb:mult}~$\Rightarrow$~\ref{cb:fail}: if every prime factor of~$N$
+is $\equiv 1 \pmod 3$ then so is every divisor of~$N^2$, and none lies
+in the class $2 \pmod 3$.
+
+\ref{cb:fail}~$\Rightarrow$~\ref{cb:mult}: if some prime $q \mid N$ has
+$q \equiv 2 \pmod 3$ then $d = q$ divides $N \mid N^2$ and meets the
+target residue, so gateway~$3$ succeeds.
+
+\ref{cb:mult}~$\Rightarrow$~\ref{cb:caseB}: the congruence
+$p \equiv 1 \pmod{24}$ is automatic.  Indeed $N$ must be odd, since
+$2 \equiv 2 \pmod 3$ would be an excluded prime factor; hence
+$p + 3 = 4N \equiv 4 \pmod 8$ and $p \equiv 1 \pmod 8$.  Also
+$4 \equiv 1 \pmod 3$ gives $N \equiv 4N = p+3 \equiv p \pmod 3$, and
+$N \equiv 1 \pmod 3$ (a product of primes $\equiv 1 \pmod 3$), so
+$p \equiv 1 \pmod 3$.  Together, $p \equiv 1 \pmod{24}$.
+
+\ref{cb:caseB}~$\Rightarrow$~\ref{cb:mult} is trivial.
+\end{proof}
+
+Lemma~\ref{lem:caseB} is the contrapositive of
+Proposition~\ref{prop:mod3}: parts~\ref{mod3:even}, \ref{mod3:p17}
+and~\ref{mod3:caseA} exhibit, respectively, the divisors $d = 2$,
+$d = p$ and $d = q$ that make gateway~$3$ succeed in each of the
+complementary cases.  (Part~\ref{mod3:p17} uses a divisor
+$d = p \nmid N^2$, so it lies outside Definition~\ref{def:Ap}; it is
+subsumed here because $p \equiv 17 \pmod{24}$ implies
+$p \equiv 2 \pmod 3$, hence $N_3 \equiv 2 \pmod 3$, hence $N_3$ has a
+prime factor $\equiv 2 \pmod 3$ and gateway~$3$ succeeds in the sense of
+Definition~\ref{def:Ap} as well.)
+In particular the Case~B QR7 residual class of
+Remark~\ref{rem:coverage} is contained in $\{p : A(p) > 3\}$.
+
+\subsection{The density-one theorems}
+
+\begin{theorem}\label{thm:densityone}
+\[
+  \#\{p \leq X : p \equiv 1 \!\!\pmod 4,\ A(p) > 3\}
+  \;\ll\; X (\log X)^{-3/2}.
+\]
+The implied constant is absolute; no epsilon, no $\log\log X$ factor,
+and no unproved hypothesis is involved.
+\end{theorem}
+
+\begin{corollary}\label{cor:caseB}
+The number of Case~B primes up to~$X$ is $O\bigl(X(\log X)^{-3/2}\bigr)$,
+and a fortiori so is the number of Case~B QR7 primes.  Dividing by
+$\pi(X) \sim X/\log X$, the residual class of
+Remark~\ref{rem:coverage} has relative density
+$O\bigl((\log X)^{-1/2}\bigr)$ among the primes; in particular its
+relative density is zero.  Equivalently, $A(p) = 3$ for a set of primes
+$p \equiv 1 \pmod 4$ of density one.
+\end{corollary}
+
+\begin{proof}
+Immediate from Theorem~\ref{thm:densityone} and
+Lemma~\ref{lem:caseB}, together with $A(p) \geq 3$ always.
+\end{proof}
+
+The value $3$ in Theorem~\ref{thm:densityone} cannot be lowered:
+$A(p) \geq 3$ holds by definition, so the theorem says that the least
+gateway that can ever work is the one that almost always does.  The
+next theorem trades that optimality for a better exponent on a thinner
+set.
+
+\begin{theorem}\label{thm:generalT}
+Fix $T \geq 3$ and let $k(T) = \#\{A \leq T : A \text{ prime},\
+A \equiv 3 \pmod 4\}$.  Then
+\[
+  \#\{p \leq X : p \equiv 1 \!\!\pmod 4,\ A(p) > T\}
+  \;\ll_T\; X (\log X)^{-1-k(T)/2}.
+\]
+More generally, for any finite set~$S$ of primes $\equiv 3 \pmod 4$,
+the number of $p \leq X$ with $p \equiv 1 \pmod 4$ for which every
+gateway $A \in S$ fails is $\ll_S X(\log X)^{-1-|S|/2}$.
+\end{theorem}
+
+The case $T = 3$ ($k = 1$) is Theorem~\ref{thm:densityone}, and the
+case $T = 7$ ($k = 2$) gives
+\[
+  \#\{p \leq X : p \equiv 1 \!\!\pmod 4,\ A(p) > 7\}
+  \;\ll\; X (\log X)^{-2},
+\]
+a strictly better exponent on the strictly smaller set
+$\{A(p) > 7\} \subset \{A(p) > 3\}$.  The two statements are
+logically incomparable: $T = 3$ gives the optimal gateway value on the
+larger set, $T = 7$ a sharper bound on the smaller one.
+Note that $\{A(p) > 7\}$ is not the same as the residual class of
+Remark~\ref{rem:coverage} minus the primes covered by
+Proposition~\ref{prop:nqr7}: that proposition uses a divisor
+$d = 2^k p$ of $B y$ which does not divide $N_7^2$, so it lies outside
+Definition~\ref{def:Ap} and a prime it covers may still have
+$A(p) > 7$.  The implied constant in Theorem~\ref{thm:generalT} is not
+uniform in~$T$, and nothing here is claimed as $T \to \infty$.
+
+\subsection{Proof sketches}
+
+We sketch the arguments in enough detail to make the mechanism and its
+inputs clear, and to let a reader familiar with sieve methods
+reconstruct them.  Full details---in particular the Kneser-theoretic
+classification of gateway failure underlying
+Theorem~\ref{thm:generalT}, and the complete remainder and
+structure-class bookkeeping---are deferred to a separate paper in
+preparation.
+
+\subsubsection*{Theorem~\ref{thm:densityone}}
+
+\emph{Reduction.}
+Put $n = N_3 = (p+3)/4$, so that $p = 4n - 3$, and set
+$x = (X+3)/4$.  By Lemma~\ref{lem:caseB},
+\begin{equation}\label{eq:reduction}
+  \#\{p \leq X : p \equiv 1 \!\!\pmod 4,\ A(p) > 3\}
+  = \#\{n \leq x : 4n-3 \text{ prime},\
+    n \text{ has no prime factor} \equiv 2 \!\!\pmod 3\}.
+\end{equation}
+This is an exact identity, not an inequality: Lemma~\ref{lem:caseB} is
+an equivalence, and the map $p \mapsto (p+3)/4$ is a bijection between
+the primes $p \equiv 1 \pmod 4$ and the integers~$n$ with $4n-3$ prime.
+
+\emph{The majorant.}
+The right-hand side of~\eqref{eq:reduction} is bounded above by sifting
+the \emph{plain integers} $n \leq x$, not the primes.  Fix a sifting
+level $z \geq 2$ and, at each prime $\ell \leq z$, exclude the residue
+classes
+\[
+  n \equiv 3 \cdot 4^{-1} \!\!\pmod \ell \quad (\ell \text{ odd}),
+  \qquad\text{and}\qquad
+  n \equiv 0 \!\!\pmod \ell \quad (\ell \equiv 2 \!\!\pmod 3).
+\]
+The first is the class in which $\ell \mid 4n-3$; it is the standard
+\emph{rough-number majorant} for the primality of $4n-3$, since a prime
+$4n-3 > z$ has no prime factor $\leq z$ and therefore avoids that class
+at every $\ell \leq z$.  The second excludes the prime factors
+$\equiv 2 \pmod 3$ forbidden by~\eqref{eq:reduction}.  Every~$n$
+counted in~\eqref{eq:reduction} with $4n-3 > z$ survives this sieve, so
+the sifted count exceeds it by at most $O(z)$.  Over-counting is
+harmless: $z$-rough values of $4n-3$ that are not prime also survive,
+and an upper-bound sieve is only forbidden to under-count.
+
+This substitution is what makes the argument elementary.  The sifted
+sequence is $\{n \leq x\}$, so for a squarefree modulus $d$ the sifted
+set $A_d$ is a union of $\rho(d)$ residue classes mod~$d$ and
+\[
+  |A_d| = x\,\frac{\rho(d)}{d} + r(d), \qquad |r(d)| \leq \rho(d),
+\]
+by counting integers in an arithmetic progression.  \emph{Every
+remainder term is elementary integer-counting.}  No count of primes in
+arithmetic progressions to a \emph{varying} modulus occurs---the only
+input of that kind anywhere in the argument is the prime number theorem
+for the single fixed real character modulo~$3$, used above to evaluate
+the density of the sifted primes---and hence no equidistribution
+theorem---Bombieri--Vinogradov, Barban--Davenport--Halberstam, the
+large sieve, GRH---is used or needed.
+
+\emph{Local data and dimension.}
+The two excluded classes at~$\ell$ coincide only if
+$3 \cdot 4^{-1} \equiv 0 \pmod \ell$, that is only for $\ell = 3$,
+where the second exclusion is not imposed ($3 \not\equiv 2 \bmod 3$).
+Hence $\rho$ is multiplicative with $\rho(\ell) \leq 2$, and
+$\rho(\ell) < \ell$ at every prime, including $\rho(2) = 1$ and
+$\rho(3) = 1$.  By Mertens' theorem and the prime number theorem for
+the single fixed real character modulo~$3$,
+\[
+  \sum_{\ell \leq z} \frac{\rho(\ell)\log \ell}{\ell}
+  = \log z + \tfrac{1}{2}\log z + O(1)
+  = \tfrac{3}{2}\log z + O(1).
+\]
+The sieve therefore has dimension $\kappa = 3/2$: one full unit from
+the primality majorant, and one half from the single gateway, the
+half being the density of the primes $\equiv 2 \pmod 3$.
+
+\emph{The sieve.}
+Selberg's $\Lambda^2$ upper-bound sieve~\cite{Selberg1947}, in the
+standard form of Halberstam and Richert~\cite[Ch.~3]{HalberstamRichert1974},
+with weights supported on $d \leq z$, gives
+\[
+  S \;\leq\; \frac{x}{G(z)} \;+\; \sum_{d \leq z^2} 3^{\omega(d)}|r(d)|,
+  \qquad
+  G(z) = \sum_{\substack{d \leq z\\ d \mid P(z)}} \mu^2(d)\, g(d),
+\]
+where $P(z)$ is the product of the sifting primes $\ell \leq z$ and $g$
+is the multiplicative function with
+$g(\ell) = \rho(\ell)/(\ell - \rho(\ell))$; the factor $3^{\omega(d)}$
+counts the ordered pairs $(d_1,d_2)$ with $\mathrm{lcm}(d_1,d_2) = d$.
+The dimension-$\kappa$ Mertens estimate
+(\cite[Lemma~5.3]{HalberstamRichert1974}, valid for arbitrary real
+$\kappa > 0$) gives $G(z) \gg (\log z)^{3/2}$.  For the remainder,
+$\rho(d) \leq 2^{\omega(d)}$, so by the classical estimate
+$\sum_{n \leq y} m^{\omega(n)} \ll y (\log y)^{m-1}$
+\cite[Ch.~I.3, I.5]{Tenenbaum2015},
+\[
+  \sum_{d \leq z^2} 3^{\omega(d)}|r(d)|
+  \;\leq\; \sum_{d \leq z^2} 6^{\omega(d)}
+  \;\ll\; z^2 (\log z)^5 .
+\]
+
+\emph{Level.}
+Take $z = x^{1/8}$, so that the weights are supported on
+$d \leq x^{1/8}$ and the remainder is summed over $d \leq x^{1/4}$.
+Then $\log z = \tfrac{1}{8}\log x$, so the main term is
+$\ll x(\log x)^{-3/2}$, while the remainder is $\ll x^{1/4}(\log x)^5$:
+smaller by a power of~$x$, not merely by a power of a logarithm.
+The boundary loss from $4n-3 \leq z$ is $O(x^{1/8})$.  Because the
+remainder is elementary, the level of distribution is nowhere near
+binding---any fixed positive power of~$x$ serves---which is the
+structural reason no equidistribution input appears.  Combining and
+returning to~$X$ proves Theorem~\ref{thm:densityone}.
+
+\subsubsection*{Theorem~\ref{thm:generalT}}
+
+Two changes are needed.  First, for a general gateway $A \equiv 3
+\pmod 4$ there is no exact analogue of Lemma~\ref{lem:caseB}; the
+group $(\Z/A)^\times$ has more than one proper subgroup, and gateway
+failure at~$N$ implies only the weaker \emph{necessary} condition that
+there is a subgroup $K \leq (\Z/A)^\times$ of index $c \geq 2$ such
+that at most $c - 2$ distinct prime factors of~$N$ have residue
+outside~$K$.
+This last condition is the deepest ingredient of the argument and is
+not elementary: it comes from a classification of gateway failure into
+a \emph{span} obstruction and a \emph{box} obstruction, obtained by
+applying Kneser's addition theorem~\cite{Kneser1953} to the set of
+residues represented by divisors of~$N^2$.  We use only the stated
+consequence; the classification itself is developed in the separate
+paper in preparation referred to above.
+For $A = 3$ the only proper subgroup is
+$\{1\}$, of index~$2$, and the condition reads ``no prime factor
+outside $\{1\}$'', recovering Lemma~\ref{lem:caseB} exactly.
+Second, the gateways are evaluated at different arguments;
+writing $n = (p+3)/4$ and $h_j = (A_j-3)/4$, one has
+$N_{A_j} = n + h_j$, so the conditions become conditions on~$k$ shifted
+arguments.
+
+The sieve is then run once for each \emph{structure class}
+$(K_1,\dots,K_k)$, of which there are $O_T(1)$, and the results are
+combined by a union bound.  For a fixed class the excluded classes are
+$3 \cdot 4^{-1}$ from the primality majorant and $-h_j$ at each prime
+$\ell$ whose residue lies outside~$K_j$; the first never collides with
+the others except at $\ell = A_j$, where the $j$th condition is not
+imposed, and two gateway classes collide exactly when
+$\ell \mid h_i - h_j$, hence only for the bounded set of primes
+$\ell \leq (T-3)/4$.  Finitely many primes change the Euler product by
+a bounded factor and the exponent not at all.  By the prime number
+theorem in arithmetic progressions to the fixed modulus~$A_j$, the
+primes outside~$K_j$ have density $1 - 1/c_j$, so the dimension of the
+class is
+\[
+  \kappa(K) = 1 + \sum_{j=1}^{k}\Bigl(1 - \frac{1}{c_j}\Bigr),
+\]
+again one unit from the primality majorant and $1 - 1/c_j$ per gateway.
+The classes with some $c_j > 2$ permit up to $c_j - 2$ exceptional
+prime factors; these are handled by extracting the (bounded) set of
+exceptional primes and re-running the sieve on the residue class they
+determine, at a cost of a factor $(\log\log x)^{\sum_j (c_j-2)}$.
+That cost is affordable, because such a class also saves a genuine
+power of $\log x$: relative to the all-quadratic-residue class
+$c_1 = \dots = c_k = 2$, its bound carries the extra factor
+\[
+  (\log x)^{-\sum_j (1/2 - 1/c_j)} (\log\log x)^{\sum_j (c_j - 2)}
+  \longrightarrow 0,
+\]
+since $1/2 - 1/c_j \geq 1/6$ whenever $c_j \geq 3$.  The maximum over
+the $O_T(1)$ classes is therefore attained at the all-quadratic-residue
+class, which has no exceptional factors at all and dimension
+$\kappa = 1 + k/2$.  The remainder is elementary exactly as before,
+and $z$ is again a fixed positive power of~$x$.  This gives
+$\ll_T x(\log x)^{-1-k/2}$, and Theorem~\ref{thm:generalT} follows.
+The variant for an arbitrary finite set~$S$ is the same argument with
+the translation ``$A(p) > T$ iff every gateway $A \leq T$ fails''
+replaced by the hypothesis on~$S$ directly; nothing else changes.
+
+\subsection{Remarks}
+
+\begin{remark}[The earlier density argument, and why it fails]
+\label{rem:landau-gap}
+An earlier version of this paper justified the density-zero claim of
+Remark~\ref{rem:coverage} as follows: the Case-B condition forces every
+prime factor of $(p+3)/4$ into the class $1 \pmod 3$, and by
+Landau-type counting~\cite[Ch.~II.5]{Tenenbaum2015} the integers
+$n \leq x$ with that property number $\sim c\,x/\sqrt{\log x}$;
+therefore, it was said, the residual class has relative density zero
+among the primes.
+
+\emph{That inference is invalid.}  The Landau count is a count of
+\emph{integers}.  Applying it as the reduction~\eqref{eq:reduction}
+requires---to $n = (p+3)/4 \leq (X+3)/4$, not to integers up to
+$X$---and dividing by $\pi(X) \sim X/\log X$ gives
+\[
+  \frac{c\,(X/4)/\sqrt{\log (X/4)}}{X/\log X}
+  \;\sim\; \frac{c}{4}\sqrt{\log X}
+  \;\longrightarrow\; \infty ,
+\]
+so the ratio does not tend to zero; it grows without bound, and the
+inference fails.  Numerically, with $c = 0.3012$, the Landau bound is
+$2.14 \times 10^4$ at $X = 10^6$ against $\pi(X) = 7.85 \times 10^4$,
+$1.71 \times 10^7$ at $10^9$ against $5.08 \times 10^7$, and
+$1.54 \times 10^9$ at $10^{11}$ against $4.12 \times 10^9$: a bound of
+the same order as $\pi(X)$, occupying a \emph{rising} fraction of it
+($0.27$, $0.34$, $0.37$), rather than a vanishing one.
+
+The missing ingredient is that the primality of~$p$ must itself be
+sieved for, and that is what supplies the extra full power of $\log X$;
+in the language of the sketch above, it is the dimension~$1$
+contributed by the primality majorant, on top of the dimension~$1/2$
+that the Landau count already sees.  The conclusion asserted in the
+earlier version is correct---it is
+Corollary~\ref{cor:caseB}---but Theorem~\ref{thm:densityone}, not the
+Landau count, is what establishes it.
+\end{remark}
+
+\begin{remark}[Sharpness]\label{rem:sharpness}
+The exponent $-1-k(T)/2$ is presumably the true order, and no matching
+lower bound is claimed or attempted here; every bound in this section
+is an upper bound.  The reason for expecting sharpness is that the
+all-quadratic-residue structure class, which sets the bound in the
+proof of Theorem~\ref{thm:generalT}, is realisable: it is a genuine
+failure mode of every gateway, not an artefact of the union bound.
+Numerically, for $T = 3$ the proportion of primes $p \equiv 1 \pmod 4$
+with $A(p) > 3$, multiplied by $\sqrt{\log X}$, is constant to within
+one per cent (at approximately $0.43$) over $10^5 \leq X \leq
+3 \times 10^8$, which is consistent with $(\log X)^{-1/2}$ being the
+true relative density rather than merely an upper bound.  Since the
+sieve is one-sided, this remains an observation, not a theorem.
+\end{remark}
+
+\begin{remark}[What these theorems do not say]\label{rem:density-limits}
+Three limitations deserve to be stated plainly.
+\begin{enumerate}[label=\textup{(\alph*)}]
+  \item A density-one statement permits an infinite exceptional set, of
+    density zero.  Theorem~\ref{thm:densityone} constrains that set only
+    in size, not in structure, and says nothing about which primes lie
+    in it.
+  \item Nothing here bears on whether $A(p)$ is bounded for
+    \emph{every} prime.  That is Conjecture~\ref{conj:bounded}, and it
+    remains open; Theorem~\ref{thm:generalT} holds for each fixed~$T$
+    with a constant that is not uniform in~$T$, so it cannot be
+    summed or taken to a limit to yield a bound valid for all primes.
+  \item Nothing here bears on the Erd\H{o}s--Straus conjecture itself,
+    which is in any case verified to $10^{18}$~\cite{MihneaBogdan2025},
+    far beyond any height at which a density-one statement would first
+    become informative.  These are structural results about the gateway
+    parameter, not existence results for~\eqref{eq:es}.
+\end{enumerate}
+\end{remark}
+
+\begin{remark}[Attribution]\label{rem:density-attribution}
+The theorems of this section are new.  The sieve machinery they use is
+entirely classical: Selberg's $\Lambda^2$ upper-bound
+sieve~\cite{Selberg1947}, the dimension-$\kappa$ Mertens estimate of
+Halberstam and Richert~\cite[Lemma~5.3]{HalberstamRichert1974},
+the prime number theorem in arithmetic progressions to a fixed modulus,
+and the divisor-moment estimate
+$\sum_{n \leq y} m^{\omega(n)} \ll y(\log y)^{m-1}$
+\cite[Ch.~I.3, I.5]{Tenenbaum2015}.  The only novelty in the method is
+its routing: sifting the integers rather than the primes, so that
+primality enters as a majorant and every remainder term becomes
+elementary.  Earlier drafts of this material attacked the same
+statement by sifting the primes and required a divisor-weighted
+Bombieri--Vinogradov input, which was neither available nor, as it
+turned out, necessary.
+\end{remark}
+
+\begin{remark}[Relation to the divisor literature]
+\label{rem:divisor-literature}
+The nearest published relative is the work of Banks, Friedlander and
+Luca~\cite{BanksFriedlanderLuca2008}, who obtain an asymptotic for the
+count of integers $n \leq x$ having \emph{no} divisor $d > 1$ in a fixed
+residue class $a \pmod q$.  Their answer is governed by $H(a)$, the
+subgroup of $(\mathbb{Z}/q\mathbb{Z})^\times$ of largest order not
+containing~$a$: writing $\mathcal{P} = [(\mathbb{Z}/q\mathbb{Z})^\times :
+H(a)]$, the count is
+$\asymp x (\log\log x)^{\mathcal{P}-2} (\log x)^{-(1 - 1/\mathcal{P})}$.
+For $q = A \equiv 3 \pmod 4$ and $a = -4$ the relevant subgroup is
+$\operatorname{QR}(A)$ and $\mathcal{P} = 2$, giving exponent $1/2$ ---
+the same exponent that governs the Landau count in
+Remark~\ref{rem:landau-gap}, and for the same structural reason.
+
+Their result does not cover the question studied here, on three counts:
+it concerns divisors of~$n$ rather than of~$n^2$; the target class is
+fixed, whereas the target $-4N^2 \pmod A$ moves with~$N$; and it excludes
+the divisor $d = 1$, which is admissible in
+condition~\ref{cond:res}.  Most importantly it is a statement about
+integers, and Remark~\ref{rem:landau-gap} records why a count over
+integers does not transfer to the primes.  The theorems of this section
+are for primes, for $k$ gateways simultaneously, and at $k$ distinct
+shifted arguments; the extra full unit in the exponent $1 + k/2$ is
+exactly the cost of detecting primality, for which
+\cite{BanksFriedlanderLuca2008} has no analogue.  Their paper is also
+explicitly non-uniform in~$q$.
+\end{remark>
 
 
 % ============================================================================
@@ -815,11 +1323,20 @@ it removes the flatness argument as evidence for it. The conjecture
 is stated below as an open question, not as one the data supports.
 
 \begin{conjecture}[Bounded gateway parameter]\label{conj:bounded}
-There exists an absolute constant~$C$ such that for every prime~$p$,
+There exists an absolute constant~$C$ such that for every prime
+$p \equiv 1 \pmod 4$,
 there is a prime $A \leq C$ with $A \equiv 3 \pmod{4}$, $4 \mid (p+A)$,
 and a divisor $d$ of $\bigl(\frac{p+A}{4}\bigr)^{\!2}$ satisfying
 $d \equiv -B \pmod{A}$, where $B = p(p+A)/4$.
+Equivalently, $A(p) \leq C$ for all such~$p$, in the notation of
+Definition~\ref{def:Ap}.
 \end{conjecture}
+
+The restriction to $p \equiv 1 \pmod 4$ is not a weakening: primes
+$p \equiv 3 \pmod 4$ are settled unconditionally by
+Proposition~\ref{prop:3mod4}, and for them $4 \nmid (p+A)$ whenever
+$A \equiv 3 \pmod 4$, so the displayed condition is vacuous rather than
+false.
 
 If Conjecture~\ref{conj:bounded} holds, the Erd\H{o}s--Straus conjecture
 follows, since the conjecture can be verified for all primes up to~$C$
@@ -892,10 +1409,16 @@ divisors falls in the target residue class $-B \pmod{A}$ is approximately
 \]
 This suggests that for any fixed~$A$, the set of primes for which
 $A$ fails has density zero---consistent with Tao's ``almost all'' result.
-For multiple values of~$A$ (the 31 distinct gateway values that occur
-below $10^{11}$), failure requires \emph{simultaneous} failure across
-all~$A$, which is heuristically negligible but not ruled out by the
-density argument alone.
+That conclusion is no longer only heuristic:
+Theorem~\ref{thm:generalT}, applied to the singleton set $S = \{A\}$,
+proves it unconditionally with the rate $O(X(\log X)^{-3/2})$, and the
+same theorem handles simultaneous failure across any fixed finite set
+of gateways, at the rate $O(X(\log X)^{-1-|S|/2})$.
+What the density argument does not deliver---and what
+Theorem~\ref{thm:generalT} equally does not, since its constant is not
+uniform in~$T$---is any statement about the 31 distinct gateway values
+being enough for \emph{every} prime, which is
+Conjecture~\ref{conj:bounded}.
 
 The Elsholtz--Tao bounds explain why small~$A$ dominates:
 with $\tau(N^2) \sim (\log p)^c$ divisors and a target residue class
@@ -1002,12 +1525,20 @@ for $p \equiv 3 \pmod 4$, we verify that every
 prime $p \leq 10^{11}$ admits an explicit decomposition
 $\frac{4}{p} = \frac{1}{x} + \frac{1}{y} + \frac{1}{z}$.
 
-The main observation is the slow growth of the gateway parameter:
-$\max A$ increases in occasional large jumps separated by long flat
-stretches ($79$ at $10^6$, $239$ at $10^8$, $359$ at $10^{10}$, holding
-through $10^{11}$), while the
-residual class itself thins out (relative density
-$\sim c/\sqrt{\log x}$).
+Section~\ref{sec:density} proves unconditionally that the residual
+class left to that search is negligible: it has relative density
+$O((\log X)^{-1/2})$ among the primes, and the first gateway $A = 3$
+already succeeds for a set of primes of density one---the best possible
+statement of that kind, since $A(p) \geq 3$ always.  The proof is an
+elementary Selberg sieve on the integers and uses no equidistribution
+theorem.  It also corrects an argument given in an earlier version of
+this paper, which drew the same conclusion from a Landau-type count of
+integers that does not support it (Remark~\ref{rem:landau-gap}).
+
+The main computational observation is the slow growth of the gateway
+parameter: $\max A$ increases in occasional large jumps separated by
+long flat stretches ($79$ at $10^6$, $239$ at $10^8$, $359$ at
+$10^{10}$, holding through $10^{11}$).
 A flat stretch of this kind is not, by itself, evidence of an eventual
 ceiling: Section~\ref{sec:discussion} shows two models fitting the
 verified data identically, one bounded and one not, and an exploratory
@@ -1018,7 +1549,8 @@ and $479$. If $\max A$ is absolutely bounded
 The framework provides a potential bridge between computational verification
 and a theoretical proof: the bounded-$A$ conjecture is a concrete
 statement about divisor equidistribution in residue classes for structured
-quadratic integers, a topic accessible to the methods of analytic number theory.
+quadratic integers, a topic accessible to the methods of analytic number theory
+(Remark~\ref{rem:divisor-literature} locates the nearest published results).
 
 \bigskip
 \noindent\textbf{Code availability.}
@@ -1031,6 +1563,11 @@ All verification code (Python) and reproducibility data are available at
 % ============================================================================
 
 \begin{thebibliography}{99}
+
+\bibitem{BanksFriedlanderLuca2008}
+W.~D.~Banks, J.~B.~Friedlander and F.~Luca,
+\emph{Integers without divisors from a fixed arithmetic progression},
+Forum Math.\ \textbf{20} (2008), 1005--1037.
 
 \bibitem{Elsholtz2001}
 C.~Elsholtz,
@@ -1046,6 +1583,16 @@ J.\ Aust.\ Math.\ Soc.\ \textbf{94} (2013), 50--105.
 B.~Ghermoul,
 \emph{Exact polynomial families solving the Erd\H{o}s--Straus equation},
 preprint, 2025. \texttt{arXiv:2508.07383}.
+
+\bibitem{HalberstamRichert1974}
+H.~Halberstam and H.-E.~Richert,
+\emph{Sieve Methods},
+London Math.\ Soc.\ Monographs 4, Academic Press, 1974.
+
+\bibitem{Kneser1953}
+M.~Kneser,
+\emph{Absch\"atzung der asymptotischen Dichte von Summenmengen},
+Math.\ Z.\ \textbf{58} (1953), 459--484.
 
 \bibitem{MihneaBogdan2025}
 S.~Mihnea and D.~C.~Bogdan,
@@ -1069,6 +1616,11 @@ A.~Schinzel,
 o\`u $n$ est un nombre impair},
 Mathesis \textbf{65} (1956), 219--222.
 
+\bibitem{Selberg1947}
+A.~Selberg,
+\emph{On an elementary method in the theory of primes},
+Norske Vid.\ Selsk.\ Forh.\ Trondheim \textbf{19} (1947), 64--67.
+
 \bibitem{Sierpinski1956}
 W.~Sierpi\'nski,
 \emph{Sur les d\'ecompositions de nombres rationnels en fractions primaires},
@@ -1085,6 +1637,11 @@ T.~Tao,
 \emph{Erd\H{o}s--Straus conjecture},
 blog post, 2011.
 \url{https://terrytao.wordpress.com/tag/erdos-straus-conjecture/}
+
+\bibitem{Tenenbaum2015}
+G.~Tenenbaum,
+\emph{Introduction to Analytic and Probabilistic Number Theory},
+3rd ed., Graduate Studies in Mathematics 163, Amer.\ Math.\ Soc., 2015.
 
 \bibitem{Vaughn2024}
 R.~Vaughn,

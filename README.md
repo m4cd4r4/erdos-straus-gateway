@@ -1,6 +1,6 @@
 # Bounded Gateway Parameters for the Erdos-Straus Conjecture
 
-[![paper](https://img.shields.io/badge/paper-19pp%20PDF-blue)](erdos_straus_gateway.pdf)
+[![paper](https://img.shields.io/badge/paper-28pp%20PDF-blue)](erdos_straus_gateway.pdf)
 [![verified](https://img.shields.io/badge/verified-4.1B%20primes%20%E2%89%A4%2010%5E11-brightgreen)](#verification)
 [![max A verified](https://img.shields.io/badge/max%20A%20verified-%E2%89%A4%20359-success)](#bounded-a-phenomenon)
 [![max A exploratory](https://img.shields.io/badge/max%20A%20exploratory-%E2%89%A4%20479%20to%201.2%C3%9710%5E12-yellow)](#bounded-a-phenomenon)
@@ -22,11 +22,15 @@ The [Erdos-Straus conjecture](https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93S
 
 has a solution in positive integers x, y, z.
 
-This repository contains the paper, verification code, and figures for a unified algebraic approach to the prime case. Every prime `p = 3 (mod 4)` is handled classically with `A = 1`. For every prime `p = 1 (mod 4)`, a single auxiliary parameter `A` produces an explicit decomposition: three algebraic propositions cover all but a density-zero residual class, and a short search over prime values of `A` resolves the rest.
+This repository contains the paper, verification code, and figures for a unified algebraic approach to the prime case. Every prime `p = 3 (mod 4)` is handled classically with `A = 1`. For every prime `p = 1 (mod 4)`, a single auxiliary parameter `A` produces an explicit decomposition: three algebraic propositions cover all but a residual class, and a short search over prime values of `A` resolves the rest.
 
 Verification to **10^11** (all 4,118,054,813 primes) succeeds with just **32 values of A** for the `p = 1 (mod 4)` primes - the value `A = 3` for the algebraic classes plus 31 distinct gateway values, all `= 3 (mod 4)` and all `<= 359`.
 
-## Key Result
+Separately, the paper proves **unconditionally** that the residual class is negligible - it has relative density zero among the primes, at the rate `O((log X)^{-1/2})` - so a single value `A = 3` suffices for a set of primes of density one. See [Density-One Theorems](#density-one-theorems).
+
+## Key Results
+
+### Explicit decomposition (computational)
 
 **Theorem.** For every prime `p <= 10^11` with `p = 1 (mod 4)` in the residual class, there exists a prime `A <= 359` with `A = 3 (mod 4)`, `4 | (p + A)`, and a divisor `d` of `((p+A)/4)^2` satisfying `d = -p^2 * 4^{-1} (mod A)`, such that
 
@@ -35,6 +39,26 @@ Verification to **10^11** (all 4,118,054,813 primes) succeeds with just **32 val
 are positive integers giving `4/p = 1/x + 1/y + 1/z`.
 
 The critical insight is that the integrality condition requires `d | N^2` (where `N = (p+A)/4`), which is **strictly weaker** than `d | N`. A nontrivial fraction of the hardest primes use a divisor `d > N` that is invisible under the stronger condition.
+
+### Density-One Theorems
+
+Write `A(p)` for the least prime `A = 3 (mod 4)` whose gateway succeeds at `p = 1 (mod 4)`. Since `3` is the least prime `= 3 (mod 4)`, `A(p) >= 3` always. Paper §5 proves, unconditionally:
+
+**Theorem 5.4.** `#{p <= X : p = 1 (mod 4), A(p) > 3} << X (log X)^{-3/2}`.
+
+So `A(p) = 3` for a set of primes of **density one**, and the residual class of §4 has relative density `O((log X)^{-1/2})` among the primes. The value `3` is optimal - there is no smaller gateway to shrink to.
+
+**Theorem 5.6.** For each fixed `T`, with `k(T) = #{A <= T : A prime, A = 3 (mod 4)}`,
+
+    #{p <= X : p = 1 (mod 4), A(p) > T}  <<_T  X (log X)^{-1-k(T)/2}
+
+`T = 3` recovers Theorem 5.4; `T = 7` gives `O(X (log X)^{-2})`.
+
+Both are elementary Selberg upper-bound sieves applied to the **integers** `n <= x`, with `p = 4n-3` and "`4n-3` has no prime factor `<= z`" used as a *majorant* for "`4n-3` is prime". That makes every remainder term elementary integer-counting, so **no equidistribution theorem is used anywhere** - no Bombieri-Vinogradov, no large sieve, no GRH. The sieve dimension is `1 + k/2`: one from the primality majorant, one half per gateway. Only upper bounds are proved; no matching lower bound is claimed.
+
+These say nothing about `A(p)` being bounded for *every* prime (that is the open [bounded-A conjecture](#bounded-a-phenomenon)), and nothing about the Erdos-Straus conjecture itself, which is verified far beyond any height relevant here.
+
+**Correction.** Earlier versions of the paper claimed the residual class had relative density zero on the strength of a Landau-type count of *integers* whose prime factors all lie in `1 (mod 3)` (`~ c x/sqrt(log x)`). That inference is invalid: dividing by `pi(X) ~ X/log X` gives `c sqrt(log X) -> infinity`, and the bound in fact exceeds `pi(X)` throughout the range of the paper. The conclusion was right; the argument was not. Theorem 5.4 is what establishes it. See paper Remark 5.7.
 
 ## Bounded-A Phenomenon
 
@@ -51,7 +75,7 @@ The maximum `A` grows extremely slowly with scale, over the range formally verif
 
 The record-setting prime in this range is `p = 3,807,728,761` (`A = 359`, `d = 1935`), which lies below 10^10 - nothing in `(10^10, 10^11]` beats it. Across 4.1 billion primes, only **47** require `A >= 199` and only **5** require `A >= 251`.
 
-**This flatness does not, by itself, support the bounded-A conjecture.** A distributional analysis of the tail of `A(p)` over this range (see the paper, §6.1, and [the companion analysis](extended-search/phase3a_growth_law.md)) shows two candidate growth models - one giving an absolutely bounded maximum, the other unbounded but extremely slow - that fit these six data points *identically*. A single decade of flatness cannot distinguish them.
+**This flatness does not, by itself, support the bounded-A conjecture.** A distributional analysis of the tail of `A(p)` over this range (see the paper, §7.1, and [the companion analysis](extended-search/phase3a_growth_law.md)) shows two candidate growth models - one giving an absolutely bounded maximum, the other unbounded but extremely slow - that fit these six data points *identically*. A single decade of flatness cannot distinguish them.
 
 Consistent with that, an **exploratory search past 10^11** (same validated engine as above; every witness with `A >= 100` - all 19,540 of them, not a sample - has since been independently re-derived, but the classification of the ordinary small-A primes has not, so still reported separately from the verified table) has since found two further records, at two separate jumps, before the search stopped at `1.212x10^12` with no further record:
 
@@ -74,14 +98,15 @@ The main paper (`erdos_straus_gateway.tex`) contains:
 
 - **Section 3**: The Gateway Decomposition theorem and the `d | N^2` lemma
 - **Section 4**: Algebraic existence proofs covering ~97.1% of all primes (at 10^6, rising with the bound)
-- **Section 5**: Computational verification for the remaining residual class (Case B QR7 primes), including an *Anatomy of the hardest prime* - a discrete-log proof of why `p = 3,807,728,761` forces `A = 359` (its N^2 divisors fill every unit mod 359)
-- **Section 6**: Discussion of the bounded-A phenomenon and the path to a full proof
+- **Section 5**: The unconditional density-one theorems above, the identification of Case B with the failure of gateway 3 (Lemma 5.3), proof sketches, and the correction to the earlier density argument (Remark 5.7)
+- **Section 6**: Computational verification for the remaining residual class (Case B QR7 primes), including an *Anatomy of the hardest prime* - a discrete-log proof of why `p = 3,807,728,761` forces `A = 359` (its N^2 divisors fill every unit mod 359)
+- **Section 7**: Discussion of the bounded-A phenomenon and the path to a full proof
 
-The residual class - `p = 1 (mod 24)`, a quadratic residue mod 7, with every prime factor of `(p+3)/4` congruent to `1 (mod 3)` - is related to but **not identical with** the classical Mordell subset `{1, 121, 169, 289, 361, 529} (mod 840)`; Remark 4.5 distinguishes them with explicit examples.
+The residual class - `p = 1 (mod 24)`, a quadratic residue mod 7, with every prime factor of `(p+3)/4` congruent to `1 (mod 3)` - is related to but **not identical with** the classical Mordell subset `{1, 121, 169, 289, 361, 529} (mod 840)`; Remark 4.4 distinguishes them with explicit examples.
 
 ### Companion Document
 
-- **`unconditional_bound.tex`** - An unconditional density bound `E(X) = O(X/(log X)^{3/2})` on the count of primes not covered by any known algebraic or gateway decomposition, via the sharpness of gateway `A = 7` and a half-dimensional Selberg sieve. Also proves `A = 7` is the unique sharp gateway among the original 28-candidate list and discusses the character-sum barrier to an unconditional finiteness result.
+- **`unconditional_bound.tex`** - An earlier, weaker unconditional density bound `E(X) = O(X/(log X)^{3/2})` on the count of primes not covered by any known algebraic or gateway decomposition, via the sharpness of gateway `A = 7`, a half-dimensional Selberg sieve, and a Bombieri-Vinogradov level of distribution. Also proves `A = 7` is the unique sharp gateway among the original 28-candidate list and discusses the character-sum barrier to an unconditional finiteness result. **Superseded on the density bound** by Theorem 5.6 above (`T = 7`), which bounds a larger set by `O(X (log X)^{-2})` and needs no Bombieri-Vinogradov input; the sharpness and barrier discussion stands.
 
 ## Verification
 
@@ -94,7 +119,7 @@ python verify.py 100000000    # to 10^8             (~30 minutes)
 python verify.py 1000000000   # to 10^9             (~90 minutes, ~1 GB RAM)
 ```
 
-Reproduce the hardest-prime analysis (Section 5.4):
+Reproduce the hardest-prime analysis (Section 6.4):
 
 ```bash
 python verify_hardest_prime.py   # checks every claim for p = 3,807,728,761
@@ -159,7 +184,7 @@ This is a question about **equidistribution of divisors in residue classes** for
 
 ## Data Provenance
 
-The verification pipeline was corrected in July 2026: an earlier run of the 10^10 stage inverted the Case A / Case B classification and searched the wrong set of primes. All figures in this repository derive from the corrected, baseline-validated pipeline (`sessions/session20_corrected_10B.py`) and are cross-checked against the checkpoints in `results/`. Section 5 of the paper documents the correction.
+The verification pipeline was corrected in July 2026: an earlier run of the 10^10 stage inverted the Case A / Case B classification and searched the wrong set of primes. All figures in this repository derive from the corrected, baseline-validated pipeline (`sessions/session20_corrected_10B.py`) and are cross-checked against the checkpoints in `results/`. Section 6 of the paper documents the correction.
 
 ## Citation
 
